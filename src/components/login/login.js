@@ -1,4 +1,6 @@
-function login(){
+import { Link } from "react-router-dom";
+
+function Login(){
     return(<div>
         <h1>Login</h1>
         <form>
@@ -15,9 +17,9 @@ function login(){
                 Ghi nhớ tôi
             </label>
             <input type="submit" value="Đăng nhập"/>
-            // có thêm quên mật khẩu nhưng để sau
-            <link to="/register">Chưa có tài khoản?</link>
+            {/*Có quên mật khẩu nữa nhưng để sau */}
+            <Link to="/register">Chưa có tài khoản?</Link>
         </form>
     </div>)
 } 
-export default login;
+export default Login;

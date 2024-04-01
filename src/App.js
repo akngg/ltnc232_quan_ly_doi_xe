@@ -2,17 +2,16 @@
 import './App.css';
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import header from './components/header/header';
-import alert from './components/alert/alert';
-import home from './components/home/home';
-import login from './components/login/login';
-import register from './components/register/register';
+import Header from './components/header/header';
+import Alert from './components/alert/alert';
+import Home from './components/home/home';
+import Login from './components/login/login';
+import Register from './components/register/register';
 
 function App() {
   return (
     // <div className="App">
     //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
     //     <p>
     //       Edit <code>src/App.js</code> and save to reload.
     //     </p>
@@ -26,14 +25,19 @@ function App() {
     //     </a>
     //   </header>
     // </div>
-    <BrowserRouter>
-      <Route path="/" element={<header />}>
-          <Route index element={<home />} />
-          <Route path="login" element={<login />} />
-          <Route path="register" element={<register />} />
-          <Route path="*" element={<alert />} />
-        </Route>
-    </BrowserRouter>
+
+
+    <>
+    <Routes>
+      <Route path="/" element={<Header />}>
+          <Route index element={<Home />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="*" element={<Alert />} />
+      </Route>
+    </Routes>
+    </>
+
   );
 }
 

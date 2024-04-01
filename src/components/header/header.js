@@ -1,20 +1,20 @@
 import React from "react";
 import { Outlet, Link } from "react-router-dom";
 
-function header(){
+function Header(){
     return (
     <>
     <div className="headerbar">
         <nav>
             <ul>
                 <li>
-                    <link to="/">Home</link>
+                    <Link to="/">Home</Link>
                 </li>
                 <li>
-                    <link to="/login">Login</link>
+                    <Link to="/login">Login</Link>
                 </li>
                 <li>
-                    <link to="/register">Register</link>
+                    <Link to="/register">Register</Link>
                 </li>
             </ul>
         </nav>
@@ -25,4 +25,4 @@ function header(){
     )
 }
 
-export default header;
+export default Header;
