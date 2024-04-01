@@ -16,10 +16,6 @@ function Register(){
                 Mật khẩu
                 <input type="password"/>
             </label>
-            <label>
-                <input type="checkbox"/>
-                Ghi nhớ tôi
-            </label>
             <input type="submit" value="Đăng nhập"/>
             {/*Có quên mật khẩu nữa nhưng để sau */}
             <Link to="/login">Đã có tài khoản?</Link>
