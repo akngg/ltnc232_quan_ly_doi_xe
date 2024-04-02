@@ -1,0 +1,14 @@
+body {
+    /* margin: 0;
+    font-family: Verdana, 'Segoe UI', Tahoma, Geneva, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale; */
+    background-image: url(../public/1214059.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
