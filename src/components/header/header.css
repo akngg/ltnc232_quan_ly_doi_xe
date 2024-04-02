@@ -1,0 +1,30 @@
+.thepage{
+    text-align: center;
+    height: 100vh;
+}
+.headerbar{
+    background-color: black;
+    padding: 20px;
+    align-items: center;
+    justify-content: center;
+}
+.headerbar ul{
+    overflow: hidden;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.headerbar li{
+    float: left;
+    padding: 10px;
+    background-color: rgb(203, 21, 30);
+}
+.thelink{
+    text-decoration: none;
+    color: white;
+    display: block;
+}
+.therest{
+    align-items: center;
+}

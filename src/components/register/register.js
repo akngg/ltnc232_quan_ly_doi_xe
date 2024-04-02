@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
+import './register.css'
 
 function Register(){
-    return(<div>
+    return(<div className="registerdiv">
         <h1>Register</h1>
         <form>
             <label>

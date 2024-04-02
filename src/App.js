@@ -27,7 +27,7 @@ function App() {
     // </div>
 
 
-    <>
+    <div>
     <Routes>
       <Route path="/" element={<Header />}>
           <Route index element={<Home />} />
@@ -36,7 +36,7 @@ function App() {
           <Route path="*" element={<Alert />} />
       </Route>
     </Routes>
-    </>
+    </div>
 
   );
 }

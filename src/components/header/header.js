@@ -1,27 +1,28 @@
 import React from "react";
 import { Outlet, Link } from "react-router-dom";
+import "./header.css"
 
 function Header(){
     return (
-    <>
+    <div className="thepage">
     <div className="headerbar">
         <nav>
-            <ul>
+            <ul className="thelist">
                 <li>
-                    <Link to="/">Home</Link>
+                    <Link to="/" className="thelink">Home</Link>
                 </li>
                 <li>
-                    <Link to="/login">Login</Link>
+                    <Link to="/login" className="thelink">Login</Link>
                 </li>
                 <li>
-                    <Link to="/register">Register</Link>
+                    <Link to="/register" className="thelink">Register</Link>
                 </li>
             </ul>
         </nav>
     </div>
 
-    <Outlet/>
-    </>
+    <Outlet className="therest"/>
+    </div>
     )
 }
 
