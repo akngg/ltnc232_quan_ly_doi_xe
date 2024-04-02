@@ -1,0 +1,94 @@
+.registerdiv{
+    padding: 25px;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    display: flex;
+    width: 400px;
+    height: 500px;
+    background: transparent;
+    border: 2px solid rgba(255,255,255, .5);
+    border-radius: 25px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 30px rgba(0,0,0,.5);
+}
+
+.registerdiv .formbox-reg{
+    width: 100%;
+    padding: 40px;
+}
+
+.registerdiv h2{
+    font-size: 2em;
+    color:aliceblue;
+    text-align: center;
+}
+
+.regbox{
+    position:relative;
+    width: 100%;
+    height: 50px;
+    border-bottom: 2px solid aliceblue;
+    margin: 30px 0;
+}
+
+.regbox label{
+    position: absolute;
+    top:50%;
+    left: 5px;
+    transform: translateY(-50%);
+    font-size: 1em;
+    color: aliceblue;
+    font-weight: 500;
+    pointer-events: none;
+    transition: .5s;
+}
+
+.regbox input{
+    width: 100%;
+    height:100%;
+    color: white;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-weight: 600;
+}
+
+.regbox input:focus~label,
+.regbox input:valid~label{
+    top: -5px;
+}
+
+.regbtn{
+    width: 100%;
+    height: 45px;
+    background-color: aliceblue;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 1.1em;
+    transition: .5s;
+}
+
+.regbtn:hover{
+    background-color: rgb(63, 64, 65);
+}
+
+.register-login{
+    font-weight: 500;
+    font-size: .9em;
+    color:aliceblue;
+    text-align: center;
+    margin: 25px 0 10px;
+}
+
+.loginlink{
+    text-decoration: none;
+    color: aliceblue;
+    font-weight: 600;
+}
+.loginlink:hover{
+    text-decoration: underline;
+}

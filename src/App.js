@@ -27,7 +27,7 @@ function App() {
     // </div>
 
 
-    <div>
+    <div id="maindiv">
     <Routes>
       <Route path="/" element={<Header />}>
           <Route index element={<Home />} />

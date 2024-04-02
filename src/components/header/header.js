@@ -5,21 +5,22 @@ import "./header.css"
 function Header(){
     return (
     <div className="thepage">
-    <div className="headerbar">
+    <header className="headerbar">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/f/f0/HCMCUT.svg" className="logoimg" alt="Logo Bách Khoa"></img>
         <nav>
-            <ul className="thelist">
-                <li>
-                    <Link to="/" className="thelink">Home</Link>
-                </li>
-                <li>
-                    <Link to="/login" className="thelink">Login</Link>
-                </li>
-                <li>
-                    <Link to="/register" className="thelink">Register</Link>
-                </li>
-            </ul>
+            {/* <ul className="thelist">
+                <li> */}
+                    <Link to="/" className="thelink">Trang chủ</Link>
+                {/* </li>
+                <li> */}
+                    <Link to="/login" className="thelink">Đăng nhập</Link>
+                {/* </li>
+                <li> */}
+                    <Link to="/register" className="thelink">Đăng ký</Link>
+                {/* </li>
+            </ul> */}
         </nav>
-    </div>
+    </header>
 
     <Outlet className="therest"/>
     </div>

@@ -1,30 +1,46 @@
 .thepage{
     text-align: center;
-    height: 100vh;
 }
 .headerbar{
-    background-color: black;
-    padding: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 100px;
+    display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    z-index: 99;
 }
-.headerbar ul{
-    overflow: hidden;
+/* .headerbar ul{
+    overflow: visible;
     list-style-type: none;
     margin: 0;
     padding: 0;
-    width: 100%;
 }
 .headerbar li{
     float: left;
     padding: 10px;
     background-color: rgb(203, 21, 30);
+} */
+/* .thelogo{
+    color: white;
+} */
+.logoimg{
+    width:50px;
+    height:50px;
+    background-color: white;
+    border-radius: 5px;
 }
 .thelink{
+    position: relative;
+    float: left;
     text-decoration: none;
     color: white;
     display: block;
+    margin-left: 40px;
+    transition: .5s;
 }
-.therest{
-    align-items: center;
+.thelink:hover{
+    color: rgb(177, 174, 174);
 }
