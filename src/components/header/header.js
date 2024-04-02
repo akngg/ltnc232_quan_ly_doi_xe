@@ -8,17 +8,9 @@ function Header(){
     <header className="headerbar">
     <img src="https://upload.wikimedia.org/wikipedia/commons/f/f0/HCMCUT.svg" className="logoimg" alt="Logo Bách Khoa"></img>
         <nav>
-            {/* <ul className="thelist">
-                <li> */}
-                    <Link to="/" className="thelink">Trang chủ</Link>
-                {/* </li>
-                <li> */}
-                    <Link to="/login" className="thelink">Đăng nhập</Link>
-                {/* </li>
-                <li> */}
-                    <Link to="/register" className="thelink">Đăng ký</Link>
-                {/* </li>
-            </ul> */}
+            <Link to="/" className="thelink">Trang chủ</Link>
+            <Link to="/login" className="thelink">Đăng nhập</Link>
+            <Link to="/register" className="thelink">Đăng ký</Link>
         </nav>
     </header>
 
