@@ -7,7 +7,7 @@ import Alert from './components/alert/alert';
 import Home from './components/home/home';
 import Login from './components/login/login';
 import Register from './components/register/register';
-
+import Test from './components/testpage/testpage';
 function App() {
   return (
     // <div className="App">
@@ -27,7 +27,7 @@ function App() {
     // </div>
 
 
-    <div id="maindiv">
+    <div className="maindiv">
     <Routes>
       <Route path="/" element={<Header />}>
           <Route index element={<Home />} />
@@ -35,6 +35,7 @@ function App() {
           <Route path="register" element={<Register />} />
           <Route path="*" element={<Alert />} />
       </Route>
+      <Route path="/test" element={<Test />} />
     </Routes>
     </div>
 
