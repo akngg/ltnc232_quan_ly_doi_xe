@@ -21,17 +21,17 @@ const Sidebar = () => {
         <div className='Sidebar'>
           <ul  className="Sidebarlist">
             <li onClick={hideDriverInfo}>
-              <Link to="/sidebar/car" className="SidebarLink" >
+              <Link to="/dashboard/car" className="SidebarLink" >
                 <CommuteIcon/>
                 <div className="title">Quản lý xe</div></Link>
             </li>
             <li onClick={DriverInfo}>
-              <Link to="/sidebar/driver" className="SidebarLink">
+              <Link to="/dashboard/driver" className="SidebarLink">
                 <PeopleAltIcon/>
                 <div className="title"> Quản lý tài xế</div></Link>
             </li>
             <li onClick={hideDriverInfo}>
-              <Link to="/sidebar/perform" className="SidebarLink">
+              <Link to="/dashboard/perform" className="SidebarLink">
                 <OfflineBoltIcon/>
                 <div className="title">Hiệu suất</div></Link>
             </li>
