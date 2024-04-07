@@ -1,43 +1,51 @@
-// import logo from './logo.svg';
-import './App.css';
-import ReactDOM from "react-dom/client";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Helmet } from "react-helmet";
 import Header from './components/header/header';
 import Alert from './components/alert/alert';
 import Home from './components/home/home';
 import Login from './components/login/login';
 import Register from './components/register/register';
+import Sidebar from "./Layout/Sidebar/Sidebar";
+import Car from "./Layout/Car_Manage/Car";
+import Driver from "./Layout/Driver_Manage/Driver";
+import Perform from "./Layout/Perform_Manage/Perform";
+// import { Outlet } from 'react-router-dom';
+import './App.css'
+// import './Layout/Sidebar/Sidebar.css'
 
 function App() {
+  const [isHomeRoute, setIsHomeRoute] = useState(true);
+
+  useEffect(() => {
+    const currentPath = window.location.pathname;
+    setIsHomeRoute(currentPath === '/');
+  }, []);
+
   return (
-    // <div className="App">
-    //   <header className="App-header">
-    //     <p>
-    //       Edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //   </header>
-    // </div>
+    <div className={!isHomeRoute? "layout" : ''}>
+      <BrowserRouter>
+        <Helmet>
+          <body className={isHomeRoute ? 'body-styles' : ''} />
+        </Helmet>
+        <Routes>
+          {/* Thẻ bao cho các route khi path="/" */}
+          <Route element={<Header />}>
+            <Route index element={<Home />} />
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+            <Route path="alert" element={<Alert />} />
+          </Route>
 
-
-    <div id="maindiv">
-    <Routes>
-      <Route path="/" element={<Header />}>
-          <Route index element={<Home />} />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
-          <Route path="*" element={<Alert />} />
-      </Route>
-    </Routes>
+          {/* Thẻ bao cho các route khi path="sidebar" */}
+          <Route path="sidebar" element={<Sidebar />}>
+            <Route path="car" element={<Car />} />
+            <Route path="driver" element={<Driver />} />
+            <Route path="perform" element={<Perform />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </div>
-
   );
 }
 

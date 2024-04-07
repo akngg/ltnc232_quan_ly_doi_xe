@@ -5,16 +5,22 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body {
-  /* margin: 0;
-  font-family: Verdana, 'Segoe UI', Tahoma, Geneva, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale; */
+.body-styles {
   background-image: url(../public/1214059.png);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
   min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.background-img {
+  background-image: url(../public/1214059.png);
+}
+.no-background-image {
+  background-image: none;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
