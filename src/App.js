@@ -58,7 +58,7 @@ function App() {
           <Route path="/testapi" element={<Header />}>
             <Route index element={<API_Page />} />
           </Route>
-          <Route path="sidebar" element={<Sidebar />}>
+          <Route path="dashboard" element={<Sidebar />}>
             <Route path="car" element={<Car />} />
             <Route path="driver" element={<Driver />} />
             <Route path="perform" element={<Perform />} />
