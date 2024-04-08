@@ -1,7 +1,16 @@
-import { database, UserRegister } from "../../modules/firebase";
-import { child, ref, get } from "firebase/database";
+import * as FireBase from "../../modules/firebase";
 
-async function API_Page() {
-  console.log(await UserRegister("shadommc", "Shadommc613@", "tml25092004@gmail.com", "Nguyễn Anh Kiệt"));
+function API_Page() {
+  return (
+  <div>
+    <button onClick={async () => await handleClick()}>BUTTON</button>
+  </div>
+  );
 }
+
+async function handleClick(){
+  console.log(await FireBase.DriversAdd("Nguyễn Anh Kiệt", "A1"));
+  console.log(await FireBase.DriversGet());
+}
+
 export default API_Page;

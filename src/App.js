@@ -43,7 +43,7 @@ function App() {
     //   </BrowserRouter>
     // </div>
 
-    <div className={!isHomeRoute? "layout" : ''}>
+    <div className={!isHomeRoute ? "layout" : ""}>
       <BrowserRouter>
         <Helmet>
           <body className={isHomeRoute ? "body-styles" : ""} />{" "}
@@ -55,9 +55,7 @@ function App() {
             <Route path="register" element={<Register />} />
             <Route path="*" element={<Alert />} />
           </Route>
-          <Route path="/testapi" element={<Header />}>
-            <Route index element={<API_Page />} />
-          </Route>
+          <Route path="testapi" element={<API_Page />} />
           <Route path="dashboard" element={<Sidebar />}>
             <Route path="car" element={<Car />} />
             <Route path="driver" element={<Driver />} />
