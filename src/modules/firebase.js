@@ -46,7 +46,7 @@ async function Update(refPath, id, object) {
   }
 }
 async function Delete(refPath, id) {
-  if (id == "*") {
+  if (id === "*") {
     await set(ref(db, refPath), null);
   } else {
     let itemRef = ref(db, refPath + "/" + id);

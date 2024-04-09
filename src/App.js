@@ -14,7 +14,9 @@ import Register from "./components/register/register";
 import Sidebar from "./Layout/Sidebar/Sidebar";
 import Car from "./Layout/Car_Manage/Car";
 import Driver from "./Layout/Driver_Manage/Driver";
+import Path from "./Layout/Path_Manage/Path";
 import Perform from "./Layout/Perform_Manage/Perform";
+import Setting from "./Layout/Setting/Setting";
 import API_Page from "./components/api/api";
 import "./App.css";
 
@@ -66,7 +68,9 @@ function App() {
           <Route path="dashboard" element={<Sidebar />}>
             <Route path="car" element={<Car />} />
             <Route path="driver" element={<Driver />} />
+            <Route path="path" element={<Path />} />
             <Route path="perform" element={<Perform />} />
+            <Route path="setting" element={<Setting />} />
           </Route>
         </Routes>
       </BrowserRouter>

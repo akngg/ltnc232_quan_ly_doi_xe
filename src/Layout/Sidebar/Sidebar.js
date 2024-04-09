@@ -2,6 +2,8 @@ import { Outlet, Link } from "react-router-dom";
 import CommuteIcon from '@mui/icons-material/Commute';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import OfflineBoltIcon from '@mui/icons-material/OfflineBolt';
+import SettingsIcon from '@mui/icons-material/Settings';
+import AltRouteIcon from '@mui/icons-material/AltRoute';
 import React, { useState } from 'react';
 import './Sidebar.css'  
 const Sidebar = () => {
@@ -31,9 +33,19 @@ const Sidebar = () => {
                 <div className="title"> Quản lý tài xế</div></Link>
             </li>
             <li onClick={hideDriverInfo}>
+              <Link to="/dashboard/Path" className="SidebarLink">
+                <AltRouteIcon/>
+                <div className="title"> Quản lý chuyến đi</div></Link>
+            </li>
+            <li onClick={hideDriverInfo}>
               <Link to="/dashboard/perform" className="SidebarLink">
                 <OfflineBoltIcon/>
                 <div className="title">Hiệu suất</div></Link>
+            </li>
+            <li onClick={hideDriverInfo}>
+              <Link to="/dashboard/setting" className="SidebarLink">
+                <SettingsIcon/>
+                <div className="title">Cài đặt</div></Link>
             </li>
           </ul>
             {showDriverInfo && (
