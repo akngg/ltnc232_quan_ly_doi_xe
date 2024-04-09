@@ -69,7 +69,6 @@ function App() {
             <Route path="perform" element={<Perform />} />
           </Route>
         </Routes>
-        //{" "}
       </BrowserRouter>
     </div>
 
