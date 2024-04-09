@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Test from './components/testpage/testpage';
+
 import { Helmet } from "react-helmet";
 import Header from "./components/header/header";
 import Alert from "./components/alert/alert";
@@ -12,6 +15,7 @@ import Driver from "./Layout/Driver_Manage/Driver";
 import Perform from "./Layout/Perform_Manage/Perform";
 import API_Page from "./components/api/api";
 import "./App.css";
+
 
 function App() {
   const [isHomeRoute, setIsHomeRoute] = useState(true);
@@ -43,7 +47,20 @@ function App() {
     //   </BrowserRouter>
     // </div>
 
-    <div className={!isHomeRoute ? "layout" : ""}>
+
+
+    //<div className="maindiv">
+    //<Routes>
+    //  <Route path="/" element={<Header />}>
+    //      <Route index element={<Home />} />
+    //      <Route path="login" element={<Login />} />
+    //      <Route path="register" element={<Register />} />
+    //      <Route path="*" element={<Alert />} />
+    //  </Route>
+    //  <Route path="/test" element={<Test />} />
+    //</Routes>
+
+    <div className="maindiv">
       <BrowserRouter>
         <Helmet>
           <body className={isHomeRoute ? "body-styles" : ""} />{" "}
