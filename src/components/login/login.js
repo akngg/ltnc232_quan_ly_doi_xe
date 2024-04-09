@@ -19,7 +19,7 @@ const login = async () =>{
         .then((userCredential) => {
             // Signed in
             const user = userCredential.user;
-            navigate('/')
+            navigate('/dashboard')
             console.log(user);
         })
         .catch((error) => {

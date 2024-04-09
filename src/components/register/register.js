@@ -24,7 +24,7 @@ function Register(){
             .then((userCredential) => {
                 // Signed up 
                 const user = userCredential.user;
-                navigate('/')
+                navigate('/dashboard')
                 // ...
             })
             .catch((error) => {
