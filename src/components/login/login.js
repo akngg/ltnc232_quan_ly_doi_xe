@@ -4,15 +4,16 @@ import { useState } from "react";
 import {signInWithEmailAndPassword} from "firebase/auth";
 import { auth } from "../../modules/firebase";
 function Login(){
-const [email, setEmail]=useState("");
-const [password, setPassword]=useState("");
+const [logemail, setEmail]=useState("");
+const [logpassword, setPassword]=useState("");
 
 const login = async () =>{
-    try{
-    await signInWithEmailAndPassword(auth,email,password);
-    }catch(error){
-        window.alert("Login error!");
-    }
+    // try{
+    await signInWithEmailAndPassword(auth,logemail,logpassword);
+    // }catch(error){
+    //     console.log("Login error!");
+    // }
+    console.log(auth.currentUser.email);
 };
 
     return(<div className="logindiv">
