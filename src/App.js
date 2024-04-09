@@ -52,9 +52,9 @@ function App() {
 
     <div className="maindiv">
       <BrowserRouter>
-        <Helmet>
+        {/* <Helmet>
           <body className={isHomeRoute ? "body-styles" : ""} />{" "}
-        </Helmet>
+        </Helmet> */}
         <Routes>
           <Route path="/" element={<Header />}>
             <Route index element={<Home />} />
