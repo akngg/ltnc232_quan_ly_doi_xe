@@ -1,6 +1,7 @@
 // import logo from './logo.svg';
 import './App.css';
 import ReactDOM from "react-dom/client";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Test from './components/testpage/testpage';
@@ -22,41 +23,18 @@ import "./App.css";
 
 
 function App() {
+  const [isHomeRoute, setIsHomeRoute] = useState(true);
+  useEffect(() => {
+    const currentPath = window.location.pathname;
+    setIsHomeRoute(currentPath === "/");
+  }, []);
+
   return (
-    // <div className="App">
-    //   <header className="App-header">
-    //     <p>
-    //       Edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //   </header>
-    // </div>
-
-
-
-    //<div className="maindiv">
-    //<Routes>
-    //  <Route path="/" element={<Header />}>
-    //      <Route index element={<Home />} />
-    //      <Route path="login" element={<Login />} />
-    //      <Route path="register" element={<Register />} />
-    //      <Route path="*" element={<Alert />} />
-    //  </Route>
-    //  <Route path="/test" element={<Test />} />
-    //</Routes>
-
-    <div className="maindiv">
+    <div className={!isHomeRoute? "mandiv" : ""}>
       <BrowserRouter>
-        {/* <Helmet>
+        <Helmet>
           <body className={isHomeRoute ? "body-styles" : ""} />{" "}
-        </Helmet> */}
+        </Helmet>
         <Routes>
           <Route path="/" element={<Header />}>
             <Route index element={<Home />} />
