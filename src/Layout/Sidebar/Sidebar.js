@@ -1,12 +1,14 @@
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import CommuteIcon from '@mui/icons-material/Commute';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import OfflineBoltIcon from '@mui/icons-material/OfflineBolt';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AltRouteIcon from '@mui/icons-material/AltRoute';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { auth } from "../../modules/firebase";
 import './Sidebar.css'  
 const Sidebar = () => {
+  const navigate=useNavigate();
   const [showDriverInfo, setShowDriverInfo] = useState(false);
 
   function DriverInfo() {
@@ -16,6 +18,12 @@ const Sidebar = () => {
   function hideDriverInfo() {
     setShowDriverInfo(false); 
   }
+
+  useEffect(() => {
+    if (!auth.currentUser) {
+      navigate('/');
+    }
+  });
 
     return (
       <>
