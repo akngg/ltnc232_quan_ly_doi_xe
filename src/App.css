@@ -3,7 +3,7 @@ body{
     width: 100vw;
     height: 100vh;
 }
-.maindiv{
+.mandiv{
     height: auto;
     width: 100vw;
     display: flex;
@@ -12,13 +12,3 @@ body{
     justify-items: center;
     background-color: gray;
 }
-/* body {
-    background-image: url(../public/1214059.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-} */
