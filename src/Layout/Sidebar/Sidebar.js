@@ -19,11 +19,11 @@ const Sidebar = () => {
     setShowDriverInfo(false); 
   }
 
-  useEffect(() => {
-    if (!auth.currentUser) {
-      navigate('/');
-    }
-  },[]);
+  // useEffect(() => {
+  //   if (!auth.currentUser) {
+  //     navigate('/');
+  //   }
+  // },[]);
 
     return (
       <>
