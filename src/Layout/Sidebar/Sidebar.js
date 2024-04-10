@@ -23,7 +23,7 @@ const Sidebar = () => {
     if (!auth.currentUser) {
       navigate('/');
     }
-  });
+  },[]);
 
     return (
       <>

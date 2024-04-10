@@ -14,7 +14,6 @@ const login = async () =>{
     // //     console.log("Login error!");
     // // }
     // console.log(auth.currentUser.email);
-    
     signInWithEmailAndPassword(auth, logemail, logpassword)
         .then((userCredential) => {
             // Signed in
