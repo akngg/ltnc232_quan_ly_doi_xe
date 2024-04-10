@@ -8,7 +8,7 @@ import React, { useState, useEffect } from 'react';
 import { auth } from "../../modules/firebase";
 import './Sidebar.css'  
 const Sidebar = () => {
-  const navigate=useNavigate();
+  // const navigate=useNavigate();
   const [showDriverInfo, setShowDriverInfo] = useState(false);
 
   function DriverInfo() {
@@ -19,11 +19,11 @@ const Sidebar = () => {
     setShowDriverInfo(false); 
   }
 
-  useEffect(() => {
-    if (!auth.currentUser) {
-      navigate('/');
-    }
-  });
+  // useEffect(() => {
+  //   if (!auth.currentUser) {
+  //     navigate('/');
+  //   }
+  // });
 
     return (
       <>
