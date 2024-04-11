@@ -1,3 +1,12 @@
+.dashboardiv{
+    height: auto;
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-items: center;
+    background-color: gray;
+}
 .Sidebar{
     display: flex;
     flex-direction: column;

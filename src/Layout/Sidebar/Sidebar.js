@@ -19,7 +19,7 @@ const Sidebar = () => {
   }
 
     return (
-      <>
+      <div className="dashboardiv">
         <nav>
         <div className='Sidebar'>
           <ul  className="Sidebarlist">
@@ -63,7 +63,7 @@ const Sidebar = () => {
         </div>
         </nav>
         <Outlet />
-      </>
+      </div>
     )
   };
 export default Sidebar
