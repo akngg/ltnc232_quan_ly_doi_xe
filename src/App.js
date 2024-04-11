@@ -32,7 +32,8 @@ function App() {
   
 
   return (
-    <div className={!isHomeRoute? "mandiv" : ""}>
+    // <div className={!isHomeRoute? "mandiv" : ""}>
+    <div>
       <BrowserRouter>
         <Helmet>
           <body className={isHomeRoute ? "body-styles" : ""} />{" "}
