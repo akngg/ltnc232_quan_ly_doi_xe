@@ -8,7 +8,10 @@
     justify-content: center;
     align-items: center;
 } */
-
+.leftdiv{
+    display: flex;
+    gap: 10px;
+}
 .logoutbtn{
     padding: 5px;
     background-color: aliceblue;
@@ -46,8 +49,8 @@
     z-index: 99;
 }
 .logoimg{
-    width:50px;
-    height:50px;
+    width:60px;
+    height:60px;
     background-color: white;
     border-radius: 5px;
 }

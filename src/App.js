@@ -3,7 +3,7 @@ import './App.css';
 import ReactDOM from "react-dom/client";
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import { auth } from './modules/firebase';
 import Test from './components/testpage/testpage';
 
 import { Helmet } from "react-helmet";
@@ -20,7 +20,7 @@ import Perform from "./Layout/Perform_Manage/Perform";
 import Setting from "./Layout/Setting/Setting";
 import API_Page from "./components/api/api";
 import "./App.css";
-
+import PrivateRoute from './modules/privateroute';
 
 function App() {
   const [isHomeRoute, setIsHomeRoute] = useState(true);
@@ -28,6 +28,8 @@ function App() {
     const currentPath = window.location.pathname;
     setIsHomeRoute(currentPath === "/"||currentPath==="/login"||currentPath==="/register");
   }, []);
+
+  
 
   return (
     <div className={!isHomeRoute? "mandiv" : ""}>
@@ -43,13 +45,37 @@ function App() {
             <Route path="*" element={<Alert />} />
           </Route>
           <Route path="testapi" element={<API_Page />} />
-          <Route path="dashboard" element={<Sidebar />}>
+          {/* <Route path="dashboard" element={<Sidebar />}>
             <Route path="car" element={<Car />} />
             <Route path="driver" element={<Driver />} />
             <Route path="path" element={<Path />} />
             <Route path="perform" element={<Perform />} />
             <Route path="setting" element={<Setting />} />
+          </Route> */}
+          <Route element={<PrivateRoute />}>
+            <Route path="dashboard" element={<Sidebar />} >
+                <Route path="car" element={<Car />} />
+                <Route path="driver" element={<Driver />} />
+                <Route path="path" element={<Path />} />
+                <Route path="perform" element={<Perform />} />
+                <Route path="setting" element={<Setting />} />
+            </Route>
           </Route>
+          {/* <Route element={<PrivateRoute />}>
+            <Route path="dashboard/car" element={<Car />} />
+          </Route>
+          <Route element={<PrivateRoute />}>
+            <Route path="dashboard/driver" element={<Driver />} />
+          </Route>
+          <Route element={<PrivateRoute />}>
+            <Route path="dashboard/path" element={<Path />} />
+          </Route>
+          <Route element={<PrivateRoute />}>
+            <Route path="dashboard/perform" element={<Perform />} />
+          </Route>
+          <Route element={<PrivateRoute />}>
+            <Route path="dashboard/setting" element={<Setting />} />
+          </Route> */}
         </Routes>
       </BrowserRouter>
     </div>

@@ -8,7 +8,6 @@ import React, { useState, useEffect } from 'react';
 import { auth } from "../../modules/firebase";
 import './Sidebar.css'  
 const Sidebar = () => {
-  // const navigate=useNavigate();
   const [showDriverInfo, setShowDriverInfo] = useState(false);
 
   function DriverInfo() {
@@ -19,14 +18,8 @@ const Sidebar = () => {
     setShowDriverInfo(false); 
   }
 
-  // useEffect(() => {
-  //   if (!auth.currentUser) {
-  //     navigate('/');
-  //   }
-  // });
-
     return (
-      <>
+      <div className="dashboardiv">
         <nav>
         <div className='Sidebar'>
           <ul  className="Sidebarlist">
@@ -70,7 +63,7 @@ const Sidebar = () => {
         </div>
         </nav>
         <Outlet />
-      </>
+      </div>
     )
   };
 export default Sidebar
