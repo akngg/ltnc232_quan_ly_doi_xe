@@ -6,7 +6,8 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import AltRouteIcon from '@mui/icons-material/AltRoute';
 import React, { useState, useEffect } from 'react';
 import { auth } from "../../modules/firebase";
-import './Sidebar.css'  
+import './Sidebar.css' ;
+import testavt from "./testavt.png"
 const Sidebar = () => {
   const [showDriverInfo, setShowDriverInfo] = useState(false);
 
@@ -53,7 +54,7 @@ const Sidebar = () => {
             {showDriverInfo && (
               <div className="driverInfo">
                 <div className="login">
-                  <img src ='./1214059.png' alt=""></img>
+                  <img src ={testavt} alt=""></img>
                   <div id="ho-ten">
                   Tieu Hung Hua
                   </div>
@@ -62,7 +63,9 @@ const Sidebar = () => {
             )}
         </div>
         </nav>
+        <div className="theoutlet">
         <Outlet />
+        </div>
       </div>
     )
   };

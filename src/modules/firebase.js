@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, get, set, child, remove } from "firebase/database";
 import {getAuth} from "firebase/auth"
-
+import {getFirestore} from "firebase/firestore"
 const firebaseConfig = {
   apiKey: "AIzaSyAltzF5wBSpRx0rJ4S2slxRfIdSZ0jsKe0",
   authDomain: "private-car-manage.firebaseapp.com",
@@ -15,8 +15,9 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-const db = getDatabase(app);
-const dbRef = ref(db);
+export const db = getFirestore(app);
+const database = getDatabase(app);
+const dbRef = ref(database);
 
 // Constant fields
 const VERHICLES_REF = "vehicles";
@@ -31,7 +32,7 @@ async function Insert(refPath, object) {
     let item = await get(child(dbRef, refPath + "/" + id));
     if (!item.exists()) break;
   }
-  await set(ref(db, refPath + "/" + id), object);
+  await set(ref(database, refPath + "/" + id), object);
   return id;
 }
 async function Get(refPath) {
@@ -42,15 +43,15 @@ async function Update(refPath, id, object) {
   let item = await get(child(dbRef, refPath + "/" + id));
   if (!item.exists()) return false;
   else {
-    await set(ref(db, refPath + "/" + id), object);
+    await set(ref(database, refPath + "/" + id), object);
     return true;
   }
 }
 async function Delete(refPath, id) {
   if (id === "*") {
-    await set(ref(db, refPath), null);
+    await set(ref(database, refPath), null);
   } else {
-    let itemRef = ref(db, refPath + "/" + id);
+    let itemRef = ref(database, refPath + "/" + id);
     remove(itemRef);
   }
 }
