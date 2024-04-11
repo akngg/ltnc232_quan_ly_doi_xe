@@ -72,6 +72,8 @@ const Car = () =>{
     const [updateNumber,setUpdateNumber]=useState(0);
     const [dataInputType, setDataInputType] = useState("text");
     const [dataAtt, setDataAtt] = useState("Driver");
+    const [showSelect, setShowSelect] = useState(false);
+
     const handleSelectChange = (e) => {
         const selectedAtt = e.target.value;
         setDataAtt(selectedAtt);
@@ -110,30 +112,39 @@ const Car = () =>{
         switch(dataAtt){
             case "Width":
                 await updateDoc(carDoc, {width: updateNumber});
+                setShowSelect(false);
             break;
             case "Height":
                 await updateDoc(carDoc, {height: updateNumber});
+                setShowSelect(false);
                 break;
             case "Length":
                 await updateDoc(carDoc, {length: updateNumber});
+                setShowSelect(false);
                 break;
-            case "Payloads":
+            case "Payload":
                 await updateDoc(carDoc, {payload: updateNumber});
+                setShowSelect(false);
                 break;
             case "Car type":
                 await updateDoc(carDoc, {cartype: updateText});
+                setShowSelect(false);
                 break;
             case "Fuel type":
                 await updateDoc(carDoc, {fueltype: updateText});
+                setShowSelect(false);
                 break;
             case "Status":
                 await updateDoc(carDoc, {status: updateText});
+                setShowSelect(true);
                 break;
             default:
                 await updateDoc(carDoc, {driver: updateText});
+                setShowSelect(false);
         }
         getCarList();
     }
+
     return (
         <div className='Car'>
             <p>Do something here...</p>
@@ -171,15 +182,25 @@ const Car = () =>{
                                 setUpdateText(e.target.value);
                             }
                         }}/>
-                        {/* {selectedOption === "input" ? (
-                            <input type="text" id="data-input" placeholder="Enter data" />
-                        ) : (
-                            <select id="data-select">
-                            <option value="option1">Option 1</option>
-                            <option value="option2">Option 2</option>
-                            <option value="option3">Option 3</option>
+                        
+                            {/* <select id="data-select" onChange={(e)=>{
+                                setUpdateText(e.target.value);
+                            }}  style={{display: !showSelect?'none':'block'}} key={!showSelect}>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                            <option value="maintenance">Maintenance</option>
                             </select>
-                        )} */}
+                            <div style={{display: showSelect?'none':'block'}} key={showSelect}>
+                                <label htmlFor="data-input">Enter Data:</label>
+                                <input type={dataInputType} id="data-input" onChange={(e)=>{
+                                if(dataInputType==="number"){
+                                    setUpdateNumber(Number(e.target.value));
+                                }
+                                else{
+                                    setUpdateText(e.target.value);
+                                }
+                                }}/>
+                            </div> */}
                         <button onClick={()=>handleChangeButton(car.id)}>Thay đổi</button>
                         </div>
                     </div>
