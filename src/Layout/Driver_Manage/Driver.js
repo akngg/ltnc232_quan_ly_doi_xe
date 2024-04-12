@@ -2,7 +2,9 @@ import './Driver.css'
 import { db } from "../../modules/firebase";
 import {getDocs, collection, addDoc, doc, deleteDoc, updateDoc} from "firebase/firestore"
 import { useState,useEffect } from 'react';
+import { auth } from '../../modules/firebase';
 const Driver = () =>{
+    {/*Thêm auth? */}
 
     const [DriverList,setDriverList]=useState([]);
 
@@ -11,9 +13,9 @@ const Driver = () =>{
     const [newDriverAddress,setNewDriverAddress]=useState("");
     const [newDriverLicense,setNewDriverLicense]=useState("A1");
     const [newDriverCar,setNewDriverCar]=useState("");
-    const [newDriverCarDrove,setNewDriverCarDrove]=useState("");
-    const [newDriverFrom,setNewDriverFrom]=useState("");
-    const [newDriverTo,setNewDriverTo]=useState("");
+    // const [newDriverCarDrove,setNewDriverCarDrove]=useState("");
+    // const [newDriverFrom,setNewDriverFrom]=useState("");
+    // const [newDriverTo,setNewDriverTo]=useState("");
     const [newDriverStatus,setNewDriverStatus]=useState("Active");
     const getDriverList=async ()=>{
         try{
@@ -43,7 +45,8 @@ const Driver = () =>{
                 address: newDriverAddress,
                 car: newDriverCar,
                 license: newDriverLicense,
-                status: newDriverStatus
+                status: newDriverStatus,
+                // userid: auth?.currentUser?.uid
                 // history: {
                 //     cardrove: newDriverCarDrove,
                 //     from: newDriverFrom,
@@ -71,44 +74,44 @@ const Driver = () =>{
         }
     }
 
-    const [updateDriverName,setUpdateDriverName]=useState("");
-    const [updateDriverPhone,setUpdateDriverPhone]=useState(0);
-    const [updateDriverAddress,setUpdateDriverAddress]=useState("");
-    const [updateDriverLicense,setUpdateDriverLicense]=useState("A1");
-    const [updateDriverCar,setUpdateDriverCar]=useState("");
-    const [updateDriverCarDrove,setUpdateDriverCarDrove]=useState("");
-    const [updateDriverFrom,setUpdateDriverFrom]=useState("");
-    const [updateDriverTo,setUpdateDriverTo]=useState("");
-    const [updateDriverStatus,setUpdateDriverStatus]=useState("");
+    // const [updateDriverName,setUpdateDriverName]=useState("");
+    // const [updateDriverPhone,setUpdateDriverPhone]=useState(0);
+    // const [updateDriverAddress,setUpdateDriverAddress]=useState("");
+    // const [updateDriverLicense,setUpdateDriverLicense]=useState("A1");
+    // const [updateDriverCar,setUpdateDriverCar]=useState("");
+    // const [updateDriverCarDrove,setUpdateDriverCarDrove]=useState("");
+    // const [updateDriverFrom,setUpdateDriverFrom]=useState("");
+    // const [updateDriverTo,setUpdateDriverTo]=useState("");
+    // const [updateDriverStatus,setUpdateDriverStatus]=useState("");
 
-    const handleChangeName=async(id)=>{
-        const carDoc=doc(db, "drivers", id);
-        await updateDoc(carDoc, {name: updateDriverName});
+    const handleChangeName=async(driver)=>{
+        const carDoc=doc(db, "drivers", driver.id);
+        await updateDoc(carDoc, {name: document.getElementById(driver.id+"name").value});
         getDriverList();
     }
-    const handleChangeLicense=async(id)=>{
-        const carDoc=doc(db, "drivers", id);
-        await updateDoc(carDoc, {license: updateDriverLicense});
+    const handleChangeLicense=async(driver)=>{
+        const carDoc=doc(db, "drivers", driver.id);
+        await updateDoc(carDoc, {license: document.getElementById(driver.id+"license").value});
         getDriverList();
     }
-    const handleChangeAddress=async(id)=>{
-        const carDoc=doc(db, "drivers", id);
-        await updateDoc(carDoc, {address: updateDriverAddress});
+    const handleChangeAddress=async(driver)=>{
+        const carDoc=doc(db, "drivers", driver.id);
+        await updateDoc(carDoc, {address: document.getElementById(driver.id+"address").value});
         getDriverList();
     }
-    const handleChangePhone=async(id)=>{
-        const carDoc=doc(db, "drivers", id);
-        await updateDoc(carDoc, {phone: updateDriverPhone});
+    const handleChangePhone=async(driver)=>{
+        const carDoc=doc(db, "drivers", driver.id);
+        await updateDoc(carDoc, {phone: Number(document.getElementById(driver.id+"phone").value)});
         getDriverList();
     }
-    const handleChangeCar=async(id)=>{
-        const carDoc=doc(db, "drivers", id);
-        await updateDoc(carDoc, {car: updateDriverCar});
+    const handleChangeCar=async(driver)=>{
+        const carDoc=doc(db, "drivers", driver.id);
+        await updateDoc(carDoc, {car: document.getElementById(driver.id+"car").value});
         getDriverList();
     }
-    const handleChangeStatus=async(id)=>{
-        const carDoc=doc(db, "drivers", id);
-        await updateDoc(carDoc, {status: updateDriverStatus});
+    const handleChangeStatus=async(driver)=>{
+        const carDoc=doc(db, "drivers", driver.id);
+        await updateDoc(carDoc, {status: document.getElementById(driver.id+"status").value});
         getDriverList();
     }
 
@@ -119,35 +122,35 @@ const Driver = () =>{
                     <div>
                         <hr></hr>
                         <h1>Tên: {driver.name}</h1>
-                        <input type='text' placeholder='Thay đổi tên?' onChange={(e)=>setUpdateDriverName(e.target.value)}/>
-                        <button onClick={()=>handleChangeName(driver.id)}>Thay đổi</button>
-                        <h1>Car: {driver.car}</h1>
-                        <input type='text' placeholder='Thay đổi xe' onChange={(e)=>setUpdateDriverCar(e.target.value)}/>
-                        <button onClick={()=>handleChangeCar(driver.id)}>Thay đổi</button>
+                        <input type='text' placeholder='Thay đổi tên?' id={driver.id+"name"}/>
+                        <button onClick={()=>handleChangeName(driver)}>Thay đổi</button>
+                        <h1>Xe: {driver.car}</h1>
+                        <input type='text' placeholder='Thay đổi xe' id={driver.id+"car"}/>
+                        <button onClick={()=>handleChangeCar(driver)}>Thay đổi</button>
                         <h1>Trạng thái: {driver.status}</h1>
-                        <label htmlFor='change-status'>Thay đổi trạng thái</label>
-                        <select id='change-status' onChange={(e)=>setUpdateDriverStatus(e.target.value)}>
+                        <label htmlFor={driver.id+"status"}>Thay đổi trạng thái</label>
+                        <select id={driver.id+"status"}>
                             <option value="Active">Active</option>
                             <option value="Inactive">Inactive</option>
                             <option value="Maintenance">Maintenance</option>
                         </select>
-                        <button onClick={()=>handleChangeStatus(driver.id)}>Thay đổi</button>
+                        <button onClick={()=>handleChangeStatus(driver)}>Thay đổi</button>
                         <h1>Bằng lái: {driver.license}</h1>
-                        <label htmlFor='change-license'>Thay đổi loại nhiên liệu</label>
-                        <select id='change-license' onChange={(e)=>setUpdateDriverLicense(e.target.value)}>
+                        <label htmlFor={driver.id+"license"}>Thay đổi loại nhiên liệu</label>
+                        <select id={driver.id+"license"}>
                             <option value="A1">A1</option>
                             <option value="A2">A2</option>
                             <option value="A3">A3</option>
                         </select>
-                        <button onClick={()=>handleChangeLicense(driver.id)}>Thay đổi</button>
+                        <button onClick={()=>handleChangeLicense(driver)}>Thay đổi</button>
                         <h1>Địa chỉ: {driver.address}</h1>
-                        <input type='text' placeholder='Thay đổi địa chỉ?' onChange={(e)=>setUpdateDriverAddress(e.target.value)}/>
-                        <button onClick={()=>handleChangeAddress(driver.id)}>Thay đổi</button>
+                        <input type='text' placeholder='Thay đổi địa chỉ?' id={driver.id+"address"}/>
+                        <button onClick={()=>handleChangeAddress(driver)}>Thay đổi</button>
                         <h1>Số điện thoại: {driver.phone}</h1>
-                        <input type='number' placeholder='Thay đổi số điện thoại?' onChange={(e)=>setUpdateDriverPhone(Number(e.target.value))}/>
-                        <button onClick={()=>handleChangePhone(driver.id)}>Thay đổi</button>
+                        <input type='number' placeholder='Thay đổi số điện thoại?' id={driver.id+"phone"}/>
+                        <button onClick={()=>handleChangePhone(driver)}>Thay đổi</button>
 
-                        <button onClick={()=>deleteDriverList(driver.id)}>Xoá tài xế</button>
+                        <button onClick={()=>deleteDriverList(driver)}>Xoá tài xế</button>
                     </div>
                 ))}
             </div>

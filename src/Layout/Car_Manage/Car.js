@@ -2,8 +2,9 @@ import './Car.css'
 import { db } from "../../modules/firebase";
 import {getDocs, collection, addDoc, doc, deleteDoc, updateDoc} from "firebase/firestore"
 import { useState,useEffect } from 'react';
-
+import { auth } from '../../modules/firebase';
 const Car = () =>{
+    {/*Thêm auth? */}
     const [carList,setCarList]=useState([]);
 
     const [newCarDriver,setNewCarDriver]=useState("");
@@ -47,7 +48,8 @@ const Car = () =>{
                 width: newCarWidth,
                 length: newCarLength,
                 payload: newCarPayload,
-                liplate: newLicensePlate
+                liplate: newLicensePlate,
+                // userid: auth?.currentUser?.uid
             });
             getCarList();
         }catch(error){
@@ -148,73 +150,50 @@ const Car = () =>{
     //     getCarList();
     // }
 
-    const [updateCarDriver,setUpdateCarDriver]=useState("");
-    const [updateCarType,setUpdateCarType]=useState("");
-    const [updateCarFuelType,setUpdateCarFuelType]=useState("Gasoline");
-    const [updateCarStatus,setUpdateCarStatus]=useState("Active");
-    const [updateCarLicensePlate,setUpdateCarLicensePlate]=useState("");
-    const [updateCarHeight,setUpdateCarHeight]=useState(0);
-    const [updateCarWidth,setUpdateCarWidth]=useState(0);
-    const [updateCarPayload,setUpdateCarPayload]=useState(0);
-    const [updateCarLength,setUpdateCarLength]=useState(0);
-{/* thêm 1 dòng set id để tránh lõi nhập input này đổi thông tin phần khác? */}
-    const [checkUpdateId, setCheckUpdateId]=useState("");
-
-    const handleChangeDriver=async(id)=>{
-        if(checkUpdateId===id){
-            const carDoc=doc(db, "cars", id);
-        await updateDoc(carDoc, {driver: updateCarDriver});
+    const handleChangeDriver=async(car)=>{
+            const carDoc=doc(db, "cars", car.id);
+        await updateDoc(carDoc, {driver: document.getElementById(car.id+"driver").value});
         getCarList();
-        }
     }
-    const handleChangeFuelType=async(id)=>{
-        if(checkUpdateId===id){
-            const carDoc=doc(db, "cars", id);
-        await updateDoc(carDoc, {fueltype: updateCarFuelType});
+    const handleChangeFuelType=async(car)=>{
+            const carDoc=doc(db, "cars", car.id);
+        await updateDoc(carDoc, {fueltype: document.getElementById(car.id+"fuel").value});
         getCarList();
-        }
     }
-    const handleChangeCarType=async(id)=>{
-        if(checkUpdateId===id){
-            const carDoc=doc(db, "cars", id);
-            await updateDoc(carDoc, {cartype: updateCarType});
-            getCarList();}
+    const handleChangeCarType=async(car)=>{
+            const carDoc=doc(db, "cars", car.id);
+            await updateDoc(carDoc, {cartype: document.getElementById(car.id+"cartype").value});
+            getCarList();
     }
-    const handleChangeStatus=async(id)=>{
-        if(checkUpdateId===id){
-            const carDoc=doc(db, "cars", id);
-            await updateDoc(carDoc, {status: updateCarStatus});
-            getCarList();}
+    const handleChangeStatus=async(car)=>{
+            const carDoc=doc(db, "cars", car.id);
+            await updateDoc(carDoc, {status: document.getElementById(car.id+"status").value});
+            getCarList();
     }
-    const handleChangeLicensePlate=async(id)=>{
-        if(checkUpdateId===id){
-            const carDoc=doc(db, "cars", id);
-            await updateDoc(carDoc, {liplate: updateCarLicensePlate});
-            getCarList();}
+    const handleChangeLicensePlate=async(car)=>{
+            const carDoc=doc(db, "cars", car.id);
+            await updateDoc(carDoc, {liplate: document.getElementById(car.id+"plate").value});
+            getCarList();
     }
-    const handleChangeLength=async(id)=>{
-        if(checkUpdateId===id){
-            const carDoc=doc(db, "cars", id);
-            await updateDoc(carDoc, {length: updateCarLength});
-            getCarList();}
+    const handleChangeLength=async(car)=>{
+            const carDoc=doc(db, "cars", car.id);
+            await updateDoc(carDoc, {length: Number(document.getElementById(car.id+"length").value)});
+            getCarList();
     }
-    const handleChangeWidth=async(id)=>{
-        if(checkUpdateId===id){
-            const carDoc=doc(db, "cars", id);
-            await updateDoc(carDoc, {width: updateCarWidth});
-            getCarList();}
+    const handleChangeWidth=async(car)=>{
+            const carDoc=doc(db, "cars", car.id);
+            await updateDoc(carDoc, {width: Number(document.getElementById(car.id+"width").value)});
+            getCarList();
     }
-    const handleChangeHeight=async(id)=>{
-        if(checkUpdateId===id){
-            const carDoc=doc(db, "cars", id);
-            await updateDoc(carDoc, {height: updateCarHeight});
-            getCarList();}
+    const handleChangeHeight=async(car)=>{
+            const carDoc=doc(db, "cars", car.id);
+            await updateDoc(carDoc, {height: Number(document.getElementById(car.id+"height").value)});
+            getCarList();
     }
-    const handleChangePayload=async(id)=>{
-        if(checkUpdateId===id){
-            const carDoc=doc(db, "cars", id);
-            await updateDoc(carDoc, {payload: updateCarPayload});
-            getCarList();}
+    const handleChangePayload=async(car)=>{
+            const carDoc=doc(db, "cars", car.id);
+            await updateDoc(carDoc, {payload: Number(document.getElementById(car.id+"payload").value)});
+            getCarList();
     }
     return (
         <div className='Car'>
@@ -223,61 +202,42 @@ const Car = () =>{
                     <div id={car.id}>
                         <hr></hr>
                         <h1>Biển số xe: {car.liplate}</h1>
-                        <input type='text' placeholder='Thay đổi loại xe' onChange={(e)=>{
-                            setUpdateCarLicensePlate(e.target.value);
-                            setCheckUpdateId(car.id);
-                            }}/>
-                        <button onClick={()=>handleChangeLicensePlate(car.id)}>Thay đổi</button>
-                        <h1>Driver: {car.driver}</h1>
-                        <input type='text' placeholder='Thay đổi tài xế?' onChange={(e)=>{
-                            setCheckUpdateId(car.id);
-                            setUpdateCarDriver(e.target.value)}}/>
-                        <button onClick={()=>handleChangeDriver(car.id)}>Thay đổi</button>
-                        <h1>Car Type: {car.cartype}</h1>
-                        <input type='text' placeholder='Thay đổi loại xe' onChange={(e)=>{
-                            setCheckUpdateId(car.id);
-                            setUpdateCarType(e.target.value)}}/>
-                        <button onClick={()=>handleChangeCarType(car.id)}>Thay đổi</button>
-                        <h1>Status: {car.status}</h1>
-                        <label htmlFor='change-status'>Thay đổi trạng thái</label>
-                        <select id='change-status' onChange={(e)=>{
-                            setCheckUpdateId(car.id);
-                            setUpdateCarStatus(e.target.value)}}>
+                        <input id={car.id+"plate"} type='text' placeholder='Thay đổi biển số' />
+                        <button onClick={()=>handleChangeLicensePlate(car)}>Thay đổi</button>
+                        <h1>Tài xế: {car.driver}</h1>
+                        <input id={car.id+"driver"} type='text' placeholder='Thay đổi tài xế?' />
+                        <button onClick={()=>handleChangeDriver(car)}>Thay đổi</button>
+                        <h1>Loại xe: {car.cartype}</h1>
+                        <input id={car.id+"cartype"} type='text' placeholder='Thay đổi loại xe' />
+                        <button onClick={()=>handleChangeCarType(car)}>Thay đổi</button>
+                        <h1>Trạng thái: {car.status}</h1>
+                        <label htmlFor={car.id+"status"}>Thay đổi trạng thái</label>
+                        <select id={car.id+"status"} >
                             <option value="Active">Active</option>
                             <option value="Inactive">Inactive</option>
                             <option value="Maintenance">Maintenance</option>
                         </select>
-                        <button onClick={()=>handleChangeStatus(car.id)}>Thay đổi</button>
-                        <h1>Fuel Type: {car.fueltype}</h1>
-                        <label htmlFor='change-fuel'>Thay đổi loại nhiên liệu</label>
-                        <select id='change-fuel' onChange={(e)=>{
-                            setCheckUpdateId(car.id);
-                            setUpdateCarFuelType(e.target.value)}}>
+                        <button onClick={()=>handleChangeStatus(car)}>Thay đổi</button>
+                        <h1>Loại nhiên liệu: {car.fueltype}</h1>
+                        <label htmlFor={car.id+"fuel"}>Thay đổi loại nhiên liệu</label>
+                        <select id={car.id+"fuel"} >
                             <option value="Gasoline">Gasoline</option>
                             <option value="Oil">Oil</option>
                             <option value="IDK">IDK</option>
                         </select>
-                        <button onClick={()=>handleChangeFuelType(car.id)}>Thay đổi</button>
-                        <h1>Width: {car.width}</h1>
-                        <input type='number' placeholder='Thay đổi chiều rộng?' onChange={(e)=>{
-                            setCheckUpdateId(car.id);
-                            setUpdateCarWidth(Number(e.target.value))}}/>
-                        <button onClick={()=>handleChangeWidth(car.id)}>Thay đổi</button>
-                        <h1>Height: {car.height}</h1>
-                        <input type='number' placeholder='Thay đổi chiều cao?' onChange={(e)=>{
-                            setCheckUpdateId(car.id);
-                            setUpdateCarHeight(Number(e.target.value))}}/>
-                        <button onClick={()=>handleChangeHeight(car.id)}>Thay đổi</button>
-                        <h1>Length: {car.length}</h1>
-                        <input type='number' placeholder='Thay đổi chiều dài?' onChange={(e)=>{
-                            setCheckUpdateId(car.id);
-                            setUpdateCarLength(Number(e.target.value))}}/>
-                        <button onClick={()=>handleChangeLength(car.id)}>Thay đổi</button>
-                        <h1>Payload: {car.payload}</h1>
-                        <input type='number' placeholder='Thay đổi tải trọng?' onChange={(e)=>{
-                            setCheckUpdateId(car.id);
-                            setUpdateCarPayload(Number(e.target.value))}}/>
-                        <button onClick={()=>handleChangePayload(car.id)}>Thay đổi</button>
+                        <button onClick={()=>handleChangeFuelType(car)}>Thay đổi</button>
+                        <h1>Chiều rộng: {car.width}</h1>
+                        <input id={car.id+"width"} type='number' placeholder='Thay đổi chiều rộng?' />
+                        <button onClick={()=>handleChangeWidth(car)}>Thay đổi</button>
+                        <h1>Chiểu cao: {car.height}</h1>
+                        <input id={car.id+"height"} type='number' placeholder='Thay đổi chiều cao?' />
+                        <button onClick={()=>handleChangeHeight(car)}>Thay đổi</button>
+                        <h1>Chiều dài: {car.length}</h1>
+                        <input id={car.id+"length"} type='number' placeholder='Thay đổi chiều dài?' />
+                        <button onClick={()=>handleChangeLength(car)}>Thay đổi</button>
+                        <h1>Tải trọng: {car.payload}</h1>
+                        <input id={car.id+"payload"} type='number' placeholder='Thay đổi tải trọng?' />
+                        <button onClick={()=>handleChangePayload(car)}>Thay đổi</button>
 
                         <button onClick={()=>deleteCarList(car.id)}>Xoá xe</button>
                         {/* <div className="container">
