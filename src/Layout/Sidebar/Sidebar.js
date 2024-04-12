@@ -51,7 +51,7 @@ const Sidebar = () => {
             </li>
           </ul>
           
-            {showDriverInfo && (
+            {/* {showDriverInfo && (
               <div className="driverInfo">
                 <div className="login">
                   <img src ={testavt} alt=""></img>
@@ -60,7 +60,7 @@ const Sidebar = () => {
                   </div>
                 </div>
               </div>
-            )}
+            )} */}
         </div>
         </nav>
         <div className="theoutlet">
