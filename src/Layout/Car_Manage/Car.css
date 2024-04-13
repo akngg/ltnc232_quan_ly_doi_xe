@@ -1,12 +1,253 @@
-.Car{
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    display: flex;
-    align-items: center;
-    justify-content: center;  
+*{
+    background-color: antiquewhite;
 }
-.titleCar{
-    color: black;
-    margin-bottom: 10px;
+html {
+    font-family: Arial, Helvetica, sans-serif;
+}
+div{    
+    grid-template-rows: auto 1fr;
+}
+#root{
+  width: 100%;
+  height: 100%;
+}
+.header{
+    /* position: fixed; */
+    /* top: 0;
+    left: 0; */
+    width: 100%;
+    /* padding: 20px; */
+    background: rgb(157, 219, 227);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* z-index: 99; */
+}
+.logo{
+    width: 10%;
+    height:50%;
+    border-radius: 5px;
+    background: rgb(157, 219, 227);
+}
+.site-name{
+    font-size: 3rem;
+    /* width: 30%;
+    height:50%; */
+    margin-right: 20%;;
+    background: rgb(157, 219, 227);
+    font-weight: bold;
+    user-select: none; 
+}
+.page-content{
+    width: 100%;
+    height: 50px;
+    display: inline-block;
+    padding-top: 0px;
+    justify-content: center;
+    align-items: center;
+}
+ .navigation {
+    justify-content: center;
+    align-items: center;
+ }
+ 
+ #nav{
+    background-color: rgb(69, 63, 92);
+    width: 100%;
+ }
+ #nav li{
+    background-color: rgb(69, 63, 92);
+    display: inline-block;
+    font-weight: bold;
+    user-select: none; 
+ }
+ #nav li button {
+    font-family: Arial, Helvetica, sans-serif;
+    border: none;
+    text-transform: uppercase;
+    font-size: 1rem;
+    color: rgb(34, 182, 84);
+    background-color: rgb(69, 63, 92);
+    text-decoration: none;
+    display: inline-block;
+    line-height: 50px;
+    padding: 0 24px 0 24px;
+ }
+ #nav li :hover{
+    color: rgb(34, 182, 54);
+    background-color: rgb(94, 40, 210);
+ }
+ #information{
+    text-transform: uppercase;
+ }
+ .table-container {
+    border-collapse: collapse;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  table {
+    border-collapse: collapse;
+    width: 80%;
+    background-color: #f3f3f3;
+  }
+  
+  th, td {
+    text-align: left;
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+  
+  th {
+    background-color: #04AA6D;
+    color: white;
+  }
+  /* Style chung cho các nút */
+.retirement-button {
+    padding: 5px 10px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin-right: 5px;
+  }
+  
+  /* Style cho nút 'Chưa nghỉ hưu' */
+  .not-retired {
+    background-color: #4CAF50; /* Màu xanh lá */
+  }
+  
+  /* Style cho nút 'Đã nghỉ hưu' */
+  .retired {
+    background-color: #f44336; /* Màu đỏ */
+  }
+  
+  /* Thêm hiệu ứng khi hover qua nút */
+  .retirement-button:hover {
+    opacity: 0.8;
+  }
+  #dangKyBaoDuong{
+    display: flex;
+  }
+  .baoduong{
+    display: flex;
+  }
+  /* Style cho form */
+.form-container {
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 30%; /* Hoặc chiều rộng bạn muốn */
+  margin: 20px 0 0 20px; /* Khoảng cách giữa form và nút */
+  padding: 20px;
+  background-color: #e5edb9; /* Màu nền cho form */
+  border-radius: 10px; /* Bo góc cho form */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+.form-container h3,
+.form-container form,
+.form-container p {
+  background-color: transparent;
+}
+/* Style cho label */
+label {
+  margin-bottom: 15px; /* Khoảng cách giữa các label */
+  font-size: 16px; /* Kích thước chữ */
+}
+
+/* Style cho input */
+input[type="text"] {
+  width: 100%; /* Chiều rộng của input */
+  padding: 10px;
+  margin-top: 5px; /* Khoảng cách giữa label và input */
+  border: 1px solid #ccc; /* Viền cho input */
+  border-radius: 5px; /* Bo góc cho input */
+}
+.submit-button {
+  padding: 10px 20px;
+  margin-top: 20px;
+  background-color: #4CAF50; /* Màu nền cho nút */
+  color: white; /* Màu chữ cho nút */
+  border: none;
+  border-radius: 5px; /* Bo góc cho nút */
+  cursor: pointer; /* Con trỏ chuột khi hover qua nút */
+}
+
+/* Hiệu ứng khi hover qua nút submit */
+.submit-button:hover {
+  background-color: #45a049;
+}
+.lichsu{
+  margin: 20px auto 0 20px;
+}
+/* thay doi thong tin */
+#thayDoiThongTinContent{
+  display: flex;
+}
+#thayDoiThongTinContent #change{
+  margin-right: 5px;
+  margin-top: 20px;
+  margin-left: 10px;
+  width: 70%;
+}
+#thayDoiThongTinContent .history{
+  margin-right: 5px;
+  margin-top: 20px;
+  margin-left: 10px;
+  width: 100%;
+}
+.code-change{
+  /* display: flex; */
+  width: 50%;
+}
+.code-change label{
+  display: flex;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+.code-change button{
+  margin-top: 5px;
+  padding: 10px 20px;
+  width: 20%;
+  background-color: #4CAF50; /* Màu nền cho nút */
+  color: white; /* Màu chữ cho nút */
+  border: none;
+  border-radius: 5px; /* Bo góc cho nút */
+  cursor: pointer; /* Con trỏ chuột khi hover qua nút */
+}
+.history{
+  justify-content: center;
+  align-items: center;
+}
+
+.infor-table {
+  font-family: 'Arial', sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+}
+
+.infor-table td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  color: #333;
+  background-color: #6eb162;
+}
+
+#list-infor {
+  background-color: #6eb162;
+  color: #333;
+}
+
+#list-infor td {
+  font-weight: bold;
+}
+
+.infor-table tr:hover {
+  background-color: #6eb162;
 }
