@@ -1,10 +1,10 @@
-import './Car.css'
+import './Car.css';
 import { db } from "../../modules/firebase";
-import {getDocs, collection, addDoc, doc, deleteDoc, updateDoc} from "firebase/firestore"
+import {getDocs, collection, addDoc, doc, deleteDoc, updateDoc} from "firebase/firestore";
 import { useState,useEffect } from 'react';
 import { auth } from '../../modules/firebase';
+// import { onAuthStateChanged } from "firebase/auth";
 const Car = () =>{
-    {/*Thêm auth? */}
     const [carList,setCarList]=useState([]);
 
     const [newCarDriver,setNewCarDriver]=useState("");
@@ -20,12 +20,15 @@ const Car = () =>{
     const getCarList=async ()=>{
         try{
             const data = await getDocs(collection(db,"cars"));
-            const filteredData= data.docs.map((doc)=>({
+            const filteredData = data.docs.map((doc)=>({
                 ...doc.data(),
                 id:doc.id,
             }));
-            console.log(filteredData)
-            setCarList(filteredData);
+            console.log(filteredData);
+            const authFilterData = filteredData.filter((data)=>{
+                return data.userid === auth?.currentUser?.uid;
+            })
+            setCarList(authFilterData);
         }catch(error){
             const errorCode = error.code;
             const errorMessage = error.message;
@@ -49,7 +52,7 @@ const Car = () =>{
                 length: newCarLength,
                 payload: newCarPayload,
                 liplate: newLicensePlate,
-                // userid: auth?.currentUser?.uid
+                userid: auth?.currentUser?.uid
             });
             getCarList();
         }catch(error){

@@ -3,8 +3,9 @@ import { db } from "../../modules/firebase";
 import {getDocs, collection, addDoc, doc, deleteDoc, updateDoc} from "firebase/firestore"
 import { useState,useEffect } from 'react';
 import { auth } from '../../modules/firebase';
+// import { onAuthStateChanged } from "firebase/auth";
+
 const Driver = () =>{
-    {/*Thêm auth? */}
 
     const [DriverList,setDriverList]=useState([]);
 
@@ -24,8 +25,11 @@ const Driver = () =>{
                 ...doc.data(),
                 id:doc.id,
             }));
-            console.log(filteredData)
-            setDriverList(filteredData);
+            console.log(filteredData);
+            const authFilterData = filteredData.filter((data)=>{
+                return data.userid === auth?.currentUser?.uid;
+            })
+            setDriverList(authFilterData);
         }catch(error){
             const errorCode = error.code;
             const errorMessage = error.message;
@@ -46,7 +50,7 @@ const Driver = () =>{
                 car: newDriverCar,
                 license: newDriverLicense,
                 status: newDriverStatus,
-                // userid: auth?.currentUser?.uid
+                userid: auth?.currentUser?.uid
                 // history: {
                 //     cardrove: newDriverCarDrove,
                 //     from: newDriverFrom,

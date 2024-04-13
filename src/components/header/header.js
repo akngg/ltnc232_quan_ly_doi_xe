@@ -4,7 +4,7 @@ import headerstyle from "./header.module.css";
 import { useState } from "react";
 // import {} from "firebase/auth";
 import { auth } from "../../modules/firebase";
-import {onAuthStateChanged, signOut} from "firebase/auth"
+import {onAuthStateChanged, signOut} from "firebase/auth";
 
 function Header(){
     // const navigate = useNavigate();
