@@ -26,7 +26,9 @@ function App() {
   const [isHomeRoute, setIsHomeRoute] = useState(true);
   useEffect(() => {
     const currentPath = window.location.pathname;
-    setIsHomeRoute(currentPath === "/");
+    setIsHomeRoute(currentPath === "/"
+                  || currentPath === "/register"
+                  || currentPath === "/login" );
   }, []);
 
   return (
