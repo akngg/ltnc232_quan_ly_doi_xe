@@ -173,11 +173,12 @@ function Car() {
     ]);
   };
     return (<>
-    <div className='header'>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/f/f0/HCMCUT.svg" className='logo' alt='Logo' ></img>
-    <h2 className='site-name'>Quản Lý Xe</h2>
-    </div>
-    <div className='page-content'>
+    <div className='carManage'>
+      <div className='header'>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/f/f0/HCMCUT.svg" className='logo' alt='Logo' ></img>
+      <h2 className='site-name'>Quản Lý Xe</h2>
+      </div>
+      <div className='page-content'>
         <nav className='navigation'>
             <ul id='nav'>
             <li><button onClick={() => handleTabClick('infor')}>Thông tin chung</button></li>
@@ -186,9 +187,9 @@ function Car() {
             <li><button onClick={() => handleTabClick('thayDoiThongTin')}>Thay đổi thông tin</button></li>
             </ul>
         </nav>
-    </div>
-    {activeTab === 'infor' && (
-        <div id='information'>
+      </div>
+      {activeTab === 'infor' && (
+        <div className='content' id='information'>
           <form className='code-change' onSubmit={handleInforCode}> 
                     <label>
                           <input type="text" placeholder='NHẬP MÃ' value={inputInfor} onChange={handleInfor} required />
@@ -208,9 +209,9 @@ function Car() {
               }
               </tbody>
           </div>
-      )}
-    {activeTab === 'lichBaoDuong' && (
-            <div id='table-container'>
+        )}
+      {activeTab === 'lichBaoDuong' && (
+            <div className='content' id='table-container'>
               <table>
                 <thead>
                   <tr>
@@ -263,9 +264,9 @@ function Car() {
               </tbody>
               </table>
             </div>
-      )}
-    {activeTab === 'dangKyBaoDuong' && (
-      <div className='baoduong'>
+        )}
+      {activeTab === 'dangKyBaoDuong' && (
+      <div className='content' id='baoduong'>
         <div className="form-container">
         <h3>THÔNG TIN</h3>
         <form onSubmit={handleSubmit}>
@@ -333,9 +334,9 @@ function Car() {
         </div>
       </div>
       </div>
-      )}
-    {activeTab === 'thayDoiThongTin' && (
-      <div id='thayDoiThongTinContent'>
+        )}
+      {activeTab === 'thayDoiThongTin' && (
+      <div className='content' id='thayDoiThongTinContent'>
             <div id='change'>
             <h2>Thay đổi thông tin</h2>
                 <form className='code-change' onSubmit={handleSubmitCode}>
@@ -381,7 +382,8 @@ function Car() {
                 </div>
             </div>
       </div>
-      )}
+        )}
+    </div>
     </>)
 }
 export default Car;

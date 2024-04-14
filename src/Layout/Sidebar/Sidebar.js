@@ -21,7 +21,7 @@ const Sidebar = () => {
     return (
       <div className="dashboardiv">
         <nav>
-        <div className='Sidebar'>
+        <div className='Sidebar' id="side">
           <ul  className="Sidebarlist">
             <li onClick={hideDriverInfo}>
               <Link to="/dashboard/car" className="SidebarLink" >
@@ -62,7 +62,9 @@ const Sidebar = () => {
             )}
         </div>
         </nav>
-        <Outlet />
+        <div id="side">
+         <Outlet />
+         </div>
       </div>
     )
   };
