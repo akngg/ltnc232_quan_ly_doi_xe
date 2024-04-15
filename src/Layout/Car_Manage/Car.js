@@ -5,7 +5,7 @@ import { useState,useEffect } from 'react';
 import { auth } from '../../modules/firebase';
 // import { onAuthStateChanged } from "firebase/auth";
 const Car = () =>{
-    const [carList,setCarList]=useState([]);
+    const [truckCarList,setTruckCarList]=useState([]);
 
     const [newCarDriver,setNewCarDriver]=useState("");
     const [newCarType,setNewCarType]=useState("");
@@ -16,6 +16,7 @@ const Car = () =>{
     const [newCarPayload,setNewCarPayload]=useState(0);
     const [newCarLength,setNewCarLength]=useState(0);
     const [newLicensePlate, setNewLicensePlate]=useState(""); 
+    const [newPosition, setNewPosition] = useState("");
     
     const getCarList=async ()=>{
         try{
@@ -28,7 +29,7 @@ const Car = () =>{
             const authFilterData = filteredData.filter((data)=>{
                 return data.userid === auth?.currentUser?.uid;
             })
-            setCarList(authFilterData);
+            setTruckCarList(authFilterData);
         }catch(error){
             const errorCode = error.code;
             const errorMessage = error.message;
@@ -40,19 +41,24 @@ const Car = () =>{
         getCarList();
     },[])
 
-    const addCarList=async ()=>{
+    const addTruckCarList=async ()=>{
         try{
-            await addDoc(collection(db,"cars"),{
+            await addDoc(collection(db,"truck"),{
+                position: newPosition,
                 cartype: newCarType,
-                driver: newCarDriver,
-                fueltype: newCarFuelType,
-                status: newCarStatus,
+                driver: "none",
+                fueltype: newCarType==="small"?"gasoline":"oil",
+                status: Active,
                 height: newCarHeight,
                 width: newCarWidth,
                 length: newCarLength,
                 payload: newCarPayload,
-                liplate: newLicensePlate,
-                userid: auth?.currentUser?.uid
+                liplate: newCarType==="small"? 1: newCarType==="medium"? 2: 3,
+                userid: auth?.currentUser?.uid,
+                arriveTime: 0,
+                maintenanceTime: -1,
+                numRuns: 0,
+                carrying: 0
             });
             getCarList();
         }catch(error){
@@ -62,9 +68,9 @@ const Car = () =>{
         }
     }
 
-    const deleteCarList=async(id)=>{
+    const deleteTruckCarList=async(id)=>{
         try{
-            const carDoc=doc(db, "cars", id);
+            const carDoc=doc(db, "truck", id);
             await deleteDoc(carDoc);
 
             getCarList();
@@ -75,109 +81,32 @@ const Car = () =>{
         }
     }
 
-    // const [updateText,setUpdateText]=useState("");
-    // const [updateNumber,setUpdateNumber]=useState(0);
-    // const [dataInputType, setDataInputType] = useState("text");
-    // const [dataAtt, setDataAtt] = useState("Driver");
-    // const [showSelect, setShowSelect] = useState(false);
-
-    // const handleSelectChange = (selectedAtt) => {
-    //     //const selectedAtt = e.target.value;
-    //     setDataAtt(selectedAtt);
-    //     switch (selectedAtt) {
-    //       case "Width":
-    //         setDataInputType("number");
-    //         break;
-    //       case "Height":
-    //         setDataInputType("number");
-    //         break;
-    //       case "Length":
-    //         setDataInputType("number");
-    //         break;
-    //       case "Payload":
-    //         setDataInputType("number");
-    //         break;
-    //       case "Car type":
-    //         setDataInputType("text");
-    //         break;
-    //       case "Fuel type":
-    //         setDataInputType("text");
-    //         break;
-    //       case "Status":
-    //         setDataInputType("text");
-    //         break;
-    //     // case "Status":
-    //     //     setDataInputType("select");
-    //     //     break;
-    //       default:
-    //         setDataInputType("text");
-    //     }
-    //   };
-
-    // const handleChangeButton=async(id)=>{
-    //     const carDoc=doc(db, "cars", id);
-    //     switch(dataAtt){
-    //         case "Width":
-    //             await updateDoc(carDoc, {width: updateNumber});
-    //             setShowSelect(false);
-    //         break;
-    //         case "Height":
-    //             await updateDoc(carDoc, {height: updateNumber});
-    //             setShowSelect(false);
-    //             break;
-    //         case "Length":
-    //             await updateDoc(carDoc, {length: updateNumber});
-    //             setShowSelect(false);
-    //             break;
-    //         case "Payload":
-    //             await updateDoc(carDoc, {payload: updateNumber});
-    //             setShowSelect(false);
-    //             break;
-    //         case "Car type":
-    //             await updateDoc(carDoc, {cartype: updateText});
-    //             setShowSelect(false);
-    //             break;
-    //         case "Fuel type":
-    //             await updateDoc(carDoc, {fueltype: updateText});
-    //             setShowSelect(false);
-    //             break;
-    //         case "Status":
-    //             await updateDoc(carDoc, {status: updateText});
-    //             setShowSelect(true);
-    //             break;
-    //         default:
-    //             await updateDoc(carDoc, {driver: updateText});
-    //             setShowSelect(false);
-    //     }
-    //     console.log(showSelect);
-    //     getCarList();
-    // }
 
     const handleChangeDriver=async(car)=>{
             const carDoc=doc(db, "cars", car.id);
         await updateDoc(carDoc, {driver: document.getElementById(car.id+"driver").value});
         getCarList();
     }
-    const handleChangeFuelType=async(car)=>{
-            const carDoc=doc(db, "cars", car.id);
-        await updateDoc(carDoc, {fueltype: document.getElementById(car.id+"fuel").value});
-        getCarList();
-    }
-    const handleChangeCarType=async(car)=>{
-            const carDoc=doc(db, "cars", car.id);
-            await updateDoc(carDoc, {cartype: document.getElementById(car.id+"cartype").value});
-            getCarList();
-    }
+    // const handleChangeFuelType=async(car)=>{
+    //         const carDoc=doc(db, "cars", car.id);
+    //     await updateDoc(carDoc, {fueltype: document.getElementById(car.id+"fuel").value});
+    //     getCarList();
+    // }
+    // const handleChangeCarType=async(car)=>{
+    //         const carDoc=doc(db, "cars", car.id);
+    //         await updateDoc(carDoc, {cartype: document.getElementById(car.id+"cartype").value});
+    //         getCarList();
+    // }
     const handleChangeStatus=async(car)=>{
             const carDoc=doc(db, "cars", car.id);
             await updateDoc(carDoc, {status: document.getElementById(car.id+"status").value});
             getCarList();
     }
-    const handleChangeLicensePlate=async(car)=>{
-            const carDoc=doc(db, "cars", car.id);
-            await updateDoc(carDoc, {liplate: document.getElementById(car.id+"plate").value});
-            getCarList();
-    }
+    // const handleChangeLicensePlate=async(car)=>{
+    //         const carDoc=doc(db, "cars", car.id);
+    //         await updateDoc(carDoc, {liplate: document.getElementById(car.id+"plate").value});
+    //         getCarList();
+    // }
     const handleChangeLength=async(car)=>{
             const carDoc=doc(db, "cars", car.id);
             await updateDoc(carDoc, {length: Number(document.getElementById(car.id+"length").value)});
@@ -243,72 +172,71 @@ const Car = () =>{
                         <button onClick={()=>handleChangePayload(car)}>Thay đổi</button>
 
                         <button onClick={()=>deleteCarList(car.id)}>Xoá xe</button>
-                        {/* <div className="container">
-                        <label htmlFor="data-type-select">Chọn dữ liệu muốn thay đổi:</label>
-                        <select id="data-type-select"  onChange={(e)=>handleSelectChange(e.target.value)}>
-                            <option value="Car type">Car type</option>
-                            <option value="Fuel type">Fuel type</option>
-                            <option value="Driver">Driver</option>
-                            <option value="Status">Status</option>
-                            <option value="Width">Width</option>
-                            <option value="Height">Height</option>
-                            <option value="Length">Length</option>
-                            <option value="Payload">Payload</option>
-                        </select>
-                        <label htmlFor="data-input">Enter Data:</label>
-                        <input type={dataInputType} id="data-input" onChange={(e)=>{
-                            if(dataInputType==="number"){
-                                setUpdateNumber(Number(e.target.value));
-                            }
-                            else{
-                                setUpdateText(e.target.value);
-                            }
-                        }}/> */}
                         
-                            {/* <select id="select-input" onChange={(e)=>{
-                                setUpdateText(e.target.value);
-                            }} style={{display:'none'}} key={!showSelect}>
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                            <option value="maintenance">Maintenance</option>
-                            </select>
-                            <div key={showSelect} id="input-input">
-                                <label htmlFor="data-input">Enter Data:</label>
-                                <input type={dataInputType} id="data-input" onChange={(e)=>{
-                                if(dataInputType==="number"){
-                                    setUpdateNumber(Number(e.target.value));
-                                }
-                                else{
-                                    setUpdateText(e.target.value);
-                                }
-                                }}/>
-                            </div> */}
-                        {/* <button onClick={()=>handleChangeButton(car.id)}>Thay đổi</button>
-                        </div> */}
                     </div>
                 ))}
             </div>
-            <div className='addCar'>
+            <div className='addTruckCar'>
                 <hr></hr>
+                <h3>Thêm xe tải</h3>
                 <input placeholder='Biển số xe' type='text' onChange={(e)=>setNewLicensePlate(e.target.value)}/>
-                <input placeholder='Car Type' type='text' onChange={(e)=>setNewCarType(e.target.value)}/>
-                <input placeholder='Driver' type='text' onChange={(e)=>setNewCarDriver(e.target.value)}/>
-                <label htmlFor='new-car-status'>Trạng thái</label>
+                {/* <input placeholder='Loại xe tải' type='text' onChange={(e)=>setNewCarType(e.target.value)}/> */}
+                <label htmlFor='new-car-type'>Loại xe tải</label>
+                <select id='new-car-type' onChange={(e)=>setNewCarType(e.target.value)}>
+                        <option value="small">Xe tải nhỏ</option>
+                        <option value="medium">Xe tải vừa</option>
+                        <option value="container">Xe container</option>
+                </select>
+                {/* <input placeholder='Driver' type='text' onChange={(e)=>setNewCarDriver(e.target.value)}/> */}
+                {/* <label htmlFor='new-car-status'>Trạng thái</label>
                 <select id='new-car-status' onChange={(e)=>setNewCarStatus(e.target.value)}>
                         <option value="Active">Active</option>
                         <option value="Inactive">Inactive</option>
                         <option value="Maintenance">Maintenance</option>
-                </select>
-                <label htmlFor='new-car-fuel-type'>Loại nhiên liệu</label>
+                </select> */}
+                {/* <label htmlFor='new-car-fuel-type'>Loại nhiên liệu</label>
                 <select id='new-car-fuel-type' onChange={(e)=>setNewCarFuelType(e.target.value)}>
                         <option value="Gasoline">Gasoline</option>
                         <option value="Oil">Oil</option>
                         <option value="IDK">IDK</option>
-                </select>
+                </select> */}
                 <input placeholder='Height' type='number' onChange={(e)=>setNewCarHeight(Number(e.target.value))}/>
                 <input placeholder='Width' type='number' onChange={(e)=>setNewCarWidth(Number(e.target.value))}/>
                 <input placeholder='Length' type='number' onChange={(e)=>setNewCarLength(Number(e.target.value))}/>
                 <input placeholder='Payload' type='number' onChange={(e)=>setNewCarPayload(Number(e.target.value))}/>
+                <input placeholder='Địa điểm' type='text' onChange={(e)=>setNewPosition(e.target.value)}/>
+                {/*thêm tính năng thêm nhiều xe cùng loại 1 lúc?*/}
+                <button onClick={addTruckCarList}>Thêm vào</button>
+            </div>
+            <div className='addBusCar'>
+                <hr></hr>
+                <h3>Thêm xe khách</h3>
+                <input placeholder='Biển số xe' type='text' onChange={(e)=>setNewLicensePlate(e.target.value)}/>
+                {/* <input placeholder='Loại xe tải' type='text' onChange={(e)=>setNewCarType(e.target.value)}/> */}
+                <label htmlFor='new-car-type'>Loại xe tải</label>
+                <select id='new-car-type' onChange={(e)=>setNewCarType(e.target.value)}>
+                        <option value="small">Xe 7 chỗ</option>
+                        <option value="medium">Xe 16 chỗ</option>
+                        <option value="big">Xe 24 chỗ</option>
+                </select>
+                {/* <input placeholder='Driver' type='text' onChange={(e)=>setNewCarDriver(e.target.value)}/> */}
+                {/* <label htmlFor='new-car-status'>Trạng thái</label>
+                <select id='new-car-status' onChange={(e)=>setNewCarStatus(e.target.value)}>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                        <option value="Maintenance">Maintenance</option>
+                </select> */}
+                {/* <label htmlFor='new-car-fuel-type'>Loại nhiên liệu</label>
+                <select id='new-car-fuel-type' onChange={(e)=>setNewCarFuelType(e.target.value)}>
+                        <option value="Gasoline">Gasoline</option>
+                        <option value="Oil">Oil</option>
+                        <option value="IDK">IDK</option>
+                </select> */}
+                <input placeholder='Height' type='number' onChange={(e)=>setNewCarHeight(Number(e.target.value))}/>
+                <input placeholder='Width' type='number' onChange={(e)=>setNewCarWidth(Number(e.target.value))}/>
+                <input placeholder='Length' type='number' onChange={(e)=>setNewCarLength(Number(e.target.value))}/>
+                <input placeholder='Số ghê' type='number' onChange={(e)=>setNewCarSeat(Number(e.target.value))}/>
+                <input placeholder='Địa điểm' type='text' onChange={(e)=>setNewPosition(e.target.value)}/>
                 {/*thêm tính năng thêm nhiều xe cùng loại 1 lúc?*/}
                 <button onClick={addCarList}>Thêm vào</button>
             </div>
