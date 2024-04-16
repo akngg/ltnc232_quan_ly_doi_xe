@@ -17,6 +17,7 @@ const Car = () =>{
     const [newCarLength,setNewCarLength]=useState(0);
     const [newPosition, setNewPosition] = useState("");
     const [newLicensePlate, setNewLicensePlate]=useState("");
+    const [newCarWeight,setNewCarWeight]=useState(0);
     const getTruckCarList=async ()=>{
         try{
             const data = await getDocs(collection(db,"truck"));
@@ -75,7 +76,10 @@ const Car = () =>{
                 license: newTruckCarType==="small"? 1: newTruckCarType==="medium"? 2: 3,
                 liplate: newLicensePlate,
                 userId: auth?.currentUser?.uid,
+                arrayOfDests: [],
+                arrayOfGoodsId: [],
                 arriveTime: 0,
+                weight: newCarWeight,
                 carrying: 0
             });
             getTruckCarList();
@@ -102,7 +106,10 @@ const Car = () =>{
                 liplate: newLicensePlate,
                 userId: auth?.currentUser?.uid,
                 passengers: 0,
+                weight: newCarWeight,
                 arriveTime: 0,
+                arrayOfDests: [],
+                arrayOfPassengersId: [],
             });
             getBusCarList();
         }catch(error){
@@ -196,6 +203,7 @@ const Car = () =>{
                         <h1>Chiểu cao: {car.height}</h1>
                         <h1>Chiều dài: {car.length}</h1>
                         <h1>Tải trọng: {car.payload}</h1>
+                        <h1>Trọng lượng xe: {car.weight}</h1>
                         <h1>Vị trí: {car.position}</h1>
                         <input id={car.id+"position"} type='text' placeholder='Thay đổi biển số' />
                         <button onClick={()=>handleChangePosition(car,"truck")}>Thay đổi</button>
@@ -228,6 +236,7 @@ const Car = () =>{
                         <h1>Chiểu cao: {car.height}</h1>
                         <h1>Chiều dài: {car.length}</h1>
                         <h1>Số ghế: {car.numOfSeats}</h1>
+                        <h1>Trọng lượng xe: {car.weight}</h1>
                         <h1>Vị trí: {car.position}</h1>
                         <input id={car.id+"position"} type='text' placeholder='Thay đổi biển số' />
                         <button onClick={()=>handleChangePosition(car,"bus")}>Thay đổi</button>
@@ -267,6 +276,7 @@ const Car = () =>{
                 <input placeholder='Length' type='number' onChange={(e)=>setNewCarLength(Number(e.target.value))}/>
                 <input placeholder='Payload' type='number' onChange={(e)=>setNewCarPayload(Number(e.target.value))}/>
                 <input placeholder='Địa điểm' type='text' onChange={(e)=>setNewPosition(e.target.value)}/>
+                <input placeholder='Trọng lượng' type='number' onChange={(e)=>setNewCarWeight(Number(e.target.value))}/>
                 {/*thêm tính năng thêm nhiều xe cùng loại 1 lúc?*/}
                 <button onClick={addTruckCarList}>Thêm vào</button>
             </div>
@@ -298,6 +308,7 @@ const Car = () =>{
                 <input placeholder='Width' type='number' onChange={(e)=>setNewCarWidth(Number(e.target.value))}/>
                 <input placeholder='Length' type='number' onChange={(e)=>setNewCarLength(Number(e.target.value))}/>
                 <input placeholder='Địa điểm' type='text' onChange={(e)=>setNewPosition(e.target.value)}/>
+                <input placeholder='Trọng lượng xe' type='number' onChange={(e)=>setNewCarWeight(Number(e.target.value))}/>
                 {/*thêm tính năng thêm nhiều xe cùng loại 1 lúc?*/}
                 <button onClick={addBusCarList}>Thêm vào</button>
             </div>

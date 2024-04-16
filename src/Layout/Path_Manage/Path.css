@@ -28,6 +28,24 @@
     z-index: 2;
     padding: 20px;
     box-sizing: border-box;
+    overflow: scroll;
+}
+#popupAddGoods{
+    display: none;
+    position: absolute;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: #fff;
+    width: 600px;
+    height:600px;
+    z-index: 2;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow: scroll;
+}
+#successAddGoods{
+    display: none;
 }
 .closebtn{
     position: absolute;

@@ -53,7 +53,9 @@ const Driver = () =>{
                 status: newDriverStatus,
                 userId: auth?.currentUser?.uid,
                 position: newDriverPosition,
-                history: []
+                history: [],
+                arrayOfDests: [],
+                arriveTime: 0
                 // history: {
                 //     cardrove: newDriverCarDrove,
                 //     from: newDriverFrom,
