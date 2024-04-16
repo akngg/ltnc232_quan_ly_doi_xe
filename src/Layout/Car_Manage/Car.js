@@ -6,28 +6,27 @@ import { auth } from '../../modules/firebase';
 // import { onAuthStateChanged } from "firebase/auth";
 const Car = () =>{
     const [truckCarList,setTruckCarList]=useState([]);
+    const [busCarList,setBusCarList]=useState([]);
 
-    const [newCarDriver,setNewCarDriver]=useState("");
-    const [newCarType,setNewCarType]=useState("");
-    const [newCarFuelType,setNewCarFuelType]=useState("Gasoline");
-    const [newCarStatus,setNewCarStatus]=useState("Active");
+    const [newTruckCarType,setNewTruckCarType]=useState("small");
+    const [newBusCarType,setNewBusCarType]=useState("small");
     const [newCarHeight,setNewCarHeight]=useState(0);
     const [newCarWidth,setNewCarWidth]=useState(0);
     const [newCarPayload,setNewCarPayload]=useState(0);
+    const [newCarSeat,setNewCarSeat]=useState(0);
     const [newCarLength,setNewCarLength]=useState(0);
-    const [newLicensePlate, setNewLicensePlate]=useState(""); 
     const [newPosition, setNewPosition] = useState("");
-    
-    const getCarList=async ()=>{
+    const [newLicensePlate, setNewLicensePlate]=useState("");
+    const getTruckCarList=async ()=>{
         try{
-            const data = await getDocs(collection(db,"cars"));
+            const data = await getDocs(collection(db,"truck"));
             const filteredData = data.docs.map((doc)=>({
                 ...doc.data(),
                 id:doc.id,
             }));
             console.log(filteredData);
             const authFilterData = filteredData.filter((data)=>{
-                return data.userid === auth?.currentUser?.uid;
+                return data.userId === auth?.currentUser?.uid;
             })
             setTruckCarList(authFilterData);
         }catch(error){
@@ -37,30 +36,75 @@ const Car = () =>{
         }
     }
 
+    const getBusCarList=async ()=>{
+        try{
+            const data = await getDocs(collection(db,"bus"));
+            const filteredData = data.docs.map((doc)=>({
+                ...doc.data(),
+                id:doc.id,
+            }));
+            console.log(filteredData);
+            const authFilterData = filteredData.filter((data)=>{
+                return data.userId === auth?.currentUser?.uid;
+            })
+            setBusCarList(authFilterData);
+        }catch(error){
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            window.alert(errorCode, errorMessage);
+        }
+    }
+
     useEffect(()=>{
-        getCarList();
+        getTruckCarList();
+        getBusCarList();
     },[])
 
     const addTruckCarList=async ()=>{
         try{
             await addDoc(collection(db,"truck"),{
                 position: newPosition,
-                cartype: newCarType,
+                cartype: newTruckCarType==="small"? "Xe tải nhỏ": newTruckCarType==="medium"? "Xe tải vừa": "Xe container",
                 driver: "none",
-                fueltype: newCarType==="small"?"gasoline":"oil",
-                status: Active,
+                fueltype: newTruckCarType==="small"?"gasoline":"oil",
+                status: "Active",
                 height: newCarHeight,
                 width: newCarWidth,
                 length: newCarLength,
                 payload: newCarPayload,
-                liplate: newCarType==="small"? 1: newCarType==="medium"? 2: 3,
-                userid: auth?.currentUser?.uid,
+                license: newTruckCarType==="small"? 1: newTruckCarType==="medium"? 2: 3,
+                liplate: newLicensePlate,
+                userId: auth?.currentUser?.uid,
                 arriveTime: 0,
-                maintenanceTime: -1,
-                numRuns: 0,
                 carrying: 0
             });
-            getCarList();
+            getTruckCarList();
+        }catch(error){
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            window.alert(errorCode, errorMessage);
+        }
+    }
+
+    const addBusCarList=async ()=>{
+        try{
+            await addDoc(collection(db,"bus"),{
+                position: newPosition,
+                cartype: newBusCarType==="small"? "Xe 7 chỗ": newBusCarType==="medium"? "Xe 16 chỗ": "Xe 24 chỗ",
+                driver: "none",
+                fueltype: "oil",
+                status: "Active",
+                height: newCarHeight,
+                width: newCarWidth,
+                length: newCarLength,
+                numOfSeats: newBusCarType==="small"? 7: newBusCarType==="medium"? 16: 24,
+                license: newBusCarType==="small"? 1: newBusCarType==="medium"? 2: 3,
+                liplate: newLicensePlate,
+                userId: auth?.currentUser?.uid,
+                passengers: 0,
+                arriveTime: 0,
+            });
+            getBusCarList();
         }catch(error){
             const errorCode = error.code;
             const errorMessage = error.message;
@@ -73,7 +117,19 @@ const Car = () =>{
             const carDoc=doc(db, "truck", id);
             await deleteDoc(carDoc);
 
-            getCarList();
+            getTruckCarList();
+        }catch(error){
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            window.alert(errorCode, errorMessage);
+        }
+    }
+    const deleteBusCarList=async(id)=>{
+        try{
+            const carDoc=doc(db, "bus", id);
+            await deleteDoc(carDoc);
+
+            getBusCarList();
         }catch(error){
             const errorCode = error.code;
             const errorMessage = error.message;
@@ -85,7 +141,8 @@ const Car = () =>{
     const handleChangeDriver=async(car)=>{
             const carDoc=doc(db, "cars", car.id);
         await updateDoc(carDoc, {driver: document.getElementById(car.id+"driver").value});
-        getCarList();
+        getTruckCarList();
+        getBusCarList();
     }
     // const handleChangeFuelType=async(car)=>{
     //         const carDoc=doc(db, "cars", car.id);
@@ -97,51 +154,35 @@ const Car = () =>{
     //         await updateDoc(carDoc, {cartype: document.getElementById(car.id+"cartype").value});
     //         getCarList();
     // }
-    const handleChangeStatus=async(car)=>{
-            const carDoc=doc(db, "cars", car.id);
+    const handleChangeStatus=async(car,collec)=>{
+            const carDoc=doc(db, collec, car.id);
             await updateDoc(carDoc, {status: document.getElementById(car.id+"status").value});
-            getCarList();
+        getTruckCarList();
+        getBusCarList();
     }
-    // const handleChangeLicensePlate=async(car)=>{
-    //         const carDoc=doc(db, "cars", car.id);
-    //         await updateDoc(carDoc, {liplate: document.getElementById(car.id+"plate").value});
-    //         getCarList();
-    // }
-    const handleChangeLength=async(car)=>{
-            const carDoc=doc(db, "cars", car.id);
-            await updateDoc(carDoc, {length: Number(document.getElementById(car.id+"length").value)});
-            getCarList();
+    const handleChangeLicensePlate=async(car,collec)=>{
+            const carDoc=doc(db, collec, car.id);
+            await updateDoc(carDoc, {liplate: Number(document.getElementById(car.id+"plate").value)});
+            getTruckCarList();
+        getBusCarList();
     }
-    const handleChangeWidth=async(car)=>{
-            const carDoc=doc(db, "cars", car.id);
-            await updateDoc(carDoc, {width: Number(document.getElementById(car.id+"width").value)});
-            getCarList();
-    }
-    const handleChangeHeight=async(car)=>{
-            const carDoc=doc(db, "cars", car.id);
-            await updateDoc(carDoc, {height: Number(document.getElementById(car.id+"height").value)});
-            getCarList();
-    }
-    const handleChangePayload=async(car)=>{
-            const carDoc=doc(db, "cars", car.id);
-            await updateDoc(carDoc, {payload: Number(document.getElementById(car.id+"payload").value)});
-            getCarList();
+    const handleChangePosition=async(car,collec)=>{
+        const carDoc=doc(db, collec, car.id);
+        await updateDoc(carDoc, {position: document.getElementById(car.id+"position").value});
+        getTruckCarList();
+        getBusCarList();
     }
     return (
         <div className='Car'>
-            <div className='displaycar'>
-                {carList.map((car)=>(
+            <div className='displaytruckcar'>
+                {truckCarList.map((car)=>(
                     <div id={car.id}>
                         <hr></hr>
                         <h1>Biển số xe: {car.liplate}</h1>
                         <input id={car.id+"plate"} type='text' placeholder='Thay đổi biển số' />
-                        <button onClick={()=>handleChangeLicensePlate(car)}>Thay đổi</button>
+                        <button onClick={()=>handleChangeLicensePlate(car,"truck")}>Thay đổi</button>
                         <h1>Tài xế: {car.driver}</h1>
-                        <input id={car.id+"driver"} type='text' placeholder='Thay đổi tài xế?' />
-                        <button onClick={()=>handleChangeDriver(car)}>Thay đổi</button>
                         <h1>Loại xe: {car.cartype}</h1>
-                        <input id={car.id+"cartype"} type='text' placeholder='Thay đổi loại xe' />
-                        <button onClick={()=>handleChangeCarType(car)}>Thay đổi</button>
                         <h1>Trạng thái: {car.status}</h1>
                         <label htmlFor={car.id+"status"}>Thay đổi trạng thái</label>
                         <select id={car.id+"status"} >
@@ -149,40 +190,61 @@ const Car = () =>{
                             <option value="Inactive">Inactive</option>
                             <option value="Maintenance">Maintenance</option>
                         </select>
-                        <button onClick={()=>handleChangeStatus(car)}>Thay đổi</button>
+                        <button onClick={()=>handleChangeStatus(car,"truck")}>Thay đổi</button>
                         <h1>Loại nhiên liệu: {car.fueltype}</h1>
-                        <label htmlFor={car.id+"fuel"}>Thay đổi loại nhiên liệu</label>
-                        <select id={car.id+"fuel"} >
-                            <option value="Gasoline">Gasoline</option>
-                            <option value="Oil">Oil</option>
-                            <option value="IDK">IDK</option>
-                        </select>
-                        <button onClick={()=>handleChangeFuelType(car)}>Thay đổi</button>
                         <h1>Chiều rộng: {car.width}</h1>
-                        <input id={car.id+"width"} type='number' placeholder='Thay đổi chiều rộng?' />
-                        <button onClick={()=>handleChangeWidth(car)}>Thay đổi</button>
                         <h1>Chiểu cao: {car.height}</h1>
-                        <input id={car.id+"height"} type='number' placeholder='Thay đổi chiều cao?' />
-                        <button onClick={()=>handleChangeHeight(car)}>Thay đổi</button>
                         <h1>Chiều dài: {car.length}</h1>
-                        <input id={car.id+"length"} type='number' placeholder='Thay đổi chiều dài?' />
-                        <button onClick={()=>handleChangeLength(car)}>Thay đổi</button>
                         <h1>Tải trọng: {car.payload}</h1>
-                        <input id={car.id+"payload"} type='number' placeholder='Thay đổi tải trọng?' />
-                        <button onClick={()=>handleChangePayload(car)}>Thay đổi</button>
+                        <h1>Vị trí: {car.position}</h1>
+                        <input id={car.id+"position"} type='text' placeholder='Thay đổi biển số' />
+                        <button onClick={()=>handleChangePosition(car,"truck")}>Thay đổi</button>
 
-                        <button onClick={()=>deleteCarList(car.id)}>Xoá xe</button>
+                        <button onClick={()=>deleteTruckCarList(car.id)}>Xoá xe</button>
                         
                     </div>
                 ))}
             </div>
+
+            <div className='displaybuscar'>
+                {busCarList.map((car)=>(
+                    <div id={car.id}>
+                        <hr></hr>
+                        <h1>Biển số xe: {car.liplate}</h1>
+                        <input id={car.id+"plate"} type='number' placeholder='Thay đổi biển số' />
+                        <button onClick={()=>handleChangeLicensePlate(car,"bus")}>Thay đổi</button>
+                        <h1>Tài xế: {car.driver}</h1>
+                        <h1>Loại xe: {car.cartype}</h1>
+                        <h1>Trạng thái: {car.status}</h1>
+                        <label htmlFor={car.id+"status"}>Thay đổi trạng thái</label>
+                        <select id={car.id+"status"} >
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                            <option value="Maintenance">Maintenance</option>
+                        </select>
+                        <button onClick={()=>handleChangeStatus(car,"bus")}>Thay đổi</button>
+                        <h1>Loại nhiên liệu: {car.fueltype}</h1>
+                        <h1>Chiều rộng: {car.width}</h1>
+                        <h1>Chiểu cao: {car.height}</h1>
+                        <h1>Chiều dài: {car.length}</h1>
+                        <h1>Số ghế: {car.numOfSeats}</h1>
+                        <h1>Vị trí: {car.position}</h1>
+                        <input id={car.id+"position"} type='text' placeholder='Thay đổi biển số' />
+                        <button onClick={()=>handleChangePosition(car,"bus")}>Thay đổi</button>
+
+                        <button onClick={()=>deleteBusCarList(car.id)}>Xoá xe</button>
+                        
+                    </div>
+                ))}
+            </div>
+
             <div className='addTruckCar'>
                 <hr></hr>
                 <h3>Thêm xe tải</h3>
                 <input placeholder='Biển số xe' type='text' onChange={(e)=>setNewLicensePlate(e.target.value)}/>
                 {/* <input placeholder='Loại xe tải' type='text' onChange={(e)=>setNewCarType(e.target.value)}/> */}
                 <label htmlFor='new-car-type'>Loại xe tải</label>
-                <select id='new-car-type' onChange={(e)=>setNewCarType(e.target.value)}>
+                <select id='new-car-type' onChange={(e)=>setNewTruckCarType(e.target.value)}>
                         <option value="small">Xe tải nhỏ</option>
                         <option value="medium">Xe tải vừa</option>
                         <option value="container">Xe container</option>
@@ -214,7 +276,7 @@ const Car = () =>{
                 <input placeholder='Biển số xe' type='text' onChange={(e)=>setNewLicensePlate(e.target.value)}/>
                 {/* <input placeholder='Loại xe tải' type='text' onChange={(e)=>setNewCarType(e.target.value)}/> */}
                 <label htmlFor='new-car-type'>Loại xe tải</label>
-                <select id='new-car-type' onChange={(e)=>setNewCarType(e.target.value)}>
+                <select id='new-car-type' onChange={(e)=>setNewBusCarType(e.target.value)}>
                         <option value="small">Xe 7 chỗ</option>
                         <option value="medium">Xe 16 chỗ</option>
                         <option value="big">Xe 24 chỗ</option>
@@ -235,10 +297,9 @@ const Car = () =>{
                 <input placeholder='Height' type='number' onChange={(e)=>setNewCarHeight(Number(e.target.value))}/>
                 <input placeholder='Width' type='number' onChange={(e)=>setNewCarWidth(Number(e.target.value))}/>
                 <input placeholder='Length' type='number' onChange={(e)=>setNewCarLength(Number(e.target.value))}/>
-                <input placeholder='Số ghê' type='number' onChange={(e)=>setNewCarSeat(Number(e.target.value))}/>
                 <input placeholder='Địa điểm' type='text' onChange={(e)=>setNewPosition(e.target.value)}/>
                 {/*thêm tính năng thêm nhiều xe cùng loại 1 lúc?*/}
-                <button onClick={addCarList}>Thêm vào</button>
+                <button onClick={addBusCarList}>Thêm vào</button>
             </div>
         </div>
     )

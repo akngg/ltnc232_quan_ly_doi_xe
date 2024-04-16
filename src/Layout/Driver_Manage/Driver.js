@@ -12,8 +12,9 @@ const Driver = () =>{
     const [newDriverName,setNewDriverName]=useState("");
     const [newDriverPhone,setNewDriverPhone]=useState(0);
     const [newDriverAddress,setNewDriverAddress]=useState("");
-    const [newDriverLicense,setNewDriverLicense]=useState("A1");
+    const [newDriverLicense,setNewDriverLicense]=useState(1);
     const [newDriverCar,setNewDriverCar]=useState("");
+    const [newDriverPosition,setNewDriverPosition]=useState("");
     // const [newDriverCarDrove,setNewDriverCarDrove]=useState("");
     // const [newDriverFrom,setNewDriverFrom]=useState("");
     // const [newDriverTo,setNewDriverTo]=useState("");
@@ -27,7 +28,7 @@ const Driver = () =>{
             }));
             console.log(filteredData);
             const authFilterData = filteredData.filter((data)=>{
-                return data.userid === auth?.currentUser?.uid;
+                return data.userId === auth?.currentUser?.uid;
             })
             setDriverList(authFilterData);
         }catch(error){
@@ -47,10 +48,12 @@ const Driver = () =>{
                 name: newDriverName,
                 phone: newDriverPhone,
                 address: newDriverAddress,
-                car: newDriverCar,
+                car: "None",
                 license: newDriverLicense,
                 status: newDriverStatus,
-                userid: auth?.currentUser?.uid
+                userId: auth?.currentUser?.uid,
+                position: newDriverPosition,
+                history: []
                 // history: {
                 //     cardrove: newDriverCarDrove,
                 //     from: newDriverFrom,
@@ -95,7 +98,7 @@ const Driver = () =>{
     }
     const handleChangeLicense=async(driver)=>{
         const carDoc=doc(db, "drivers", driver.id);
-        await updateDoc(carDoc, {license: document.getElementById(driver.id+"license").value});
+        await updateDoc(carDoc, {license: Number(document.getElementById(driver.id+"license").value)});
         getDriverList();
     }
     const handleChangeAddress=async(driver)=>{
@@ -108,14 +111,15 @@ const Driver = () =>{
         await updateDoc(carDoc, {phone: Number(document.getElementById(driver.id+"phone").value)});
         getDriverList();
     }
-    const handleChangeCar=async(driver)=>{
-        const carDoc=doc(db, "drivers", driver.id);
-        await updateDoc(carDoc, {car: document.getElementById(driver.id+"car").value});
-        getDriverList();
-    }
     const handleChangeStatus=async(driver)=>{
         const carDoc=doc(db, "drivers", driver.id);
         await updateDoc(carDoc, {status: document.getElementById(driver.id+"status").value});
+        getDriverList();
+    }
+
+    const handleChangePosition=async(driver)=>{
+        const carDoc=doc(db, "drivers", driver.id);
+        await updateDoc(carDoc, {position: document.getElementById(driver.id+"position").value});
         getDriverList();
     }
 
@@ -129,22 +133,19 @@ const Driver = () =>{
                         <input type='text' placeholder='Thay đổi tên?' id={driver.id+"name"}/>
                         <button onClick={()=>handleChangeName(driver)}>Thay đổi</button>
                         <h1>Xe: {driver.car}</h1>
-                        <input type='text' placeholder='Thay đổi xe' id={driver.id+"car"}/>
-                        <button onClick={()=>handleChangeCar(driver)}>Thay đổi</button>
                         <h1>Trạng thái: {driver.status}</h1>
                         <label htmlFor={driver.id+"status"}>Thay đổi trạng thái</label>
                         <select id={driver.id+"status"}>
                             <option value="Active">Active</option>
                             <option value="Inactive">Inactive</option>
-                            <option value="Maintenance">Maintenance</option>
                         </select>
                         <button onClick={()=>handleChangeStatus(driver)}>Thay đổi</button>
                         <h1>Bằng lái: {driver.license}</h1>
-                        <label htmlFor={driver.id+"license"}>Thay đổi loại nhiên liệu</label>
+                        <label htmlFor={driver.id+"license"}>Thay đổi loại bằng lái</label>
                         <select id={driver.id+"license"}>
-                            <option value="A1">A1</option>
-                            <option value="A2">A2</option>
-                            <option value="A3">A3</option>
+                            <option value={1}>A1</option>
+                            <option value={2}>A2</option>
+                            <option value={3}>A3</option>
                         </select>
                         <button onClick={()=>handleChangeLicense(driver)}>Thay đổi</button>
                         <h1>Địa chỉ: {driver.address}</h1>
@@ -153,28 +154,30 @@ const Driver = () =>{
                         <h1>Số điện thoại: {driver.phone}</h1>
                         <input type='number' placeholder='Thay đổi số điện thoại?' id={driver.id+"phone"}/>
                         <button onClick={()=>handleChangePhone(driver)}>Thay đổi</button>
+                        <h1>Trạm: {driver.position}</h1>
+                        <input type='text' placeholder='Thay đổi trạm?' id={driver.id+"position"}/>
+                        <button onClick={()=>handleChangePosition(driver)}>Thay đổi</button>
 
-                        <button onClick={()=>deleteDriverList(driver)}>Xoá tài xế</button>
+                        <button onClick={()=>deleteDriverList(driver.id)}>Xoá tài xế</button>
                     </div>
                 ))}
             </div>
             <div className='addDriver'>
                 <hr></hr>
                 <input placeholder='Tên' type='text' onChange={(e)=>setNewDriverName(e.target.value)}/>
-                <input placeholder='Xe' type='text' onChange={(e)=>setNewDriverCar(e.target.value)}/>
                 <label htmlFor='new-driver-status'>Trạng thái</label>
                 <select id='new-car-status' onChange={(e)=>setNewDriverStatus(e.target.value)}>
                         <option value="Active">Active</option>
                         <option value="Inactive">Inactive</option>
-                        <option value="Maintenance">Maintenance</option>
                 </select>
                 <label htmlFor='new-driver-license'>Bằng lái</label>
                 <select id='new-driver-license' onChange={(e)=>setNewDriverLicense(e.target.value)}>
-                        <option value="A1">A1</option>
-                        <option value="A2">A2</option>
-                        <option value="A3">A3</option>
+                            <option value={1}>A1</option>
+                            <option value={2}>A2</option>
+                            <option value={3}>A3</option>
                 </select>
                 <input placeholder='Địa chỉ' type='text' onChange={(e)=>setNewDriverAddress(e.target.value)}/>
+                <input placeholder='Trạm' type='text' onChange={(e)=>setNewDriverPosition(e.target.value)}/>
                 <input placeholder='Số điện thoại' type='number' onChange={(e)=>setNewDriverPhone(Number(e.target.value))}/>
                 {/*thêm tính năng thêm nhiều xe cùng loại 1 lúc?*/}
                 <button onClick={addDriverList}>Thêm vào</button>
