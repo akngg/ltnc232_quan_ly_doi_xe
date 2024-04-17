@@ -63,18 +63,11 @@ const Path = () =>{
             window.alert(errorCode, errorMessage);
         }
     }
-    const deleteGoods=async(id)=>{
+    const deleteGoods=async(id,station)=>{
         try{
             const carDoc=doc(db, "goods", id);
             await deleteDoc(carDoc);
-
-            const queryGoods=query(collection(db, "goods"), where("userId","==",auth?.currentUser?.uid),where("position","==",newGoodsLocation));
-            const goods=await getDocs(queryGoods);
-            const filteredGoods = goods.docs.map((doc)=>({
-                ...doc.data(),
-                id:doc.id,
-            }));
-            setPopupGoodsList(filteredGoods);
+            displayPopupBox(station);
         }catch(error){
             const errorCode = error.code;
             const errorMessage = error.message;
@@ -99,14 +92,14 @@ const Path = () =>{
         }
         return displayArr;
     }
-    const [popupStationName,setPopupStationName]=useState("");
+    const [popupStation,setPopupStation]=useState({});
     const [popupDriverList,setPopupDriverList]=useState([]);
     const [popupTruckList,setPopupTruckList]=useState([]);
     const [popupBusList,setPopupBusList]=useState([]);
     const [popupGoodsList,setPopupGoodsList]=useState([]);
 
-    const showPopupBox=async(station)=>{
-        setPopupStationName(station.name);
+    const displayPopupBox= async(station)=>{
+        setPopupStation(station);
         const queryDriver=query(collection(db, "drivers"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name));
         const driver=await getDocs(queryDriver);
         const filteredDriver = driver.docs.map((doc)=>({
@@ -135,11 +128,14 @@ const Path = () =>{
             id:doc.id,
         }));
         setPopupGoodsList(filteredGoods);
+    }
+    const showPopupBox=(station)=>{
+        displayPopupBox(station);
         document.getElementById('popupStationDetail').style.display="block";
         document.getElementById('overlay').style.display="block";
     }
     const hidePopupStationBox=async()=>{
-        setPopupStationName("");
+        setPopupStation({});
         setPopupDriverList([]);
         setPopupTruckList([]);
         setPopupBusList([]);
@@ -147,14 +143,7 @@ const Path = () =>{
         document.getElementById('overlay').style.display="none";
     }
 
-    const [pathCalcGoods, setPathCalcGoods]= useState([]);
-    const [pathCalcPassengers, setPathCalcPassengers] = useState([]);
-    const [pathCalcDistance, setPathCalcDistance]= useState([]);
-
-    const showPopupCalcPath=(station)=>{
-
-    }
-
+    //Thêm hàng hoá
     const [newGoodsName, setNewGoodsName]=useState("");
     const [newGoodsWeight, setNewGoodsWeight]=useState(0);
     const [newGoodsDest, setNewGoodsDest]=useState("");
@@ -166,6 +155,7 @@ const Path = () =>{
         document.getElementById('overlay').style.display="block";
     }
     const hidePopupAddGoods=()=>{
+        setAddedGoods([]);
         setNewGoodsDest([]);
         setNewGoodsName("");
         setNewGoodsWeight(0);
@@ -173,16 +163,17 @@ const Path = () =>{
         setNewGoodsDest("");
         document.getElementById('popupAddGoods').style.display="none";
         document.getElementById('overlay').style.display="none";
+        document.getElementById('successAddGoods').style.display="none";
     }
     const [addedGoods, setAddedGoods] = useState([]);
 
     const addNewGoods= async()=>{
         try{
-            addedGoods.push({
+            setAddedGoods([...addedGoods,{
                 name: newGoodsName,
                 weight: newGoodsWeight,
-                dest: newGoodsDest
-            })
+                dest: newGoodsDest,
+            }])
             await addDoc(collection(db,"goods"),{
                 name: newGoodsName,
                 weight: newGoodsWeight,
@@ -193,21 +184,59 @@ const Path = () =>{
                 carId: "none",
                 userId: auth?.currentUser?.uid
             });
+            document.getElementById('successAddGoods').style.display="none";
             document.getElementById('successAddGoods').style.display="block";
-            console.log(addedGoods);
         }catch(error){
             const errorCode = error.code;
             const errorMessage = error.message;
             window.alert(errorCode, errorMessage);
         }
     }
+    //
+    const [pathCalcStation,setPathCalcStation]= useState({})
+    const [pathCalcGoods, setPathCalcGoods]= useState([]);
+    const [pathCalcDrivers, setPathCalcDrivers]= useState([]);
+    const [pathCalcTruck, setPathCalcTruck]= useState([]);
+    const [pathCalcTruckChosenIndex, setPathCalcTruckChosenIndex]= useState(0);
+    const [pathCalcTruckGoodsArray, setPathCalcTruckGoodsArray]= useState([]);
+    const [pathCalcTruckUsed, setPathCalcTruckUsed]= useState([]);
+    const [pathCalcPassengers, setPathCalcPassengers] = useState([]);
+    const [pathCalcDistance, setPathCalcDistance]= useState([]);
+    const [pathCalcTruckUpdateId, setPathCalcTruckUpdateId]= useState([]);
+
+
+    const showPopupCalcPathTruck= async(station)=>{
+        setPathCalcStation(station);
+        const queryTruck=query(collection(db, "truck"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name),where("status","==","Active"));
+        const truck=await getDocs(queryTruck);
+        const filteredTruck = truck.docs.map((doc)=>({
+            ...doc.data(),
+            id:doc.id,
+        }));
+        const sortedTruck=filteredTruck.sort(function(a, b){return b.payload - a.payload});
+        setPathCalcTruck(sortedTruck);
+        const queryGoods=query(collection(db, "goods"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name));
+        const goods=await getDocs(queryGoods);
+        const filteredGoods = goods.docs.map((doc)=>({
+            ...doc.data(),
+            id:doc.id,
+        }));
+        const sortedGoods=filteredGoods.sort(function(a, b){return b.weight - a.weight});
+        setPathCalcGoods(sortedGoods);
+        document.getElementById('popupCalcPathTruck1').style.display="block";
+        document.getElementById('overlay').style.display="block";
+        // console.log(pathCalcTruckChosenIndex);
+        setPathCalcTruckChosenIndex(0);
+    }
+
+    const calcPath1to2=async()=>{}
     return (
         <div className='Path'>
             <div id='overlay'></div>
 
             <div id='popupStationDetail'>
                 <button className='closebtn' onClick={()=>hidePopupStationBox()}>X</button>
-                <h1>Thông tin chi tiết về trạm {popupStationName}</h1>
+                <h1>Thông tin chi tiết về trạm {popupStation.name}</h1>
                 <div className='popupStationDriver'>
                     <h1>Danh sách tài xế</h1>
                     {popupDriverList.map((driver)=>(<div id={driver.id}>
@@ -238,7 +267,7 @@ const Path = () =>{
                         <p>Tên hàng hoá {goods.name}</p>
                         <p>Trọng lượng: {goods.weight}</p>
                         <p>Đích đến: {goods.dest}</p>
-                        <button onClick={()=>deleteGoods(goods.id)}>Xoá hàng hoá</button>
+                        <button onClick={()=>deleteGoods(goods.id,popupStation)}>Xoá hàng hoá</button>
                         </div>))}
                 </div>
             </div>
@@ -246,11 +275,12 @@ const Path = () =>{
             <div id='popupAddGoods'>
                 <button onClick={()=>hidePopupAddGoods()}>X</button>
                 <h1>Thêm hàng hoá vào kho</h1>
+                <h2>Hàng đã được thêm: </h2>
                 {addedGoods.map((goods)=>(<div id={goods.id}>
                         <p>Tên hàng hoá {goods.name}</p>
                         <p>Trọng lượng: {goods.weight}</p>
                         <p>Đích đến: {goods.dest}</p>
-                </div>))}
+                        </div>))}
                 <input placeholder='Tên hàng' type='text' onChange={(e)=>setNewGoodsName(e.target.value)}/>
                 <input placeholder='Trọng lượng' type='number' onChange={(e)=>setNewGoodsWeight(Number(e.target.value))}/>
                 <input placeholder='Đích đến' type='text' onChange={(e)=>setNewGoodsDest(e.target.value)}/>
@@ -258,7 +288,96 @@ const Path = () =>{
                 <h2 id='successAddGoods'>Đã thêm hàng thành công</h2>
             </div>
 
-            <div id='popupCalcPath'>
+            <div id='popupCalcPathTruck1'>
+                <div id='calcPathTruck1Page'>
+                    <div id='calcPathGoodsList'>
+                        <div id='currentTruckGoods'>
+                            {pathCalcTruckGoodsArray.map((goods)=>(
+                                <div className='displayGoods'>
+                                <p>Tên hàng: {goods.name}</p>
+                                <p>Trọng lượng: {goods.weight} Kg</p>
+                                <p>Đích đến: {goods.dest}</p>
+                                <button onClick={()=>{
+                                    // let i=pathCalcTruckChosenIndex;
+                                    // pathCalcTruck[i].arrayOfGoods=pathCalcTruck[i].arrayOfGoods.filter(good=>good=goods);
+                                    pathCalcTruck[pathCalcTruckChosenIndex].arrayOfGoods.splice(pathCalcTruck[pathCalcTruckChosenIndex].arrayOfGoods.indexOf(goods),1);
+                                    pathCalcTruck[pathCalcTruckChosenIndex].carrying-=goods.weight;
+                                    setPathCalcGoods([...pathCalcGoods,goods]);
+                                    // console.log();
+                                    setPathCalcGoods(pathCalcGoods=>pathCalcGoods.sort(function(a, b){return b.weight - a.weight}));
+                                    setPathCalcTruckGoodsArray(pathCalcTruckGoodsArray=>pathCalcTruckGoodsArray.filter(good=>good.id!=goods.id))
+                                    if (pathCalcTruck[pathCalcTruckChosenIndex].arrayOfGoods.length==0) setPathCalcTruckUsed(pathCalcTruckUsed=>pathCalcTruckUsed.filter(truck=>truck!=pathCalcTruck[pathCalcTruckChosenIndex]));
+                                }}>Xoá khỏi xe</button>
+                            </div>))}
+                            <hr></hr>
+                        </div>
+                        <div id='allGoods'>
+                            {pathCalcGoods.map((goods)=>(<div className='displayGoods'>
+                                <p>Tên hàng: {goods.name}</p>
+                                <p>Trọng lượng: {goods.weight} Kg</p>
+                                <p>Đích đến: {goods.dest}</p>
+                                <button onClick={()=>{
+                                    if(pathCalcTruck[pathCalcTruckChosenIndex].carrying+goods.weight<=pathCalcTruck[pathCalcTruckChosenIndex].payload){
+                                        pathCalcTruck[pathCalcTruckChosenIndex]?.arrayOfGoods.push(goods);
+                                        setPathCalcTruckGoodsArray([...pathCalcTruckGoodsArray,goods]);
+                                        setPathCalcGoods(pathCalcGoods=>pathCalcGoods.filter(good=>good.id!=goods.id));
+                                        pathCalcTruck[pathCalcTruckChosenIndex].carrying+=goods.weight;
+                                        document.getElementById(goods.id+"warning").style.display='none';
+                                        if(!pathCalcTruckUsed.includes(pathCalcTruck[pathCalcTruckChosenIndex])) setPathCalcTruckUsed([...pathCalcTruckUsed,pathCalcTruck[pathCalcTruckChosenIndex]]);
+                                    }
+                                    else document.getElementById(goods.id+"warning").style.display='block';
+                                }}>Thêm vào xe</button>
+                                <p style={{display:'none'}} id={goods.id+"warning"}>Vượt quá trọng tải xe</p>
+                            </div>))}
+                        </div>
+                    </div>
+                    <div id='calcPathDriversList'>
+                        <div id='currentTruck'>
+                            <p>Biển số xe: {pathCalcTruck[pathCalcTruckChosenIndex]?.liplate}</p>
+                            <p>Loại xe: {pathCalcTruck[pathCalcTruckChosenIndex]?.cartype}</p>
+                            <p>Tải trong xe: {pathCalcTruck[pathCalcTruckChosenIndex]?.payload} Kg</p>
+                            <p>KL Hàng Hiện tại: {pathCalcTruck[pathCalcTruckChosenIndex]?.carrying} Kg</p>
+                            <hr></hr>
+                        </div>
+                        <div id='allTruckPage1'>
+                            {pathCalcTruck.map((truck)=>(<div>
+                                <button onClick={()=>{
+                                setPathCalcTruckChosenIndex(pathCalcTruck.indexOf(truck));
+                                console.log(pathCalcTruckChosenIndex);
+                                setPathCalcTruckGoodsArray([...pathCalcTruck[pathCalcTruck.indexOf(truck)]?.arrayOfGoods]);
+                                console.log(pathCalcTruckGoodsArray);
+                                }}><div className='displayTruckPage1'>
+                                <p>Biển số xe: {truck.liplate}</p>
+                                <p>Loại xe: {truck.cartype}</p>
+                                <p>Tải trong xe: {truck.payload} Kg</p>
+                                <p>KL Hàng Hiện tại: {truck.carrying} Kg</p>
+                            </div></button>
+                            <br></br>
+                            </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+                <div id='calcPathTruck1Control'>
+                    <button onClick={()=>{
+                        setPathCalcGoods([]);
+                        setPathCalcTruck([]);
+                        setPathCalcTruckGoodsArray([]);
+                        setPathCalcTruckChosenIndex(0);
+                        setPathCalcStation({});
+                        setPathCalcTruckUsed([]);
+                        document.getElementById('popupCalcPathTruck1').style.display="none";
+                        document.getElementById('overlay').style.display="none";
+                    }}>Huỷ</button>
+                    <button onClick={()=>calcPath1to2()}>Tiếp theo</button>
+                </div>
+            </div>
+
+            <div id='popupCalcPathTruck2'>
+                <div>
+                    {pathCalcTruckUsed.map(truck=>(<div></div>))}
+                </div>
+                <div id='calcPathTruck2Control'></div>
             </div>
 
             <div className='displaystation'>
@@ -270,7 +389,8 @@ const Path = () =>{
                     <button onClick={()=>showPopupBox(station)}>Chi tiết</button>
                     <button onClick={()=>deleteStationArr(station.id)}>Xoá trạm</button>
                     <button onClick={()=>showPopupAddGoods(station)}>Thêm hàng hoá</button>
-                    <button onClick={()=>showPopupCalcPath(station)}>Lên kế hoạch vận chuyển</button>
+                    <h1>Lên kế hoạch vận chuyển</h1>
+                    <button onClick={()=>showPopupCalcPathTruck(station)}>Hàng hoá</button>
                 </div>))}
             </div>
             <div className='addStation'>

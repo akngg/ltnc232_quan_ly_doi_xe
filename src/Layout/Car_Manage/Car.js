@@ -77,7 +77,7 @@ const Car = () =>{
                 liplate: newLicensePlate,
                 userId: auth?.currentUser?.uid,
                 arrayOfDests: [],
-                arrayOfGoodsId: [],
+                arrayOfGoods: [],
                 arriveTime: 0,
                 weight: newCarWeight,
                 carrying: 0
@@ -109,7 +109,7 @@ const Car = () =>{
                 weight: newCarWeight,
                 arriveTime: 0,
                 arrayOfDests: [],
-                arrayOfPassengersId: [],
+                arrayOfPassengers: [],
             });
             getBusCarList();
         }catch(error){

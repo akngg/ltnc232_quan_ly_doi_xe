@@ -38,7 +38,7 @@
     transform: translate(-50%,-50%);
     background: #fff;
     width: 600px;
-    height:600px;
+    height:300px;
     z-index: 2;
     padding: 20px;
     box-sizing: border-box;
@@ -60,4 +60,21 @@
     line-height: 30px;
     text-align: center;
     border-radius: 50%;
+}
+#popupCalcPathTruck1{
+    display: none;
+    position: absolute;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: #fff;
+    width: 600px;
+    height:600px;
+    z-index: 2;
+    padding: 20px;
+    box-sizing: border-box;
+    /* overflow: scroll; */
+}
+#calcPathTruck1Page{
+    display: flex;
 }
