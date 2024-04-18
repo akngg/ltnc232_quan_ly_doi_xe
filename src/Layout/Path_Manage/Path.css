@@ -75,6 +75,51 @@
     box-sizing: border-box;
     /* overflow: scroll; */
 }
-#calcPathTruck1Page{
+#calcPathTruckPage{
     display: flex;
+}
+#popupCalcPathTruck2{
+    display: none;
+    position: absolute;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: #fff;
+    width: 600px;
+    height:600px;
+    z-index: 2;
+    padding: 20px;
+    box-sizing: border-box;
+}
+#popupCalcPathTruck3{
+    display: none;
+    position: absolute;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: #fff;
+    width: 600px;
+    height:600px;
+    z-index: 2;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.popupCalcPathTruck3InfoCar{
+    display: flex;
+}
+.destOrder{
+    display: flex;
+    gap: 10px;
+}
+.dragAndDrop{
+    border-style: solid;
+    border-width: 1px;
+    width: 30px;
+    text-align: center;
+}
+#calcPathTruckControl{
+    display: flex;
+    position: absolute;
+    bottom: 5px;
+    justify-content: right;
 }

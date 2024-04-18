@@ -1,6 +1,6 @@
 import './Car.css';
 import { db } from "../../modules/firebase";
-import {getDocs, collection, addDoc, doc, deleteDoc, updateDoc} from "firebase/firestore";
+import {getDocs, collection, addDoc, doc, deleteDoc, updateDoc, query} from "firebase/firestore";
 import { useState,useEffect } from 'react';
 import { auth } from '../../modules/firebase';
 // import { onAuthStateChanged } from "firebase/auth";
@@ -66,7 +66,7 @@ const Car = () =>{
             await addDoc(collection(db,"truck"),{
                 position: newPosition,
                 cartype: newTruckCarType==="small"? "Xe tải nhỏ": newTruckCarType==="medium"? "Xe tải vừa": "Xe container",
-                driver: "none",
+                driver: {},
                 fueltype: newTruckCarType==="small"?"gasoline":"oil",
                 status: "Active",
                 height: newCarHeight,
@@ -95,7 +95,7 @@ const Car = () =>{
             await addDoc(collection(db,"bus"),{
                 position: newPosition,
                 cartype: newBusCarType==="small"? "Xe 7 chỗ": newBusCarType==="medium"? "Xe 16 chỗ": "Xe 24 chỗ",
-                driver: "none",
+                driver: {},
                 fueltype: "oil",
                 status: "Active",
                 height: newCarHeight,
@@ -145,12 +145,12 @@ const Car = () =>{
     }
 
 
-    const handleChangeDriver=async(car)=>{
-            const carDoc=doc(db, "cars", car.id);
-        await updateDoc(carDoc, {driver: document.getElementById(car.id+"driver").value});
-        getTruckCarList();
-        getBusCarList();
-    }
+    // const handleChangeDriver=async(car)=>{
+    //         const carDoc=doc(db, "cars", car.id);
+    //     await updateDoc(carDoc, {driver: document.getElementById(car.id+"driver").value});
+    //     getTruckCarList();
+    //     getBusCarList();
+    // }
     // const handleChangeFuelType=async(car)=>{
     //         const carDoc=doc(db, "cars", car.id);
     //     await updateDoc(carDoc, {fueltype: document.getElementById(car.id+"fuel").value});
@@ -188,7 +188,8 @@ const Car = () =>{
                         <h1>Biển số xe: {car.liplate}</h1>
                         <input id={car.id+"plate"} type='text' placeholder='Thay đổi biển số' />
                         <button onClick={()=>handleChangeLicensePlate(car,"truck")}>Thay đổi</button>
-                        <h1>Tài xế: {car.driver}</h1>
+                        {/* <h1>Tài xế: {car.name}</h1> */}
+                        {car.arriveTime!=0&&<h1>Tài xế: {car.driver?.name}</h1>}
                         <h1>Loại xe: {car.cartype}</h1>
                         <h1>Trạng thái: {car.status}</h1>
                         <label htmlFor={car.id+"status"}>Thay đổi trạng thái</label>
@@ -205,7 +206,7 @@ const Car = () =>{
                         <h1>Tải trọng: {car.payload}</h1>
                         <h1>Trọng lượng xe: {car.weight}</h1>
                         <h1>Vị trí: {car.position}</h1>
-                        <input id={car.id+"position"} type='text' placeholder='Thay đổi biển số' />
+                        <input id={car.id+"position"} type='text' placeholder='Thay đổi vị trí' />
                         <button onClick={()=>handleChangePosition(car,"truck")}>Thay đổi</button>
 
                         <button onClick={()=>deleteTruckCarList(car.id)}>Xoá xe</button>
@@ -221,7 +222,8 @@ const Car = () =>{
                         <h1>Biển số xe: {car.liplate}</h1>
                         <input id={car.id+"plate"} type='number' placeholder='Thay đổi biển số' />
                         <button onClick={()=>handleChangeLicensePlate(car,"bus")}>Thay đổi</button>
-                        <h1>Tài xế: {car.driver}</h1>
+                        {/* <h1>Tài xế: {car.driver}</h1> */}
+                        {car.arriveTime!=0&&<h1>Tài xế: {car.driver?.name}</h1>}
                         <h1>Loại xe: {car.cartype}</h1>
                         <h1>Trạng thái: {car.status}</h1>
                         <label htmlFor={car.id+"status"}>Thay đổi trạng thái</label>
@@ -238,7 +240,7 @@ const Car = () =>{
                         <h1>Số ghế: {car.numOfSeats}</h1>
                         <h1>Trọng lượng xe: {car.weight}</h1>
                         <h1>Vị trí: {car.position}</h1>
-                        <input id={car.id+"position"} type='text' placeholder='Thay đổi biển số' />
+                        <input id={car.id+"position"} type='text' placeholder='Thay đổi vị trí' />
                         <button onClick={()=>handleChangePosition(car,"bus")}>Thay đổi</button>
 
                         <button onClick={()=>deleteBusCarList(car.id)}>Xoá xe</button>
