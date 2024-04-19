@@ -393,6 +393,7 @@ const Path = () =>{
                     </div>
                 </div>
                 <div id='calcPathTruckControl'>
+                    <h2 style={{display: "none"}} id='warning1to2'>Vui lòng sắp xếp hàng hoá</h2>
                     <button onClick={()=>{
                         setPathCalcGoods([]);
                         setPathCalcTruck([]);
@@ -424,7 +425,6 @@ const Path = () =>{
                             setShowDriversMode(false);
                             console.log(pathCalcShowDrivers);
                         }}}>Tiếp theo</button>
-                    <h2 style={{display: "none"}} id='warning1to2'>Vui lòng sắp xếp hàng hoá</h2>
                 </div>
             </div>
 
@@ -527,7 +527,7 @@ const Path = () =>{
                         </div>
                         <div>
                             <h2>Kéo và thả để thay đổi thứ tự điểm đến</h2>
-                            <DndDisplay car={truck}/>
+                            <DndDisplay currentStation={pathCalcStation} arrStation={stationArr} car={truck}/>
                             <hr></hr>
                         </div>
                     </div>))}
@@ -546,6 +546,10 @@ const Path = () =>{
                         document.getElementById('popupCalcPathTruck3').style.display="none";
                         document.getElementById('overlay').style.display="none";
                     }}>Huỷ</button>
+                    <button onClick={()=>{
+                        pathCalcTruckUsed.forEach((truck)=>{
+                        })
+                    }}>Bắt đầu vận chuyển</button>
                 </div>
             </div>
 

@@ -71,7 +71,6 @@
     width: 600px;
     height:600px;
     z-index: 2;
-    padding: 20px;
     box-sizing: border-box;
     /* overflow: scroll; */
 }
@@ -88,7 +87,6 @@
     width: 600px;
     height:600px;
     z-index: 2;
-    padding: 20px;
     box-sizing: border-box;
 }
 #popupCalcPathTruck3{
@@ -101,7 +99,6 @@
     width: 600px;
     height:600px;
     z-index: 2;
-    padding: 20px;
     box-sizing: border-box;
 }
 .popupCalcPathTruck3InfoCar{
@@ -109,17 +106,18 @@
 }
 .destOrder{
     display: flex;
-    gap: 10px;
 }
 .dragAndDrop{
     border-style: solid;
     border-width: 1px;
     width: 30px;
     text-align: center;
+    cursor: pointer;
 }
 #calcPathTruckControl{
     display: flex;
     position: absolute;
     bottom: 5px;
     justify-content: right;
+    right: 10px;
 }

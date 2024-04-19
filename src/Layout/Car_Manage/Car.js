@@ -80,7 +80,8 @@ const Car = () =>{
                 arrayOfGoods: [],
                 arriveTime: 0,
                 weight: newCarWeight,
-                carrying: 0
+                carrying: 0,
+                cost: 0,
             });
             getTruckCarList();
         }catch(error){
