@@ -27,9 +27,15 @@ const DndDisplay=({currentStation, arrStation, car})=>{
         let tempTotalCost=0;
         // setArrDistance([...cloneArrDistance]);
         for(let index=0;index<car.arrayOfGoods.length;index++){
-            tempTotalCost+=10000*parseFloat(cloneArrDistance[destination.indexOf(car.arrayOfGoods[index].dest)])*car.arrayOfGoods[index].weight;
+            let totalDistance=0;
+            for(let i=0;i<destination.length;i++){
+                totalDistance+=parseFloat(cloneArrDistance[i]);
+                if (destination.indexOf(car.arrayOfGoods[index].dest)===i) break;
+            }
+            // parseFloat(cloneArrDistance[destination.indexOf(car.arrayOfGoods[index].dest)])
+            tempTotalCost+=100*totalDistance*car.arrayOfGoods[index].weight;
             if(index+1==car.arrayOfGoods.length){
-                tempTotalCost+=15000*parseFloat(cloneArrDistance[cloneArrDistance.length-1]);
+                tempTotalCost+=100*parseFloat(cloneArrDistance[cloneArrDistance.length-1])*(car.weight+50);
             }
         }
         setTotalCost(tempTotalCost);

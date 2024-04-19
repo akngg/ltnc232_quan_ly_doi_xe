@@ -1,11 +1,13 @@
 import './Path.css';
-import {collection, doc, getDocs, query, where, addDoc, deleteDoc} from "firebase/firestore";
+import {collection, doc, getDocs, query, where, addDoc, deleteDoc, updateDoc} from "firebase/firestore";
 import { useState,useEffect } from 'react';
 import { auth } from '../../modules/firebase';
 import { db } from '../../modules/firebase';
 import DndDisplay from './dnd.tsx';
 
 const Path = () =>{
+    //1. CÁC THAO TÁC VỚI TRẠM XE (STATION)
+    //1.1 Lấy thông tin trạm xe
     const [stationArr, setStationArr]=useState([]);
     const getStationArr=async ()=>{
         try{
@@ -29,6 +31,7 @@ const Path = () =>{
         getStationArr();
     },[])
 
+    // 1.2 Thêm trạm xe
     const [newStationName,setNewStationName]=useState("");
     const [newXCoordinate,setNewXCoordinate]=useState(0);
     const [newYCoordinate,setNewYCoordinate]=useState(0);
@@ -53,6 +56,7 @@ const Path = () =>{
         }
     }
 
+    //1.3 Xoá trạm xe
     const deleteStationArr=async(id)=>{
         try{
             const carDoc=doc(db, "station", id);
@@ -65,69 +69,8 @@ const Path = () =>{
             window.alert(errorCode, errorMessage);
         }
     }
-    const deleteGoods=async(id,station)=>{
-        try{
-            const carDoc=doc(db, "goods", id);
-            await deleteDoc(carDoc);
-            displayPopupBox(station);
-        }catch(error){
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            window.alert(errorCode, errorMessage);
-        }
-    }
-    const [popupStation,setPopupStation]=useState({});
-    const [popupDriverList,setPopupDriverList]=useState([]);
-    const [popupTruckList,setPopupTruckList]=useState([]);
-    const [popupBusList,setPopupBusList]=useState([]);
-    const [popupGoodsList,setPopupGoodsList]=useState([]);
-
-    const displayPopupBox= async(station)=>{
-        setPopupStation(station);
-        const queryDriver=query(collection(db, "drivers"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name));
-        const driver=await getDocs(queryDriver);
-        const filteredDriver = driver.docs.map((doc)=>({
-            ...doc.data(),
-            id:doc.id,
-        }));
-        setPopupDriverList(filteredDriver);
-        const queryTruck=query(collection(db, "truck"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name));
-        const truck=await getDocs(queryTruck);
-        const filteredTruck = truck.docs.map((doc)=>({
-            ...doc.data(),
-            id:doc.id,
-        }));
-        setPopupTruckList(filteredTruck);
-        const queryBus=query(collection(db, "bus"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name));
-        const bus=await getDocs(queryBus);
-        const filteredBus = bus.docs.map((doc)=>({
-            ...doc.data(),
-            id:doc.id,
-        }));
-        setPopupBusList(filteredBus);
-        const queryGoods=query(collection(db, "goods"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name));
-        const goods=await getDocs(queryGoods);
-        const filteredGoods = goods.docs.map((doc)=>({
-            ...doc.data(),
-            id:doc.id,
-        }));
-        setPopupGoodsList(filteredGoods);
-    }
-    const showPopupBox=(station)=>{
-        displayPopupBox(station);
-        document.getElementById('popupStationDetail').style.display="block";
-        document.getElementById('overlay').style.display="block";
-    }
-    const hidePopupStationBox=async()=>{
-        setPopupStation({});
-        setPopupDriverList([]);
-        setPopupTruckList([]);
-        setPopupBusList([]);
-        document.getElementById('popupStationDetail').style.display="none";
-        document.getElementById('overlay').style.display="none";
-    }
-
-    //Thêm hàng hoá
+    //2 CÁC THAO TÁC VỚI HÀNG HOÁ (GOODS)
+    //2.1 Thêm Hàng 
     const [newGoodsName, setNewGoodsName]=useState("");
     const [newGoodsWeight, setNewGoodsWeight]=useState(0);
     const [newGoodsDest, setNewGoodsDest]=useState("");
@@ -176,7 +119,98 @@ const Path = () =>{
             window.alert(errorCode, errorMessage);
         }
     }
+    //2.2 Xoá Hàng
+    const deleteGoods=async(id,station)=>{
+        try{
+            const carDoc=doc(db, "goods", id);
+            await deleteDoc(carDoc);
+            displayPopupBox(station);
+        }catch(error){
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            window.alert(errorCode, errorMessage);
+        }
+    }
     //
+    // 3. HIỂN THỊ THÔNG TIN CHI TIẾT CỦA TRẠM
+    const [popupStation,setPopupStation]=useState({});
+    const [popupDriverList,setPopupDriverList]=useState([]);
+    const [popupTruckList,setPopupTruckList]=useState([]);
+    const [popupBusList,setPopupBusList]=useState([]);
+    const [popupGoodsList,setPopupGoodsList]=useState([]);
+    const [popupIncomingTruck,setPopupIncomingTruck]=useState([]);
+    const [popupIncomingBus,setPopupIncomingBus]=useState([]);
+    const [popupIncomingDriverList,setPopupIncomingDriverList]=useState([]);
+
+    const displayPopupBox= async(station)=>{
+        setPopupStation(station);
+        const queryDriver=query(collection(db, "drivers"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name),where("status","==","Active"));
+        const driver=await getDocs(queryDriver);
+        const filteredDriver = driver.docs.map((doc)=>({
+            ...doc.data(),
+            id:doc.id,
+        }));
+        setPopupDriverList(filteredDriver);
+        const queryIncomingDriver=query(collection(db, "drivers"), where("userId","==",auth?.currentUser?.uid),where("dest","==",station.name),where("status","==","Running"));
+        const Incomingdriver=await getDocs(queryIncomingDriver);
+        const filteredIncomingDriver = Incomingdriver.docs.map((doc)=>({
+            ...doc.data(),
+            id:doc.id,
+        }));
+        setPopupIncomingDriverList(filteredIncomingDriver);
+        const queryTruck=query(collection(db, "truck"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name),where("status","==","Active"));
+        const truck=await getDocs(queryTruck);
+        const filteredTruck = truck.docs.map((doc)=>({
+            ...doc.data(),
+            id:doc.id,
+        }));
+        setPopupTruckList(filteredTruck);
+        const queryIncomingTruck=query(collection(db, "truck"), where("userId","==",auth?.currentUser?.uid),where("dest","==",station.name),where("status","==","Running"));
+        const incomingTruck=await getDocs(queryIncomingTruck);
+        const filteredIncomingTruck = incomingTruck.docs.map((doc)=>({
+            ...doc.data(),
+            id:doc.id,
+        }));
+        setPopupIncomingTruck(filteredIncomingTruck);
+        const queryBus=query(collection(db, "bus"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name),where("status","==","Active"));
+        const bus=await getDocs(queryBus);
+        const filteredBus = bus.docs.map((doc)=>({
+            ...doc.data(),
+            id:doc.id,
+        }));
+        setPopupBusList(filteredBus);
+        const queryIncomingBus=query(collection(db, "bus"), where("userId","==",auth?.currentUser?.uid),where("dest","==",station.name),where("status","==","Running"));
+        const Incomingbus=await getDocs(queryIncomingBus);
+        const filteredIncomingBus = Incomingbus.docs.map((doc)=>({
+            ...doc.data(),
+            id:doc.id,
+        }));
+        setPopupIncomingBus(filteredIncomingBus);
+        const queryGoods=query(collection(db, "goods"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name));
+        // ,where("isMoving","==",false)
+        const goods=await getDocs(queryGoods);
+        const filteredGoods = goods.docs.map((doc)=>({
+            ...doc.data(),
+            id:doc.id,
+        }));
+        setPopupGoodsList(filteredGoods);
+    }
+    const showPopupBox=(station)=>{
+        displayPopupBox(station);
+        document.getElementById('popupStationDetail').style.display="block";
+        document.getElementById('overlay').style.display="block";
+    }
+    const hidePopupStationBox=async()=>{
+        setPopupStation({});
+        setPopupDriverList([]);
+        setPopupTruckList([]);
+        setPopupBusList([]);
+        document.getElementById('popupStationDetail').style.display="none";
+        document.getElementById('overlay').style.display="none";
+    }
+
+    //4. TÍNH TOÁN CHUYẾN ĐI XE TẢI
+    
     const [pathCalcStation,setPathCalcStation]= useState({})
     const [pathCalcGoods, setPathCalcGoods]= useState([]);
     const [pathCalcDrivers, setPathCalcDrivers]= useState([]);
@@ -186,8 +220,6 @@ const Path = () =>{
     const [pathCalcTruckGoodsArray, setPathCalcTruckGoodsArray]= useState([]);
     const [pathCalcTruckUsed, setPathCalcTruckUsed]= useState([]);
     const [pathCalcPassengers, setPathCalcPassengers] = useState([]);
-    const [pathCalcDistance, setPathCalcDistance]= useState([]);
-    const [pathCalcTruckUpdateId, setPathCalcTruckUpdateId]= useState([]);
     const [showDriversMode,setShowDriversMode] = useState(false);
 
 
@@ -208,7 +240,7 @@ const Path = () =>{
         }));
         const sortedTruck=filteredTruck.sort(function(a, b){return b.payload - a.payload});
         setPathCalcTruck(sortedTruck);
-        const queryGoods=query(collection(db, "goods"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name));
+        const queryGoods=query(collection(db, "goods"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name), where("isMoving","==",false));
         const goods=await getDocs(queryGoods);
         const filteredGoods = goods.docs.map((doc)=>({
             ...doc.data(),
@@ -222,46 +254,98 @@ const Path = () =>{
         setPathCalcTruckChosenIndex(0);
     }
 
-    const calcPath1to2= ()=>{
-        // console.log(pathCalcStation.name);
-        // console.log(pathCalcTruck);
-        setPathCalcTruckUsed(pathCalcTruck);
-        setPathCalcTruckUsed(pathCalcTruckUsed=>pathCalcTruckUsed.filter(truck=>truck.arrayOfGoods.length!=0));
-        const tempTruckUsed=pathCalcTruck;
-        const truckUsed=tempTruckUsed.filter((truck)=>{return truck.arrayOfGoods.length!=0});
-        if (truckUsed.length==0) {
-            document.getElementById('warning1to2').style.display="block";
-        }
-        else {
-            console.log(truckUsed);
-            // console.log(pathCalcDrivers);
-            // console.log(pathCalcTruckUsed);
-            document.getElementById('warning1to2').style.display="none";
-            document.getElementById('popupCalcPathTruck1').style.display="none";
-            document.getElementById('popupCalcPathTruck2').style.display="block";
-            setPathCalcTruckChosenIndex(0);
-            setPathCalcShowDrivers(pathCalcDrivers);
-            setPathCalcShowDrivers(pathCalcShowDrivers=>pathCalcShowDrivers.filter(driver=>driver.license>=truckUsed[0].license));
-            setShowDriversMode(false);
-            console.log(pathCalcShowDrivers);
-        }
-        // console.log("ehhh");
-        // console.log(showDriversMode);
-        // console.log(pathCalcDrivers);
-        // console.log(pathCalcShowDrivers);
+    //5. TÍNH TOÁN CHUYẾN ĐI XE KHÁCH
 
+    //6. CẬP NHẬT XE ĐẾN MỖI 1P
+    const updatePerMinute=async()=>{
+        const d=new Date();
+        console.log("Last Sync: " + d.getDate() + "/"
+        + (d.getMonth()+1)  + "/" 
+        + d.getFullYear() + " @ "  
+        + d.getHours() + ":"  
+        + d.getMinutes() + ":" 
+        + d.getSeconds())
+        const time=d.getTime();
+        const queryTruck=query(collection(db, "truck"),where('arriveTime',">", 0), where('arriveTime',"<=", time));
+        //, where("arriveTime","<=",time)
+        const truck=await getDocs(queryTruck);
+        const filteredTruck = truck.docs.map((doc)=>({
+            ...doc.data(),
+            id:doc.id,
+        }));
+        console.log(filteredTruck);
+        if(filteredTruck.length!=0){
+            filteredTruck.forEach(async(truck)=>{
+                truck.position=truck.arrayOfDests[0];
+                console.log("dest:");
+                console.log(truck.arrayOfDests);
+                truck.driver.position=truck.position;
+                truck.arrayOfGoods.forEach(async(goods)=>{
+                    if(goods.dest==truck.position){
+                        truck.carrying-=goods.weight;
+                        const goodsDoc=doc(db,"goods", goods.id);
+                        await deleteDoc(goodsDoc);
+                    }
+                });
+                truck.arrayOfGoods=truck.arrayOfGoods.filter(goods=>goods.dest!=truck.position);
+                truck.arrayOfDests.shift();
+                
+                truck.driver.arrayOfDests.shift();
+                if(truck.arrayOfDests.length!=0){
+                    truck.arriveTime=d.getTime()+Math.round((Math.sqrt(((stationArr.find(station=>station.name==truck.position).xCoordinate-stationArr.find(station=>station.name==truck.arrayOfDests[0]).xCoordinate)**2)
+                    +((stationArr.find(station=>station.name==truck.position).yCoordinate-stationArr.find(station=>station.name==truck.arrayOfDests[0]).yCoordinate)**2))/50)*3600*1000);
+                    truck.driver.arriveTime=truck.arriveTime;
+                    truck.status="Running";
+                    truck.driver.status="Running";
+                    truck.dest=truck.arrayOfDests[0];
+                    const driverDoc=doc(db, "drivers", truck.driver.id);
+                    updateDoc(driverDoc,{
+                        status: truck.driver.status,
+                        arrayOfDests: truck.arrayOfDests,
+                        position: truck.position,
+                        dest: truck.dest,
+                        arriveTime: truck.driver.arriveTime
+                    })
+                }
+                else {
+                    truck.arriveTime=0;
+                    truck.driver.arriveTime=0;
+                    truck.status="Active";
+                    truck.driver.status="Active";
+                    // Update thêm cost vào totalcost công ty?
+                    truck.cost=0;
+                    truck.dest="";
+                    truck.driver.dest="";
+                    const driverDoc=doc(db, "drivers", truck.driver.id);
+                    updateDoc(driverDoc,{
+                        status: "Active",
+                        arrayOfDests: [],
+                        position: truck.position,
+                        dest: "",
+                        arriveTime: 0
+                    })
+                    truck.driver={};
+                }
+                const truckDoc=doc(db, "truck", truck.id);
+                updateDoc(truckDoc, {status: truck.status,
+                    arriveTime: truck.arriveTime,
+                    carrying: truck.carrying,
+                    arrayOfDests: truck.arrayOfDests,
+                    arrayOfGoods: truck.arrayOfGoods,
+                    driver: truck.driver,
+                    cost: truck.cost,
+                    dest: truck.dest,
+                    position: truck.position
+                });
+            })
+        }
     }
-    // const findTruckDriver=(truck)=>{
-    //     var filteredDriver=pathCalcDrivers.filter(driver=>driver>=truck.license);
-    //     filteredDriver.sort(function(a,b){return b.license-a.license});
-    //     return (<div>
-    //         {filteredDriver.map(driver=>(<div>
-    //             <p>Tên tài xế: {driver.name}</p>
-    //             <p>Bằng lái: {driver.license}</p>
-    //             <p>Số điện thoại: {driver.phone} </p>
-    //         </div>))}
-    //     </div>)
-    // }
+    useEffect(()=>{
+        const interval = setInterval(updatePerMinute, 1 * 60 * 1000); 
+        return () => clearInterval(interval);
+    },[])
+    //
+
     return (
         <div className='Path'>
             <div id='overlay'></div>
@@ -277,6 +361,14 @@ const Path = () =>{
                         <p>Trạng thái: {driver.status}</p>
                         </div>))}
                 </div>
+                <div className='popupStationIncomingDriver'>
+                    <h1>Danh sách tài xế đang đến</h1>
+                    {popupIncomingDriverList.map((driver)=>(<div id={driver.id}>
+                        <p>Tên: {driver.name}</p>
+                        <p>SĐT: {driver.phone}</p>
+                        <p>Trạng thái: {driver.status}</p>
+                        </div>))}
+                </div>
                 <div className='popupStationTruck'>
                     <h1>Danh sách xe tải</h1>
                     {popupTruckList.map((truck)=>(<div id={truck.id}>
@@ -285,9 +377,25 @@ const Path = () =>{
                         <p>Trạng thái: {truck.status}</p>
                         </div>))}
                 </div>
+                <div className='popupStationIncomingTruck'>
+                    <h1>Danh sách xe tải đang đến</h1>
+                    {popupIncomingTruck.map((truck)=>(<div id={truck.id}>
+                        <p>Loại xe: {truck.cartype}</p>
+                        <p>Biển số: {truck.liplate}</p>
+                        <p>Trạng thái: {truck.status}</p>
+                        </div>))}
+                </div>
                 <div className='popupStationBus'>
                     <h1>Danh sách xe khách</h1>
                     {popupBusList.map((bus)=>(<div id={bus.id}>
+                        <p>Loại xe: {bus.cartype}</p>
+                        <p>Biển số: {bus.liplate}</p>
+                        <p>Trạng thái: {bus.status}</p>
+                        </div>))}
+                </div>
+                <div className='popupStationIncomingBus'>
+                    <h1>Danh sách xe khách đang đến</h1>
+                    {popupIncomingBus.map((bus)=>(<div id={bus.id}>
                         <p>Loại xe: {bus.cartype}</p>
                         <p>Biển số: {bus.liplate}</p>
                         <p>Trạng thái: {bus.status}</p>
@@ -504,6 +612,7 @@ const Path = () =>{
                         //distance
                         document.getElementById('popupCalcPathTruck2').style.display="none";
                         document.getElementById('popupCalcPathTruck3').style.display="block";
+                        // kiểm tra xem đã nhập tài xế chưa?
                         //arr of dest
                     }}>Tiếp theo</button>
                 </div>
@@ -547,12 +656,52 @@ const Path = () =>{
                         document.getElementById('overlay').style.display="none";
                     }}>Huỷ</button>
                     <button onClick={()=>{
-                        pathCalcTruckUsed.forEach((truck)=>{
+                        const d=new Date();
+                        pathCalcTruckUsed.forEach(async (truck)=>{
+                            truck.arriveTime=d.getTime()+Math.round((Math.sqrt(((pathCalcStation.xCoordinate-stationArr.find(station=>station.name==truck.arrayOfDests[0]).xCoordinate)**2)
+                            +((pathCalcStation.yCoordinate-stationArr.find(station=>station.name==truck.arrayOfDests[0]).yCoordinate)**2))/50)*3600*1000);
+                            const truckDoc=doc(db, "truck", truck.id);
+                            await updateDoc(truckDoc, {status: "Running",
+                                arriveTime: truck.arriveTime,
+                                carrying: truck.carrying,
+                                arrayOfDests: truck.arrayOfDests,
+                                arrayOfGoods: truck.arrayOfGoods,
+                                driver: truck.driver,
+                                cost: truck.cost,
+                                dest: truck.arrayOfDests[0]
+                            });
+                            truck.arrayOfGoods.forEach(async(good)=>{
+                                const goodsDoc=doc(db,"goods", good.id);
+                                await updateDoc(goodsDoc,{
+                                    isMoving: true,
+                                    carId: truck.id,
+                                })
+                            });
+                            const driverDoc=doc(db, "drivers", truck.driver.id);
+                            await updateDoc(driverDoc,{
+                                status: "Running",
+                                arrayOfDests: truck.arrayOfDests,
+                                arriveTime: truck.arriveTime,
+                                car: truck.liplate,
+                                dest: truck.arrayOfDests[0],
+                            })
+                            setPathCalcGoods([]);
+                            setPathCalcTruck([]);
+                            setPathCalcTruckGoodsArray([]);
+                            setPathCalcTruckChosenIndex(0);
+                            setPathCalcStation({});
+                            setPathCalcTruckUsed([]);
+                            setShowDriversMode(false);
+                            setPathCalcDrivers([]);
+                            setPathCalcShowDrivers([]);
+                            document.getElementById('popupCalcPathTruck3').style.display="none";
+                            document.getElementById('overlay').style.display="none";
                         })
                     }}>Bắt đầu vận chuyển</button>
                 </div>
             </div>
 
+            <button onClick={()=>updatePerMinute()}>Làm mới dữ liệu</button>
             <div className='displaystation'>
                 {stationArr.map((station)=>(<div id={station.id}>
                     <hr></hr>
@@ -574,6 +723,10 @@ const Path = () =>{
 
                 <button onClick={addStationArr}>Thêm vào</button>
             </div>
+            <button onClick={()=>{
+                const d=new Date();
+                console.log(d.getTime());
+            }}>CheckTime</button>
         </div>
     )
     // TODO

@@ -55,7 +55,8 @@ const Driver = () =>{
                 position: newDriverPosition,
                 history: [],
                 arrayOfDests: [],
-                arriveTime: 0
+                arriveTime: 0,
+                dest: ""
                 // history: {
                 //     cardrove: newDriverCarDrove,
                 //     from: newDriverFrom,

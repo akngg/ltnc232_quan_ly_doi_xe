@@ -65,6 +65,7 @@ const Car = () =>{
         try{
             await addDoc(collection(db,"truck"),{
                 position: newPosition,
+                dest: "",
                 cartype: newTruckCarType==="small"? "Xe tải nhỏ": newTruckCarType==="medium"? "Xe tải vừa": "Xe container",
                 driver: {},
                 fueltype: newTruckCarType==="small"?"gasoline":"oil",
@@ -110,6 +111,7 @@ const Car = () =>{
                 weight: newCarWeight,
                 arriveTime: 0,
                 arrayOfDests: [],
+                dest: "",
                 arrayOfPassengers: [],
             });
             getBusCarList();
