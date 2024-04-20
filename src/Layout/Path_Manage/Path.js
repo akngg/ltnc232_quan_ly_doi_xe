@@ -1273,6 +1273,16 @@ const Path = () =>{
                 
             </div>
             
+            {/* thêm trạm */}
+            
+            <div className="addStation">
+                <h1>Thêm trạm</h1>
+                <input placeholder='Tên trạm?' type='text' onChange={(e)=>setNewStationName(e.target.value)}/>
+                <input placeholder='Toạ độ X?' type='number' onChange={(e)=>setNewXCoordinate(e.target.value)}/>
+                <input placeholder='Toạ độ Y?' type='number' onChange={(e)=>setNewYCoordinate(e.target.value)}/>
+
+                <button onClick={addStationArr}>Thêm vào</button>
+            </div>
            
             {/* Hiển thị trạm */}
             <div className='displayStation'>
@@ -1289,14 +1299,7 @@ const Path = () =>{
                     <button onClick={()=>showPopupCalcPathBus(station)}>Khách</button>
                 </div>))}
             </div>
-             {/* thêm trạm */}
-             <div className="addStation">
-                <input placeholder='Tên trạm?' type='text' onChange={(e)=>setNewStationName(e.target.value)}/>
-                <input placeholder='Toạ độ X?' type='number' onChange={(e)=>setNewXCoordinate(e.target.value)}/>
-                <input placeholder='Toạ độ Y?' type='number' onChange={(e)=>setNewYCoordinate(e.target.value)}/>
-
-                <button onClick={addStationArr}>Thêm vào</button>
-            </div>
+             
             <button onClick={()=>{
                 const d=new Date();
                 console.log(d.getTime());

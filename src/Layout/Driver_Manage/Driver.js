@@ -128,45 +128,10 @@ const Driver = () =>{
 
     return (
         <div className='Driver'>
-            <div className='displaydriver'>
-                {DriverList.map((driver)=>(
-                    <div>
-                        <hr></hr>
-                        <h1>Tên: {driver.name}</h1>
-                        <input type='text' placeholder='Thay đổi tên?' id={driver.id+"name"}/>
-                        <button onClick={()=>handleChangeName(driver)}>Thay đổi</button>
-                        <h1>Xe: {driver.car}</h1>
-                        <h1>Trạng thái: {driver.status}</h1>
-                        <label htmlFor={driver.id+"status"}>Thay đổi trạng thái</label>
-                        <select id={driver.id+"status"}>
-                            <option value="Active">Active</option>
-                            <option value="Inactive">Inactive</option>
-                        </select>
-                        <button onClick={()=>handleChangeStatus(driver)}>Thay đổi</button>
-                        <h1>Bằng lái: {driver.license}</h1>
-                        <label htmlFor={driver.id+"license"}>Thay đổi loại bằng lái</label>
-                        <select id={driver.id+"license"}>
-                            <option value={1}>A1</option>
-                            <option value={2}>A2</option>
-                            <option value={3}>A3</option>
-                        </select>
-                        <button onClick={()=>handleChangeLicense(driver)}>Thay đổi</button>
-                        <h1>Địa chỉ: {driver.address}</h1>
-                        <input type='text' placeholder='Thay đổi địa chỉ?' id={driver.id+"address"}/>
-                        <button onClick={()=>handleChangeAddress(driver)}>Thay đổi</button>
-                        <h1>Số điện thoại: {driver.phone}</h1>
-                        <input type='number' placeholder='Thay đổi số điện thoại?' id={driver.id+"phone"}/>
-                        <button onClick={()=>handleChangePhone(driver)}>Thay đổi</button>
-                        <h1>Trạm: {driver.position}</h1>
-                        <input type='text' placeholder='Thay đổi trạm?' id={driver.id+"position"}/>
-                        <button onClick={()=>handleChangePosition(driver)}>Thay đổi</button>
-
-                        <button onClick={()=>deleteDriverList(driver.id)}>Xoá tài xế</button>
-                    </div>
-                ))}
+            <div className='headerDriver'>
             </div>
             <div className='addDriver'>
-                <hr></hr>
+                <h1>Thêm tài xế</h1>
                 <input placeholder='Tên' type='text' onChange={(e)=>setNewDriverName(e.target.value)}/>
                 <label htmlFor='new-driver-status'>Trạng thái</label>
                 <select id='new-car-status' onChange={(e)=>setNewDriverStatus(e.target.value)}>
@@ -183,8 +148,46 @@ const Driver = () =>{
                 <input placeholder='Trạm' type='text' onChange={(e)=>setNewDriverPosition(e.target.value)}/>
                 <input placeholder='Số điện thoại' type='number' onChange={(e)=>setNewDriverPhone(Number(e.target.value))}/>
                 {/*thêm tính năng thêm nhiều xe cùng loại 1 lúc?*/}
+                <br></br>
                 <button onClick={addDriverList}>Thêm vào</button>
             </div>
+            <div className='displayDriver'>
+                {DriverList.map((driver)=>(
+                    <div className='eachDriver'>
+                        <p>Tên: {driver.name}</p>
+                        <input type='text' placeholder='Thay đổi tên?' id={driver.id+"name"}/>
+                        <button onClick={()=>handleChangeName(driver)}>Thay đổi</button>
+                        <p>Xe: {driver.car}</p>
+                        <p>Trạng thái: {driver.status}</p>
+                        <label htmlFor={driver.id+"status"}>Thay đổi trạng thái</label>
+                        <select id={driver.id+"status"}>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                        <button onClick={()=>handleChangeStatus(driver)}>Thay đổi</button>
+                        <p>Bằng lái: {driver.license}</p>
+                        <label htmlFor={driver.id+"license"}>Thay đổi loại bằng lái</label>
+                        <select id={driver.id+"license"}>
+                            <option value={1}>A1</option>
+                            <option value={2}>A2</option>
+                            <option value={3}>A3</option>
+                        </select>
+                        <button onClick={()=>handleChangeLicense(driver)}>Thay đổi</button>
+                        <p>Địa chỉ: {driver.address}</p>
+                        <input type='text' placeholder='Thay đổi địa chỉ?' id={driver.id+"address"}/>
+                        <button onClick={()=>handleChangeAddress(driver)}>Thay đổi</button>
+                        <p>Số điện thoại: {driver.phone}</p>
+                        <input type='number' placeholder='Thay đổi số điện thoại?' id={driver.id+"phone"}/>
+                        <button onClick={()=>handleChangePhone(driver)}>Thay đổi</button>
+                        <p>Trạm: {driver.position}</p>
+                        <input type='text' placeholder='Thay đổi trạm?' id={driver.id+"position"}/>
+                        <button onClick={()=>handleChangePosition(driver)}>Thay đổi</button>
+                        <br></br>
+                        <button onClick={()=>deleteDriverList(driver.id)}>Xoá tài xế</button>
+                    </div>
+                ))}
+            </div>
+            
         </div>
     )
 };

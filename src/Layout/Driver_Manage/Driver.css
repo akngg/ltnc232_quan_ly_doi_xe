@@ -1,9 +1,27 @@
 .Driver{
-    align-items: center;
-    justify-content: center;  
-    overflow-x: hidden;
+    width: 100%;
+    height: 100vh;
+    background-color: aliceblue;
 }
-.titleDriver{
-    color: black;
-    margin-bottom: 10px;
+.headerDriver{
+    width: 100%;
+    height: 50px;
+    /* padding: 20px; */
+    background: rgb(157, 219, 227);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* .displayDriver{
+    overflow: auto;
+} */
+.eachDriver{
+    width: 48%;
+    float: left;
+    border: 2px solid black;
+    margin: 1%;
+}
+.addDriver{
+    border: 4px solid black;
 }

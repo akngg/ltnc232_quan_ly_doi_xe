@@ -198,6 +198,14 @@
     margin: 1%;
 }
 .headerPath{
-    height:150px;
-    background-color: rgb(58, 69, 168);
+    width: 100%;
+    height: 50px;
+    /* padding: 20px; */
+    background: rgb(157, 219, 227);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.addStation{
+    border: 4px solid black;
 }

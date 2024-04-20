@@ -5,7 +5,7 @@
     flex-direction: row;
     align-items: flex-start;
     justify-items: center;
-    background-color: gray;
+    background-color: aliceblue;
     overflow-x: hidden;
 }
 .Sidebar{
@@ -82,7 +82,7 @@ li a{
 
 .theoutlet{
     /* position: relative; */
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
     width: 100%;
     margin-left: 220px;
     margin-right: 0px;
