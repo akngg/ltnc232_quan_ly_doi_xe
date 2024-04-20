@@ -18,6 +18,7 @@ div{
     /* top: 0;
     left: 0; */
     width: 100%;
+    height: 50px;
     /* padding: 20px; */
     background: rgb(157, 219, 227);
     display: flex;
@@ -27,9 +28,18 @@ div{
 } 
 .logo{
     width: 10%;
-    height:50%;
+    height:100%;
     border-radius: 5px;
     background: rgb(157, 219, 227);
+}
+#thongbao{
+  text-align: center;
+  font-weight: bold;
+  margin-top: 20px;
+  font-size: 2em;
+  color: #296a71;
+  text-shadow: 2px 2px 4px rgba(96, 30, 30, 0.5);
+  font-family: 'Arial', sans-serif; 
 }
 .site-name{
     font-size: 3rem;
@@ -222,11 +232,12 @@ div{
 .form-container {
   flex-direction: column;
   align-items: flex-start;
-  max-width: 30%; /* Hoặc chiều rộng bạn muốn */
-  margin: 20px 0 0 20px; /* Khoảng cách giữa form và nút */
+  max-width: 30%;
+  height: 350px;
+  margin: 45px 0 0 20px;
   padding: 20px;
-  background-color: #e5edb9; /* Màu nền cho form */
-  border-radius: 10px; /* Bo góc cho form */
+  background-color: #e5edb9; 
+  border-radius: 10px; 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 .form-container h3,
@@ -242,7 +253,7 @@ label {
 
 /* Style cho input */
 input[type="text"] {
-  width: 100%; /* Chiều rộng của input */
+  /* width: 100%; */
   padding: 10px;
   margin-top: 5px; /* Khoảng cách giữa label và input */
   border: 1px solid #ccc; /* Viền cho input */
@@ -266,45 +277,102 @@ input[type="text"] {
   margin: 20px auto 0 20px;
 }
 /* thay doi thong tin */
-#thayDoiThongTinContent{
+.thaydoi{
   display: flex;
-}
-#thayDoiThongTinContent #change{
-  margin-right: 5px;
-  margin-top: 20px;
-  margin-left: 10px;
-  width: 70%;
-}
-#thayDoiThongTinContent .history{
-  margin-right: 5px;
-  margin-top: 20px;
-  margin-left: 10px;
-  width: 100%;
-}
-.code-change{
-  /* display: flex; */
-  width: 50%;
-}
-.code-change label{
-  display: flex;
-  margin-bottom: 15px;
-  font-size: 16px;
-}
-.code-change button{
-  margin-top: 5px;
-  padding: 10px 20px;
-  width: 20%;
-  background-color: #4CAF50; /* Màu nền cho nút */
-  color: white; /* Màu chữ cho nút */
-  border: none;
-  border-radius: 5px; /* Bo góc cho nút */
-  cursor: pointer; /* Con trỏ chuột khi hover qua nút */
-}
-.history{
-  justify-content: center;
-  align-items: center;
-}
 
+}
+.thaydoi .form-container {
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 30%; /* Hoặc chiều rộng bạn muốn */
+  height: 200px;
+  margin: 15px 0 0 20px; /* Khoảng cách giữa form và nút */
+  padding: 20px;
+  background-color: #e5edb9; /* Màu nền cho form */
+  border-radius: 10px; /* Bo góc cho form */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+.changeInfo{
+  margin-top: 15px;
+  margin-left: 20px;
+  margin-bottom: 10px;
+  padding: 20px;
+  border-radius: 10px; /* Bo góc cho form */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  width: 100%;
+  height: 360px;
+  background-color: #e5edb9;
+}
+.changeInfo p{
+  margin: 5px 0 0 15px;
+  font-size: 15px;
+  font-style: italic;
+  font-weight: bold;
+  color: #147be2;
+}
+.changeInfo input{
+  margin: 5px 0 0 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.changeInfo button{
+  padding: 10px 20px;
+  margin-top: 5px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#buttonX{
+  display: block;
+  margin-top: 10px;
+  margin-left: 15px;
+  margin-bottom: 10px;
+}
+/*  */
+/* them xe */
+.themxe{
+  display: flex;
+  width: 40%;
+  flex-direction: column;
+  margin: 20px 10px 10px 20px;
+  padding: 20px;
+  background-color: #e5edb9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+.themxe h3{
+  margin: 10px 0 0 10px;
+  font-size: 24px;
+  color: #1767b6;
+}
+.themxe input{
+  width: 90%;
+  margin: 5px 0 0 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.themxe select{
+  margin: 5px 0 0 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.themxe button{
+  width: 90%;
+  padding: 10px 20px;
+  margin-top: 5px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 15px;
+}
+/*  */
 .infor-table {
   font-family: 'Arial', sans-serif;
   border-collapse: collapse;
@@ -333,5 +401,17 @@ input[type="text"] {
   background-color: #6eb162;
 }
 .inputRadio{
+  display: flex;
+}
+.history-change{
+  display: flex;
+}
+.history-changeBus{
+  width: 50%;
+}
+.history-changeTruck{
+  width: 50%;
+}
+.history-add{
   display: flex;
 }
