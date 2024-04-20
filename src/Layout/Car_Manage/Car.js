@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect} from 'react';
 import './Car.css'
 import {database} from '../../modules/firebase';
-import { increment, update } from 'firebase/database';
 import 
 { collection,
   getDocs,
@@ -10,12 +9,9 @@ import
   updateDoc,
   doc,
   deleteDoc,
-  query, orderBy, limit, startAfter,
-  count,
   setDoc,
   arrayUnion
 } from 'firebase/firestore';
-import { get, set } from 'firebase/database';
 function Car() {
   // state
   const [activeTab, setActiveTab] = useState('thayDoiThongTin');
@@ -59,7 +55,6 @@ function Car() {
   const updateBusStatus = async (id, status) => {
     const busDoc= doc(database, 'buses', id);
     await updateDoc(busDoc, {status});
-    getBusesList();
   }
     //bao duong xe buyt
   const busMainCollectionRef = collection(database, 'busMain');
@@ -104,31 +99,33 @@ function Car() {
       dateSignIn: new Date().toLocaleString(  'vi-VN', { hour: 'numeric', minute: 'numeric', day: 'numeric', month: 'numeric', year: 'numeric' })
     });
     updateCount();
-    getBusMainList();
     }
     catch(err){
       console.error(err);
     }
   };
-  const deleteBusMain = async (id) => {
-    const busMainDoc = doc(database, 'busMain', id);
-    await deleteDoc(busMainDoc);
-  };
   const updateBusMainStatus = async (id, status) => {
     const busMainDoc= doc(database, 'busMain', id);
     await updateDoc(busMainDoc, {status});
-    getBusMainList();
   }
   const sortedBusMain = busmain.filter(bus => bus.status === 'maintenance');
   const activeBuses = buses.filter(bus => bus.status === "active");  
   const [search, setSearch] = useState('');
   const [busInfo, setBusInfo] = useState(null);
+  const [truckInfo, setTruckInfo] = useState(null);
   const handleSearch = () => {
     // Giả sử `buses` là một mảng chứa thông tin về các xe
     const bus = buses.find(bus => bus.liplate === search);
     if (bus) {
       setBusInfo(bus);
-    } else {
+      return;
+    }
+    const truck = trucks.find(truck => truck.liplate === search);
+    if (truck) {
+      setTruckInfo(truck);
+      return;
+    }
+     else {
       alert('Không có thông tin');
     }
   };
@@ -141,7 +138,13 @@ function Car() {
   const handleSubmit = async () => {
   const reversedBusMain = busmain.slice(0, -1).reverse();
   const busInMain = reversedBusMain.find(bus => bus.liplate === liplateBus);
+  const reversedTruckMain = truckmain.slice(0, -1).reverse();
+  const truckInMain = reversedTruckMain.find(truck => truck.liplate === liplateTruck);
   if (busInMain && busInMain.status === 'maintenance') {
+    alert('Xe này đã được đăng ký bảo dưỡng.');
+    return;
+  }
+  if(truckInMain && truckInMain.status === 'maintenance') {
     alert('Xe này đã được đăng ký bảo dưỡng.');
     return;
   }
@@ -149,6 +152,14 @@ function Car() {
     if (bus) {
       await addBusMain(bus.liplate, bus.cartype, bus.numOfSeats, bus.position, bus.releaseDate, 'maintenance');
       await updateBusStatus(bus.id, 'maintenance');
+      alert('Đăng ký bảo dưỡng thành công');
+      return;
+    }
+    const truck = trucks.find(truck => truck.liplate === liplateTruck);
+    if (truck) {
+      await addTruckMain(truck.liplate, truck.cartype, truck.carrying, truck.position, truck.releaseDate, 'maintenance');
+      await updateTruckStatus(truck.id, 'maintenance');
+      alert('Đăng ký bảo dưỡng thành công');
     }
     else{
       alert('Không tìm thấy xe');
@@ -198,19 +209,8 @@ function Car() {
   const updateTruckStatus = async (id, status) => {
     const truckDoc= doc(database, 'trucks', id);
     await updateDoc(truckDoc, {status});
-    getBusesList();
   }
   const activeTrucks = trucks.filter(truck => truck.status === "active");
-  const [searchTruck, setSearchTruck] = useState('');
-  const [truckInfo, setTruckInfo] = useState(null);
-  const handleSearchTruck = () => {
-    const truck = trucks.find(truck => truck.liplate === searchTruck);
-    if (truck) {
-      setTruckInfo(truck);
-    } else {
-      alert('Không có thông tin');
-    }
-  };
       // bao duong xe tai
   const truckMainCollectionRef = collection(database, 'truckMain');
   const getTruckMain = async () => {
@@ -255,44 +255,19 @@ function Car() {
       dateSignIn: new Date().toLocaleString(  'vi-VN', { hour: 'numeric', minute: 'numeric', day: 'numeric', month: 'numeric', year: 'numeric' })
     });
     updateTruckCount();
-    getTruckMain();
     }
     catch(err){
       console.error(err);
     }
   };
-  const deleteTruckMain = async (id) => {
-    const truckMainDoc = doc(database, 'truckMain', id);
-    await deleteDoc(truckMainDoc);
-  }
   const updateTruckMainStatus = async (id, status) => {
     const truckMainDoc= doc(database, 'truckMain', id);
     await updateDoc(truckMainDoc, {status});
-    getTruckMain();
   }
   const sortedTruckMain = truckmain.filter(truck => truck.status === 'maintenance');
   // const sortedTrucksMain = trucks.reverse().slice(1,6);
     // dang ky bao duong xe tai
   const [liplateTruck,setLiplateTruck] = useState('');
-  const handleInputLiplateTruck = (event) => {
-    setLiplateTruck(event.target.value);
-  }
-  const handleSubmitTruck = async () => {
-  const reversedTruckMain = truckmain.slice(0, -1).reverse();
-  const truckInMain = reversedTruckMain.find(truck => truck.liplate === liplateTruck);
-  if (truckInMain && truckInMain.status === 'maintenance') {
-    alert('Xe này đã được đăng ký bảo dưỡng.');
-    return;
-  }
-    const truck = trucks.find(truck => truck.liplate === liplateTruck);
-    if (truck) {
-      await addTruckMain(truck.liplate, truck.cartype, truck.carrying, truck.position, truck.releaseDate, 'maintenance');
-      await updateTruckStatus(truck.id, 'maintenance');
-    }
-    else{
-      alert('Không tìm thấy xe');
-    }
-  }
   const handleMaintenanceTruck = async (liplateTruck) => {
     const reversedTruckMain = truckmain.slice(0, -1).reverse();
     const truckInMain = reversedTruckMain.find(truck => truck.liplate === liplateTruck);
@@ -304,7 +279,7 @@ function Car() {
     if (truck) {
       await updateTruckStatus(truck.id, 'active');
     }
-    }
+  }
   const sortedTrucksMain = truckmain.slice(-4,-1).reverse();
   //
     // thay doi thong tin
@@ -356,25 +331,11 @@ function Car() {
   }
     //
     //history add
-  const [historyAdd, setHistoryAdd] = useState('');
-    //
-  const[newLiplate, setNewLiplate] = useState('');
   const[newCartype, setNewCartype] = useState('');
   // carying neu la trucks
   const[newNumOfSeats, setNewNumOfSeats] = useState('');
   const[newPosition, setNewPosition] = useState('');
-  const[newReleaseDate, setNewReleaseDate] = useState('');
       //bus
-  const updateLiplateBus = async (id) => {
-    if (newLiplate !== ""){
-    const busDoc = doc(database, 'buses', id);
-    await updateDoc(busDoc, {liplate: newLiplate});
-    setLiplate(newLiplate);
-    }
-    else{
-      alert("Vui lòng nhập thông tin");
-    };
-  }
   const updateCartypeBus = async (id) => {
     if(newCartype === cartype){
     alert("Vui lòng nhập thông tin khác với thông tin cũ");
@@ -432,16 +393,6 @@ function Car() {
   }
       //
       //truck
-  const updateLiplateTruck = async (id) => {
-    if (newLiplate !== ""){
-    const truckDoc = doc(database, 'trucks', id);
-    await updateDoc(truckDoc, {liplate: newLiplate});
-    setLiplate(newLiplate);
-    }
-    else{
-      alert("Vui lòng nhập thông tin");
-    };
-  }
   const updateCartypeTruck = async (id) => {
     if(newCartype === cartype){
     alert("Vui lòng nhập thông tin khác với thông tin cũ");
@@ -482,6 +433,7 @@ function Car() {
     await updateDoc(truckDoc, {position: newPosition});
     updatehistorTruckChange(historyChange);
     setPosition(newPosition);
+    alert('Thay đổi thông tin thành công');
     }
     else{
       alert("Vui lòng nhập thông tin");
@@ -508,6 +460,20 @@ function Car() {
       position: position,
       releaseDate: releaseDate,
       status: status,
+      arrayOfDests: {},
+      arrayOfGoods: {},
+      arrayOfTimeDests: {},
+      arriveTime: 0,
+      class: 'bus',
+      driver: {},
+      height: 0,
+      length: 0,
+      license : 0,
+      cost : 0,
+      userId: '',
+      weight: 0,
+      passengers: 0,
+      fueltype: '',
     });
     const busDoc = doc(database, 'buses','history-bus');
     await updateDoc(busDoc, {
@@ -522,6 +488,20 @@ function Car() {
       position: position,
       releaseDate: releaseDate,
       status: status,
+      arrayOfDests: {},
+      arrayOfGoods: {},
+      arrayOfTimeDests: {},
+      arriveTime: 0,
+      class: 'truck',
+      cost: 0,
+      driver: {},
+      fueltype: '',
+      height: 0,
+      length: 0,
+      license: 0,
+      userId: '',
+      weight: 0,
+      payload: {},
     });
     const truckDoc = doc(database, 'trucks','history-truck');
     await updateDoc(truckDoc, {
@@ -541,14 +521,46 @@ function Car() {
     }
     if (selectedValue === 'bus') {
       addBus(liplate, cartype, numOfSeats, position, releaseDate, 'active');
+      alert('Thêm xe thành công');
     } else if (selectedValue === 'truck') {
       addTruck(liplate, cartype, numOfSeats, position, releaseDate, 'active');
+      alert('Thêm xe thành công');
     }
     else {
       alert('Vui lòng nhập đầy đủ thông tin loại xe');
     }
   }
-
+  // lich su bao duong cua moi xe
+  const [inputHisMain, setInputHisMain] = useState('');
+  const [busHisMain, setBusHisMain] = useState([]);
+  const [truckHisMain, setTruckHisMain] = useState([]);
+  const handleHisMain = async () => {
+    const matchedBuses = busmain.filter(bus => bus.liplate === inputHisMain);
+    setBusHisMain([]);
+    setTruckHisMain([]);
+    if(matchedBuses.length > 0) {
+      setBusHisMain(matchedBuses);
+      return;
+    }
+    const matchedTrucks = truckmain.filter(truck => truck.liplate === inputHisMain);
+    if (matchedTrucks.length > 0) {
+      setTruckHisMain(matchedTrucks);
+      return;
+    }
+    else {
+      alert('Không có thông tin');
+    }
+  }
+  const deleteBusMain = async (id) => {
+    const busMainDoc = doc(database, 'busMain', id);
+    await deleteDoc(busMainDoc);
+    handleHisMain();
+  };
+  const deleteTruckMain = async (id) => {
+    const truckMainDoc = doc(database, 'truckMain', id);
+    await deleteDoc(truckMainDoc);
+    handleHisMain();
+  }
     return (<>  
     <div className='carManage'>
       <div className='header'>
@@ -580,7 +592,6 @@ function Car() {
           </div>
           <div className='search'>
           <h2>Tìm kiếm thông tin</h2>
-          <h3>Xe Khách: </h3>
           <input type='text' placeholder='Nhập biển số xe...'
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -596,16 +607,12 @@ function Car() {
               <p>Số khách hiện tại: {busInfo.passengers}</p>
               <p>Vị trí hiện tại: {busInfo.position}</p>
               <p>Ngày sản xuất: {busInfo.releaseDate}</p>
-              <p>Trạng thái:  {busInfo.status === 'active' ? 'Hoạt động' : 'Bảo trì'}</p>
+              <p>Trạng thái:  {
+              busInfo.status === 'Active' ? 'Sẵn sàng' :
+              busInfo.status === 'Running' ? 'Di chuyển' : 'Bảo trì'
+              }</p>
             </div>
           )}
-          <h3>Xe Tải: </h3>
-          <input type='text' placeholder='Nhập biển số xe...'
-          value={searchTruck}
-          onChange={(e) => setSearchTruck(e.target.value)}
-          />
-          <button type='submit' onClick={handleSearchTruck}
-          >Tìm kiếm</button>
           {truckInfo && (
             <div className='searchInfo'>
               <h4>Thông tin</h4>
@@ -615,14 +622,18 @@ function Car() {
               <p>Trọng tải: {truckInfo.carrying}</p>
               <p>Vị trí hiện tại: {truckInfo.position}</p>
               <p>Ngày sản xuất: {truckInfo.releaseDate}</p>
-              <p>Trạng thái:  {truckInfo.status === 'active' ? 'Hoạt động' : 'Bảo trì'}</p>
+              <p>Trạng thái:  {
+              truckInfo.status === 'Active' ? 'Sẵn sàng' :
+              truckInfo.status === 'Running' ? 'Di chuyển' : 'Bảo trì'
+              }</p>
             </div>
           )}
           </div>
         </div>
         )}
       {activeTab === 'lichBaoDuong' && (
-        sortedBusMain.length + sortedTruckMain.length === 0 ? (
+        <>
+        {sortedBusMain.length + sortedTruckMain.length === 0 ? (
           <h2 id='thongbao'>Hiện không có xe đăng ký bảo dưỡng</h2>
           ) : ( 
             <div className='content' id='table-container'>
@@ -692,6 +703,7 @@ function Car() {
                    Chưa bảo dưỡng
                   </div>
                 </td>
+                <td>{truck.dateSignIn}</td>
               </tr>
                   );
               })
@@ -699,24 +711,85 @@ function Car() {
               </tbody>
               </table>
             </div>
-          )     
+          )}
+          <div className='list-His'>
+            <div className="form-container">
+              <h3>LỊCH SỬ BẢO DƯỠNG XE</h3>
+              <input type="text" placeholder='Nhập biển số xe...' 
+                onChange={(e)=> setInputHisMain(e.target.value)}
+              />
+              <button type="button" className='submit-button'
+                onClick={handleHisMain}
+              >TÌM KIẾM</button>
+            </div>
+            <div>
+              {busHisMain.length > 0 && (
+                <table id='table-container'>
+                  <thead>
+                    <tr>
+                      <th>STT</th>
+                      <th>Biển số</th>
+                      <th>THỜI GIAN BẢO DƯỠNG</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {
+                      busHisMain.slice(-10).reverse().map((bus, index) => (
+                        <tr key={index+1}>
+                          <td>{index+1}</td>
+                          <td>{bus.liplate}</td>
+                          <td>{bus.dateSignIn}</td>
+                            <td>
+                              <button onClick={() => deleteBusMain(bus.id)}
+                              >Xóa thông tin</button>
+                            </td>
+                        </tr>
+                      ))
+                    }
+                  </tbody>
+                </table>
+                )}
+              {truckHisMain.length > 0 && (
+                <table id='table-container'>
+                  <thead>
+                    <tr>
+                      <th>STT</th>
+                      <th>Biển số</th>
+                      <th>THỜI GIAN BẢO DƯỠNG</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {
+                      truckHisMain.slice(-10).reverse().map((bus, index) => (
+                        <tr key={index+1}>
+                          <td>{index+1}</td>
+                          <td>{bus.liplate}</td>
+                          <td>{bus.dateSignIn}</td>
+                            <td>
+                              <button onClick={() => deleteTruckMain(bus.id)}
+                              >Xóa thông tin</button>
+                            </td>
+                        </tr>
+                      ))
+                    }
+                  </tbody>
+                </table>
+              )}
+            </div>
+        </div>
+        </>    
         )}
       {activeTab === 'dangKyBaoDuong' && (
       <div className='content' id='baoduong'>
         <div className="form-container">
-        <h3>BẢO DƯỠNG XE BUÝT</h3>
+        <h3>BẢO DƯỠNG XE</h3>
           <input type="text" placeholder='Nhập biển số xe...' 
           onChange={handleInputLiplate}
           />
         <button type="button" className='submit-button'
         onClick={handleSubmit}
-        >Đăng ký bảo dưỡng</button>
-        <h3>BẢO DƯỠNG XE TẢI</h3>
-          <input type="text" placeholder='Nhập biển số xe...' 
-          onChange={handleInputLiplateTruck}
-          />
-        <button type="button" className='submit-button'
-        onClick={handleSubmitTruck}
         >Đăng ký bảo dưỡng</button>
         </div>
         <div className='lichsu'>
@@ -868,10 +941,10 @@ function Car() {
                       setHistoryChange(newHistoryChange);
                     }}
                     ></input>
-                    <button
+                    <button 
                     onClick={() => updatePositionTruck(truckInforChange.id)}
                     >Thay đổi</button>
-                    <button
+                    <button id='buttonX'
                     onClick={() => {deleteTruck(truckInforChange.id)}}
                     >XÓA THÔNG TIN XE</button>
                   </div>

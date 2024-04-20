@@ -94,6 +94,7 @@ div{
   justify-content: center;
   height: 70%;
  }
+ /* thong tin chung */
  .general{
   width: 30%;
   height: 70%;
@@ -135,15 +136,16 @@ div{
   margin-left: 80px;
  }
  .search input[type="text"] {
-  width: 40%;
+  width: 80%;
   padding: 10px;
   margin-top: 5px;
-  margin-left: 80px;
+  margin-left: 0px;
   border: 1px solid #ccc;
   border-radius: 5px;
  }
  .search button{
   padding: 10px 20px;
+  width: 20%;
   margin-top: 5px;
   background-color: #4CAF50;
   color: white;
@@ -155,11 +157,16 @@ div{
     background-color: #45a049;
   }
   .searchInfo {
-  width: 70%;
+  width: 75%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin: 10px 20px 0 20px;
+  padding: 20px;
+  background-color: #e5edb9; 
+  border-radius: 10px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
   }
   .searchInfo h4 {
     font-size: 24px;
@@ -194,33 +201,16 @@ div{
   tr:nth-child(even) {
     background-color: #dddddd;
   }
-  
   th {
     background-color: #04AA6D;
     color: white;
   }
-  /* Style chung cho các nút */
-.retirement-button {
-    padding: 5px 10px;
-    border: none;
-    color: white;
-    cursor: pointer;
-    margin-right: 5px;
+  /* Lịch bao duong */
+  .list-His{
+    display: flex;
   }
-  
-  /* Style cho nút 'Chưa nghỉ hưu' */
-  .not-retired {
-    background-color: #4CAF50; /* Màu xanh lá */
-  }
-  
-  /* Style cho nút 'Đã nghỉ hưu' */
-  .retired {
-    background-color: #f44336; /* Màu đỏ */
-  }
-  
-  /* Thêm hiệu ứng khi hover qua nút */
-  .retirement-button:hover {
-    opacity: 0.8;
+  .list-His table{
+    margin: 45px 0 0 20px;
   }
   #dangKyBaoDuong{
     display: flex;
@@ -233,7 +223,7 @@ div{
   flex-direction: column;
   align-items: flex-start;
   max-width: 30%;
-  height: 350px;
+  height: 180px;
   margin: 45px 0 0 20px;
   padding: 20px;
   background-color: #e5edb9; 
