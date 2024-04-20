@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, get, set, child, remove } from "firebase/database";
+import { getFirestore } from "firebase/firestore";
 import {getAuth} from "firebase/auth"
 
 const firebaseConfig = {
@@ -16,7 +17,7 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 const db = getDatabase(app);
 const dbRef = ref(db);
-
+export const database = getFirestore(app);
 // Constant fields
 const VERHICLES_REF = "vehicles";
 const DRIVERS_REF = "drivers";

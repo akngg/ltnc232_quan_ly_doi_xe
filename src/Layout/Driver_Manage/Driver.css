@@ -1,31 +1,47 @@
-.driver-input-form{
-    /* text-align: center; */
-    display:block;
-    unicode-bidi: isolate;
-    margin-left: 25%;
-    margin-right: 25%;
-    margin-bottom: 15px;
-    margin-top: 50px;
-    background-color: hsl(0,3%,97%);
-    font-family: "SF Pro Text", sans-serif;
-    margin: auto;
+
+
+.driver-input-form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 2px solid black;
+    border-radius: 10px;
+    display: none;
+    z-index: 999; 
 }
-.driver-input-form label{
-    font-size: 25px;
-    user-select:none;
+
+
+.driver-input-form legend {
+    font-size: 18px;
+}
+
+.driver-input-form label {
+    font-size:20px;
+    /* display: block; */
+    font-weight: bold;
+    margin: 5px;
     border:none;
 }
-.driver-input-form:hover{
-    background-color: hsl(0,3%,94%);
+
+.driver-input label{
+    border:none;
 }
-.driver-input-form legend{
-    font-size: 40px;
-    user-select: none;
+
+
+.driver-input-form select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
+
 .driver-title{
     text-align: center;
     font-size: 80px;
-    /* background-color: lightgray;  */
     background: linear-gradient(87deg, #727070, #d5d3d3);
     padding: 20px;
     margin-top: 10px;
@@ -39,61 +55,58 @@
     transition: background-color 0.5s ease;
     font-size: 20px;
 }
-/* input{
-    padding: 5px;
-    margin: 5px;
-} */
 .driver-input{
     font-size: 1.5rem;
     padding: 3px;
-    border: 2px solid hsla(0, 0%, 80%, 0.5);
-    border-radius: 5px;
+    border:none;
     color: black;
     display:inline-flex;
     font-weight: normal;
     transition: 0.5s;
-    margin-bottom: 10px;
 }
 .driver-input:focus {
     border: 2px solid hsla(0, 0%, 80%, 1.5);
 }
-/* li{
-    font-size: 2rem;
-    font-weight:bold;
-    padding: 15px;
-    margin: 20px 0px;
-    border: 3px solid hsla(0,0%,85%, 0.75);
-    background-color: hsl(0,0%,97%);
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-} */
 .li-driver-info{
-    font-size: 2rem;
-    font-weight:bold;
+    font-size: 25px;
+    /* font-weight:bold; */
     padding: 15px;
     margin: 20px 0px;
     border: 3px solid hsla(0,0%,85%, 0.75);
     background-color: hsl(0,0%,97%);
     border-radius: 5px;
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
 }
 .li-driver-info:hover{
     background-color: hsl(0,0%,87%);
 }
-.text{
-    flex:1;
+#red-text{
+    color: orange;
 }
-/* form label{
-    font-size: 1.5rem;
-    unicode-bidi: isolate;
-} */
-.add-button{
-    /* background-color: rgba(255, 255, 255, 0.419);
-    display: block;
-    margin: auto;
-    border-color: black; */
+#add-button{
+    visibility: hidden;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
+    position: fixed;
+    top: 84%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 2px solid black;
+    border-radius: 10px;
+    z-index: 999;
+}
+#add-button:hover{
+    background-color: grey;
+    color: black;
+    background-color: rgb(98, 233, 98);
+}
+#open-add-button{
+    visibility: visible;
     padding: 10px;
     margin: 10px;
     border-radius: 5px;
@@ -103,42 +116,27 @@
     display: block;
     margin: auto;
 }
-.add-button:hover{
-    background-color: grey;
+#open-add-button:hover{
+    background-color: rgb(130, 230, 121);
     color: black;
 }
-.delete-button{
-    background-color:  white;
+#delete-button{
+    background-color:  grey;
     border: none;
 }
-.delete-button:hover{
-    background-color: grey;
+#delete-button:hover{
+    background-color: rgb(247, 113, 113);
     color: black;
+    transition: 0.3s;
 }
-
-.change-button{
-    background-color: white;
+#open-change-button{
+    background-color:  grey;
     border: none;
 }
-.change-button:hover{
-    background-color: grey;
+#open-change-button:hover{
+    background-color: rgb(238, 238, 120);
     color: black;
-}
-.moveUp-button{
-    background-color: white;
-    border: none;
-}
-.moveUp-button:hover{
-    background-color: grey;
-    color: black;
-}
-.moveDown-button{
-    background-color: white;
-    border: none;
-}
-.moveDown-button:hover{
-    background-color: grey;
-    color: black;
+    transition: 0.3s;
 }
 .bar-control{
     padding: 30px 60px;
@@ -156,4 +154,119 @@
 }
 .degree-select:hover{
     cursor: pointer;
-} 
+}
+.close-btn {
+    position: absolute;
+    top: 6px;
+    right: 12px;
+    cursor: pointer;
+    font-size: 15px;
+    color: #666;
+    background-color: lightgray;
+    padding: 10px 15px;
+    border: none;
+}
+
+.close-btn:hover {
+    background-color: rgb(225, 13, 13);
+    cursor: pointer;
+}
+
+
+.li-driver-info .driver-updated{
+    visibility: hidden;
+}
+.li-driver-info-elements{
+    flex: 0 0 25%; 
+    box-sizing: border-box;
+}
+
+
+#updateName-button{
+    visibility: hidden;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+#updatePhone-button{
+    visibility: hidden;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+#updatePosition-button{
+    visibility: hidden;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+#updateStatus-button{
+    visibility: hidden;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+#updateID-button{
+    visibility: hidden;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+#updateAddress-button{
+    visibility: hidden;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+#updateDegree-button{
+    visibility: hidden;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+#updateName-button:hover{    
+    background-color: lightgray;
+    transition: 0.5s;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+#updatePhone-button:hover{    
+    background-color: lightgray;
+    transition: 0.5s;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+#updateDegree-button:hover{    
+    background-color: lightgray;
+    transition: 0.5s;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+#updateStatus-button:hover{    
+    background-color: lightgray;
+    transition: 0.5s;
+    cursor: pointer;
+    border-radius: 2px;
+}
+#updateAddress-button:hover{    
+    background-color: lightgray;
+    transition: 0.5s;
+    cursor: pointer;
+    border-radius: 2px;
+}
+#updatePosition-button:hover{    
+    background-color: lightgray;
+    transition: 0.5s;
+    cursor: pointer;
+    border-radius: 2px;
+}
+#updateID-button:hover{    
+    background-color: lightgray;
+    transition: 0.5s;
+    cursor: pointer;
+    border-radius: 2px;
+}
