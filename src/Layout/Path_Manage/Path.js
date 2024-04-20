@@ -367,9 +367,6 @@ const Path = () =>{
     }
 
     //7. CẬP NHẬT XE ĐẾN MỖI 1P
-    const createRandomAccident=()=>{
-        const rdvalue=Math.floor(Math.random()*10);
-    }
     const updatePerMinute=async()=>{
         const d=new Date();
         console.log("Last Sync: " + d.getDate() + "/"
@@ -1271,12 +1268,15 @@ const Path = () =>{
                     }}>Bắt đầu vận chuyển</button>
                 </div>
             </div>
-            {/* Làm mới dữ liệu */}
-            <button onClick={()=>updatePerMinute()}>Làm mới dữ liệu</button>
+            {/* header */}
+            <div className='headerPath'>
+                
+            </div>
+            
+           
             {/* Hiển thị trạm */}
-            <div className='displaystation'>
-                {stationArr.map((station)=>(<div id={station.id}>
-                    <hr></hr>
+            <div className='displayStation'>
+                {stationArr.map((station)=>(<div id={station.id} className='eachStation'>
                     <h1>Tên trạm: {station.name}</h1>
                     <h1>Toạ độ X: {station.xCoordinate}</h1>
                     <h1>Toạ độ Y: {station.yCoordinate}</h1>
@@ -1289,9 +1289,8 @@ const Path = () =>{
                     <button onClick={()=>showPopupCalcPathBus(station)}>Khách</button>
                 </div>))}
             </div>
-            {/* thêm trạm */}
-            <div className='addStation'>
-                <hr></hr>
+             {/* thêm trạm */}
+             <div className="addStation">
                 <input placeholder='Tên trạm?' type='text' onChange={(e)=>setNewStationName(e.target.value)}/>
                 <input placeholder='Toạ độ X?' type='number' onChange={(e)=>setNewXCoordinate(e.target.value)}/>
                 <input placeholder='Toạ độ Y?' type='number' onChange={(e)=>setNewYCoordinate(e.target.value)}/>
