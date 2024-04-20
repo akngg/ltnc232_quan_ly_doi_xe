@@ -83,7 +83,7 @@ const Path = () =>{
     }
     const hidePopupAddGoods=()=>{
         setAddedGoods([]);
-        setNewGoodsDest([]);
+        // setNewGoodsDest([]);
         setNewGoodsName("");
         setNewGoodsWeight(0);
         setNewGoodsLocation("");
@@ -132,12 +132,75 @@ const Path = () =>{
         }
     }
     //
-    // 3. HIỂN THỊ THÔNG TIN CHI TIẾT CỦA TRẠM
+    // 3. CÁC THAO TÁC VỚI KHÁCH HÀNG
+    // 3.1 Thêm khách
+    const [newPassengerName,setNewPassengerName]=useState("");
+    const [newPassengerPhone, setNewPassengerPhone]=useState(0);
+    const [newPassengerDest, setNewPassengerDest]=useState("");
+    const [newPassengerLocation, setNewPassengerLocation]=useState("");
+
+    const showPopupAddPassenger=(station)=>{
+        setNewPassengerLocation(station.name);
+        document.getElementById('popupAddPassenger').style.display="block";
+        document.getElementById('overlay').style.display="block";
+    }
+    const hidePopupAddPassenger=()=>{
+        setAddedPassenger([]);
+        setNewPassengerName("");
+        setNewPassengerPhone(0);
+        setNewPassengerLocation("");
+        setNewPassengerDest("");
+        document.getElementById('popupAddPassenger').style.display="none";
+        document.getElementById('overlay').style.display="none";
+        document.getElementById('successAddPassenger').style.display="none";
+    }
+    const [addedPassenger, setAddedPassenger] = useState([]);
+
+    const addNewPassenger= async()=>{
+        try{
+            setAddedPassenger([...addedPassenger,{
+                name: newPassengerName,
+                phone: newPassengerPhone,
+                dest: newPassengerDest,
+            }])
+            await addDoc(collection(db,"passenger"),{
+                name: newPassengerName,
+                phone: newPassengerPhone,
+                dest: newPassengerDest,
+                isMoving: false,
+                position: newPassengerLocation,
+                status: true,
+                carId: "none",
+                userId: auth?.currentUser?.uid
+            });
+            document.getElementById('successAddPassenger').style.display="none";
+            document.getElementById('successAddPassenger').style.display="block";
+        }catch(error){
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            window.alert(errorCode, errorMessage);
+        }
+    }
+    // 3.2 Xoá khách
+    const deletePassenger=async(id,station)=>{
+        try{
+            const carDoc=doc(db, "passenger", id);
+            await deleteDoc(carDoc);
+            displayPopupBox(station);
+        }catch(error){
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            window.alert(errorCode, errorMessage);
+        }
+    }
+    //
+    // 4. HIỂN THỊ THÔNG TIN CHI TIẾT CỦA TRẠM
     const [popupStation,setPopupStation]=useState({});
     const [popupDriverList,setPopupDriverList]=useState([]);
     const [popupTruckList,setPopupTruckList]=useState([]);
     const [popupBusList,setPopupBusList]=useState([]);
     const [popupGoodsList,setPopupGoodsList]=useState([]);
+    const [popupPassengerList,setPopupPassengerList]=useState([]);
     const [popupIncomingTruck,setPopupIncomingTruck]=useState([]);
     const [popupIncomingBus,setPopupIncomingBus]=useState([]);
     const [popupIncomingDriverList,setPopupIncomingDriverList]=useState([]);
@@ -186,7 +249,7 @@ const Path = () =>{
             id:doc.id,
         }));
         setPopupIncomingBus(filteredIncomingBus);
-        const queryGoods=query(collection(db, "goods"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name));
+        const queryGoods=query(collection(db, "goods"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name), where("isMoving","==",false));
         // ,where("isMoving","==",false)
         const goods=await getDocs(queryGoods);
         const filteredGoods = goods.docs.map((doc)=>({
@@ -194,6 +257,14 @@ const Path = () =>{
             id:doc.id,
         }));
         setPopupGoodsList(filteredGoods);
+        const queryPassenger=query(collection(db, "passenger"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name), where("isMoving","==",false));
+        // ,where("isMoving","==",false)
+        const passenger=await getDocs(queryPassenger);
+        const filteredPassenger = passenger.docs.map((doc)=>({
+            ...doc.data(),
+            id:doc.id,
+        }));
+        setPopupPassengerList(filteredPassenger);
     }
     const showPopupBox=(station)=>{
         displayPopupBox(station);
@@ -205,11 +276,16 @@ const Path = () =>{
         setPopupDriverList([]);
         setPopupTruckList([]);
         setPopupBusList([]);
+        setPopupPassengerList([]);
+        setPopupGoodsList([]);
+        setPopupIncomingBus([]);
+        setPopupIncomingTruck([]);
+        setPopupIncomingDriverList([]);
         document.getElementById('popupStationDetail').style.display="none";
         document.getElementById('overlay').style.display="none";
     }
 
-    //4. TÍNH TOÁN CHUYẾN ĐI XE TẢI
+    //5. TÍNH TOÁN CHUYẾN ĐI XE TẢI
     
     const [pathCalcStation,setPathCalcStation]= useState({})
     const [pathCalcGoods, setPathCalcGoods]= useState([]);
@@ -219,7 +295,6 @@ const Path = () =>{
     const [pathCalcTruckChosenIndex, setPathCalcTruckChosenIndex]= useState(0);
     const [pathCalcTruckGoodsArray, setPathCalcTruckGoodsArray]= useState([]);
     const [pathCalcTruckUsed, setPathCalcTruckUsed]= useState([]);
-    const [pathCalcPassengers, setPathCalcPassengers] = useState([]);
     const [showDriversMode,setShowDriversMode] = useState(false);
 
 
@@ -254,9 +329,47 @@ const Path = () =>{
         setPathCalcTruckChosenIndex(0);
     }
 
-    //5. TÍNH TOÁN CHUYẾN ĐI XE KHÁCH
+    //6. TÍNH TOÁN CHUYẾN ĐI XE KHÁCH
+    const [pathCalcBus, setPathCalcBus]= useState([]);
+    const [pathCalcBusChosenIndex, setPathCalcBusChosenIndex]= useState(0);
+    const [pathCalcBusPassengerArray, setPathCalcBusPassengerArray]= useState([]);
+    const [pathCalcBusUsed, setPathCalcBusUsed]= useState([]);
+    const [pathCalcPassenger, setPathCalcPassenger] = useState([]);
 
-    //6. CẬP NHẬT XE ĐẾN MỖI 1P
+    const showPopupCalcPathBus= async(station)=>{
+        const queryDriver=query(collection(db, "drivers"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name),where("status","==","Active"));
+        const driver=await getDocs(queryDriver);
+        const filteredDriver = driver.docs.map((doc)=>({
+            ...doc.data(),
+            id:doc.id,
+        }));
+        setPathCalcDrivers(filteredDriver);
+        setPathCalcStation(station);
+        const queryBus=query(collection(db, "bus"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name),where("status","==","Active"));
+        const bus=await getDocs(queryBus);
+        const filteredBus = bus.docs.map((doc)=>({
+            ...doc.data(),
+            id:doc.id,
+        }));
+        const sortedBus=filteredBus.sort(function(a, b){return b.numOfSeats - a.numOfSeats});
+        setPathCalcBus(sortedBus);
+        const queryPassenger=query(collection(db, "passenger"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name), where("isMoving","==",false));
+        const goods=await getDocs(queryPassenger);
+        const filteredPassenger = goods.docs.map((doc)=>({
+            ...doc.data(),
+            id:doc.id,
+        }));
+        setPathCalcPassenger(filteredPassenger);
+        document.getElementById('popupCalcPathBus1').style.display="block";
+        document.getElementById('overlay').style.display="block";
+        // console.log(pathCalcTruckChosenIndex);
+        setPathCalcBusChosenIndex(0);
+    }
+
+    //7. CẬP NHẬT XE ĐẾN MỖI 1P
+    const createRandomAccident=()=>{
+        const rdvalue=Math.floor(Math.random()*10);
+    }
     const updatePerMinute=async()=>{
         const d=new Date();
         console.log("Last Sync: " + d.getDate() + "/"
@@ -273,70 +386,175 @@ const Path = () =>{
             ...doc.data(),
             id:doc.id,
         }));
-        console.log(filteredTruck);
         if(filteredTruck.length!=0){
             filteredTruck.forEach(async(truck)=>{
-                truck.position=truck.arrayOfDests[0];
-                console.log("dest:");
-                console.log(truck.arrayOfDests);
-                truck.driver.position=truck.position;
-                truck.arrayOfGoods.forEach(async(goods)=>{
-                    if(goods.dest==truck.position){
-                        truck.carrying-=goods.weight;
-                        const goodsDoc=doc(db,"goods", goods.id);
-                        await deleteDoc(goodsDoc);
+                while(true){
+                    const getd=new Date();
+                    if(truck.arriveTime>getd.getTime()||truck.arriveTime===0) break;
+                    truck.position=truck.arrayOfDests[0];
+                    console.log("dest:");
+                    console.log(truck.arrayOfDests);
+                    truck.driver.position=truck.position;
+                    truck.arrayOfGoods.forEach(async(goods)=>{
+                        if(goods.dest==truck.position){
+                            truck.carrying-=goods.weight;
+                            const goodsDoc=doc(db,"goods", goods.id);
+                            await deleteDoc(goodsDoc);
+                        }
+                    });
+                    truck.arrayOfGoods=truck.arrayOfGoods.filter(goods=>goods.dest!=truck.position);
+                    truck.arrayOfDests.shift();
+                    truck.arrayOfTimeDests.shift();
+                    truck.driver.arrayOfDests.shift();
+
+                    //random tình huống xe
+                    const trafficViolation=Math.floor(Math.random()*100);
+                    const goodsDamaging=Math.floor(Math.random()*100);
+                    let allViolations=0;
+                    if(trafficViolation<=7) allViolations+=2;
+                    if(goodsDamaging<=5) allViolations+=1;
+                    if (truck.driver.history.length===10) truck.driver.history.pop();
+                    truck.driver.history.unshift(allViolations);
+
+                    if(truck.arrayOfDests.length!=0){
+                        truck.arriveTime=truck.arrayOfTimeDests[0];
+                        truck.driver.arriveTime=truck.arriveTime;
+                        truck.status="Running";
+                        truck.driver.status="Running";
+                        truck.dest=truck.arrayOfDests[0];
+                        const driverDoc=doc(db, "drivers", truck.driver.id);
+                        updateDoc(driverDoc,{
+                            status: truck.driver.status,
+                            arrayOfDests: truck.arrayOfDests,
+                            position: truck.position,
+                            dest: truck.dest,
+                            arriveTime: truck.driver.arriveTime,
+                            history: truck.driver.history
+                        })
                     }
-                });
-                truck.arrayOfGoods=truck.arrayOfGoods.filter(goods=>goods.dest!=truck.position);
-                truck.arrayOfDests.shift();
-                
-                truck.driver.arrayOfDests.shift();
-                if(truck.arrayOfDests.length!=0){
-                    truck.arriveTime=d.getTime()+Math.round((Math.sqrt(((stationArr.find(station=>station.name==truck.position).xCoordinate-stationArr.find(station=>station.name==truck.arrayOfDests[0]).xCoordinate)**2)
-                    +((stationArr.find(station=>station.name==truck.position).yCoordinate-stationArr.find(station=>station.name==truck.arrayOfDests[0]).yCoordinate)**2))/50)*3600*1000);
-                    truck.driver.arriveTime=truck.arriveTime;
-                    truck.status="Running";
-                    truck.driver.status="Running";
-                    truck.dest=truck.arrayOfDests[0];
-                    const driverDoc=doc(db, "drivers", truck.driver.id);
-                    updateDoc(driverDoc,{
-                        status: truck.driver.status,
+                    else {
+                        truck.arriveTime=0;
+                        truck.driver.arriveTime=0;
+                        truck.status="Active";
+                        truck.driver.status="Active";
+                        // Update thêm cost vào totalcost công ty?
+                        truck.cost=0;
+                        truck.dest="";
+                        truck.driver.dest="";
+                        const driverDoc=doc(db, "drivers", truck.driver.id);
+                        updateDoc(driverDoc,{
+                            status: "Active",
+                            arrayOfDests: [],
+                            position: truck.position,
+                            dest: "",
+                            arriveTime: 0,
+                            car: "None",
+                            history: truck.driver.history
+                        })
+                        truck.driver={};
+                    }
+                    const truckDoc=doc(db, "truck", truck.id);
+                    updateDoc(truckDoc, {status: truck.status,
+                        arriveTime: truck.arriveTime,
+                        carrying: truck.carrying,
                         arrayOfDests: truck.arrayOfDests,
-                        position: truck.position,
+                        arrayOfTimeDests: truck.arrayOfTimeDests,
+                        arrayOfGoods: truck.arrayOfGoods,
+                        driver: truck.driver,
+                        cost: truck.cost,
                         dest: truck.dest,
-                        arriveTime: truck.driver.arriveTime
-                    })
+                        position: truck.position
+                    });
                 }
-                else {
-                    truck.arriveTime=0;
-                    truck.driver.arriveTime=0;
-                    truck.status="Active";
-                    truck.driver.status="Active";
-                    // Update thêm cost vào totalcost công ty?
-                    truck.cost=0;
-                    truck.dest="";
-                    truck.driver.dest="";
-                    const driverDoc=doc(db, "drivers", truck.driver.id);
-                    updateDoc(driverDoc,{
-                        status: "Active",
-                        arrayOfDests: [],
-                        position: truck.position,
-                        dest: "",
-                        arriveTime: 0
-                    })
-                    truck.driver={};
+            })
+        }
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
+        const queryBus=query(collection(db, "bus"),where('arriveTime',">", 0), where('arriveTime',"<=", time));
+        const bus=await getDocs(queryBus);
+        const filteredBus = bus.docs.map((doc)=>({
+            ...doc.data(),
+            id:doc.id,
+        }));
+        if(filteredBus.length!=0){
+            filteredBus.forEach(async(bus)=>{
+                while(true){
+                    const getd=new Date();
+                    if(bus.arriveTime>getd.getTime()||bus.arriveTime===0) break;
+                    bus.position=bus.arrayOfDests[0];
+                    console.log("dest:");
+                    console.log(bus.arrayOfDests);
+                    bus.driver.position=bus.position;
+                    bus.arrayOfPassenger.forEach(async(passenger)=>{
+                        if(passenger.dest==bus.position){
+                            bus.passengers-=1;
+                            const passengerDoc=doc(db,"passenger", passenger.id);
+                            await deleteDoc(passengerDoc);
+                        }
+                    });
+                    bus.arrayOfPassenger=bus.arrayOfPassenger.filter(passenger=>passenger.dest!=bus.position);
+                    bus.arrayOfDests.shift();
+                    bus.arrayOfTimeDests.shift();
+                    bus.driver.arrayOfDests.shift();
+
+                    //random tình huống xe
+                    const trafficViolation=Math.floor(Math.random()*100);
+                    const passengersDamaging=Math.floor(Math.random()*100);
+                    let allViolations=0;
+                    if(trafficViolation<=7) allViolations+=2;
+                    if(passengersDamaging<=5) allViolations+=1;
+                    if (bus.driver.history.length===10) bus.driver.history.pop();
+                    bus.driver.history.unshift(allViolations);
+
+                    if(bus.arrayOfDests.length!=0){
+                        bus.arriveTime=bus.arrayOfTimeDests[0];
+                        bus.driver.arriveTime=bus.arriveTime;
+                        bus.status="Running";
+                        bus.driver.status="Running";
+                        bus.dest=bus.arrayOfDests[0];
+                        const driverDoc=doc(db, "drivers", bus.driver.id);
+                        updateDoc(driverDoc,{
+                            status: bus.driver.status,
+                            arrayOfDests: bus.arrayOfDests,
+                            position: bus.position,
+                            dest: bus.dest,
+                            arriveTime: bus.driver.arriveTime,
+                            history: bus.driver.history
+                        })
+                    }
+                    else {
+                        bus.arriveTime=0;
+                        bus.driver.arriveTime=0;
+                        bus.status="Active";
+                        bus.driver.status="Active";
+                        // Update thêm cost vào totalcost công ty?
+                        bus.cost=0;
+                        bus.dest="";
+                        bus.driver.dest="";
+                        const driverDoc=doc(db, "drivers", bus.driver.id);
+                        updateDoc(driverDoc,{
+                            status: "Active",
+                            arrayOfDests: [],
+                            position: bus.position,
+                            dest: "",
+                            arriveTime: 0,
+                            car: "None",
+                            history: bus.driver.history
+                        })
+                        bus.driver={};
+                    }
+                    const busDoc=doc(db, "bus", bus.id);
+                    updateDoc(busDoc, {status: bus.status,
+                        arriveTime: bus.arriveTime,
+                        passengers: bus.passengers,
+                        arrayOfDests: bus.arrayOfDests,
+                        arrayOfTimeDests: bus.arrayOfTimeDests,
+                        arrayOfPassenger: bus.arrayOfPassenger,
+                        driver: bus.driver,
+                        cost: bus.cost,
+                        dest: bus.dest,
+                        position: bus.position
+                    });
                 }
-                const truckDoc=doc(db, "truck", truck.id);
-                updateDoc(truckDoc, {status: truck.status,
-                    arriveTime: truck.arriveTime,
-                    carrying: truck.carrying,
-                    arrayOfDests: truck.arrayOfDests,
-                    arrayOfGoods: truck.arrayOfGoods,
-                    driver: truck.driver,
-                    cost: truck.cost,
-                    dest: truck.dest,
-                    position: truck.position
-                });
             })
         }
     }
@@ -349,7 +567,7 @@ const Path = () =>{
     return (
         <div className='Path'>
             <div id='overlay'></div>
-
+            {/* Hiển thị thông tin trạm */}
             <div id='popupStationDetail'>
                 <button className='closebtn' onClick={()=>hidePopupStationBox()}>X</button>
                 <h1>Thông tin chi tiết về trạm {popupStation.name}</h1>
@@ -404,21 +622,30 @@ const Path = () =>{
                 <div className='popupStationGoods'>
                     <h1>Danh sách hàng hoá</h1>
                     {popupGoodsList.map((goods)=>(<div id={goods.id}>
-                        <p>Tên hàng hoá {goods.name}</p>
+                        <p>Tên hàng hoá: {goods.name}</p>
                         <p>Trọng lượng: {goods.weight}</p>
                         <p>Đích đến: {goods.dest}</p>
                         <button onClick={()=>deleteGoods(goods.id,popupStation)}>Xoá hàng hoá</button>
                         </div>))}
                 </div>
+                <div className='popupStationPassenger'>
+                    <h1>Danh sách khách</h1>
+                    {popupPassengerList.map((passenger)=>(<div id={passenger.id}>
+                        <p>Tên khách: {passenger.name}</p>
+                        <p>SĐT: {passenger.phone}</p>
+                        <p>Đích đến: {passenger.dest}</p>
+                        <button onClick={()=>deletePassenger(passenger.id,popupStation)}>Xoá khách</button>
+                        </div>))}
+                </div>
             </div>
-
+            {/* Hiển thị thêm hàng hoá */}
             <div id='popupAddGoods'>
                 <button onClick={()=>hidePopupAddGoods()}>X</button>
                 <h1>Thêm hàng hoá vào kho</h1>
                 <h2>Hàng đã được thêm: </h2>
                 {addedGoods.map((goods)=>(<div id={goods.id}>
-                        <p>Tên hàng hoá {goods.name}</p>
-                        <p>Trọng lượng: {goods.weight}</p>
+                        <p>Tên hàng hoá: {goods.name}</p>
+                        <p>Trọng lượng: {goods.weight} Kg</p>
                         <p>Đích đến: {goods.dest}</p>
                         </div>))}
                 <input placeholder='Tên hàng' type='text' onChange={(e)=>setNewGoodsName(e.target.value)}/>
@@ -427,7 +654,23 @@ const Path = () =>{
                 <button onClick={addNewGoods}>Thêm vào</button>
                 <h2 id='successAddGoods'>Đã thêm hàng thành công</h2>
             </div>
-
+            {/* Hiển thị thêm khách */}
+            <div id='popupAddPassenger'>
+                <button onClick={()=>hidePopupAddPassenger()}>X</button>
+                <h1>Thêm khách vào danh sách</h1>
+                <h2>Khách đã được thêm: </h2>
+                {addedPassenger.map((passenger)=>(<div id={passenger.id}>
+                        <p>Tên: {passenger.name}</p>
+                        <p>SĐT: {passenger.phone}</p>
+                        <p>Đích đến: {passenger.dest}</p>
+                        </div>))}
+                <input placeholder='Tên ' type='text' onChange={(e)=>setNewPassengerName(e.target.value)}/>
+                <input placeholder='SĐT' type='number' onChange={(e)=>setNewPassengerPhone(Number(e.target.value))}/>
+                <input placeholder='Đích đến' type='text' onChange={(e)=>setNewPassengerDest(e.target.value)}/>
+                <button onClick={addNewPassenger}>Thêm vào</button>
+                <h2 id='successAddPassenger' style={{display:"none"}}>Đã thêm hàng thành công</h2>
+            </div>
+            {/* Hiển thị tính đường đi cho xe tải */}
             <div id='popupCalcPathTruck1'>
                 <div id='calcPathTruckPage'>
                 <div id='calcPathDriversList'>
@@ -501,7 +744,7 @@ const Path = () =>{
                     </div>
                 </div>
                 <div id='calcPathTruckControl'>
-                    <h2 style={{display: "none"}} id='warning1to2'>Vui lòng sắp xếp hàng hoá</h2>
+                    <h2 style={{display: "none"}} id='warning1to2truck'>Vui lòng sắp xếp hàng hoá</h2>
                     <button onClick={()=>{
                         setPathCalcGoods([]);
                         setPathCalcTruck([]);
@@ -518,18 +761,27 @@ const Path = () =>{
                         const tempTruckUsed=pathCalcTruck;
                         const truckUsed=tempTruckUsed.filter((truck)=>{return truck.arrayOfGoods.length!=0});
                         if (truckUsed.length==0) {
-                            document.getElementById('warning1to2').style.display="block";
+                            document.getElementById('warning1to2truck').style.display="block";
                         }
                         else {
                             console.log(truckUsed);
                             // console.log(pathCalcDrivers);
                             // console.log(pathCalcTruckUsed);
-                            document.getElementById('warning1to2').style.display="none";
+                            document.getElementById('warning1to2truck').style.display="none";
                             document.getElementById('popupCalcPathTruck1').style.display="none";
                             document.getElementById('popupCalcPathTruck2').style.display="block";
                             setPathCalcTruckChosenIndex(0);
                             setPathCalcShowDrivers(pathCalcDrivers);
                             setPathCalcShowDrivers(pathCalcShowDrivers=>pathCalcShowDrivers.filter(driver=>driver.license>=truckUsed[0].license));
+                            setPathCalcShowDrivers(pathCalcShowDrivers=>pathCalcShowDrivers.sort(function(a,b){
+                                let sumA=0;
+                                a.history.forEach((his)=>{sumA+=his});
+                                let sumB=0;
+                                b.history.forEach((his)=>{sumB+=his});
+                                console.log(sumA);
+                                console.log(sumB);
+                                return sumA-sumB;
+                            }))
                             setShowDriversMode(false);
                             console.log(pathCalcShowDrivers);
                         }}}>Tiếp theo</button>
@@ -542,18 +794,20 @@ const Path = () =>{
                         {pathCalcTruckUsed.map(truck=>(<div>
                             <button onClick={()=>{
                                 setPathCalcTruckChosenIndex(pathCalcTruckUsed.indexOf(truck));
-                                console.log(pathCalcTruckUsed[pathCalcTruckUsed.indexOf(truck)]);
-                                console.log(pathCalcTruckUsed[pathCalcTruckUsed.indexOf(truck)].driver);
-                                console.log(pathCalcTruckUsed[pathCalcTruckUsed.indexOf(truck)].driver.name==undefined);
                                 setShowDriversMode(!(pathCalcTruckUsed[pathCalcTruckUsed.indexOf(truck)].driver.name==undefined));
                                 setPathCalcShowDrivers(pathCalcDrivers);
                                 // const tempCalcDriver=pathCalcDrivers.filter(driver=>{return driver>=pathCalcTruckUsed[pathCalcTruckUsed.indexOf(truck)].license});
                                 setPathCalcShowDrivers(pathCalcShowDrivers=>pathCalcShowDrivers.filter(driver=>driver.license>=pathCalcTruckUsed[pathCalcTruckUsed.indexOf(truck)].license));
                                 // setPathCalcShowDrivers(tempCalcDriver);
-                                console.log("ehh");
-                                console.log(pathCalcTruckUsed.indexOf(truck));
-                                console.log(pathCalcShowDrivers);
-                                console.log(pathCalcDrivers);
+                                setPathCalcShowDrivers(pathCalcShowDrivers=>pathCalcShowDrivers.sort(function(a,b){
+                                    let sumA=0;
+                                    a.history.forEach((his)=>{sumA+=his});
+                                    let sumB=0;
+                                    b.history.forEach((his)=>{sumB+=his});
+                                    console.log(sumA);
+                                    console.log(sumB);
+                                    return sumA-sumB;
+                                }));
                             }}>
                                 <div>
                                     <h2>Biển số xe {truck.liplate}</h2>
@@ -563,11 +817,12 @@ const Path = () =>{
                             </button>
                         </div>))}
                     </div>
-                    <div>{!showDriversMode && <div>
+                    <div>{!showDriversMode && pathCalcTruckUsed.length!==0 && <div>
                         {pathCalcShowDrivers.map(driver=>(<div>
                             <p>Tên tài xế: {driver.name}</p>
                             <p>Bằng lái: {driver.license}</p>
                             <p>Số điện thoại: {driver.phone} </p>
+                            <p>Lịch sử lái xe: {driver.history}</p>
                             <button onClick={()=>{
                                 pathCalcTruckUsed[pathCalcTruckChosenIndex].driver=driver;
                                 setPathCalcDrivers(pathCalcDrivers=>pathCalcDrivers.filter(drivers=>drivers!=driver));
@@ -577,10 +832,11 @@ const Path = () =>{
                             }}>Chọn tài xế</button>
                         </div>))}
                         </div>}
-                        {showDriversMode && <div>
+                        {showDriversMode && pathCalcTruckUsed.length!==0 && <div>
                             <p>Tên tài xế: {pathCalcTruckUsed[pathCalcTruckChosenIndex].driver?.name}</p>
                             <p>Bằng lái: {pathCalcTruckUsed[pathCalcTruckChosenIndex].driver?.license}</p>
                             <p>Số điện thoại: {pathCalcTruckUsed[pathCalcTruckChosenIndex].driver?.phone} </p>
+                            <p>Lịch sử lái xe: {pathCalcTruckUsed[pathCalcTruckChosenIndex].driver?.history}</p>
                             <button onClick={()=>{
                                 setPathCalcDrivers([...pathCalcDrivers,pathCalcTruckUsed[pathCalcTruckChosenIndex].driver]);
                                 setPathCalcShowDrivers([...pathCalcShowDrivers,pathCalcTruckUsed[pathCalcTruckChosenIndex].driver]);
@@ -591,6 +847,7 @@ const Path = () =>{
                     </div>
                 </div>
                 <div id='calcPathTruckControl'>
+                    <h2 style={{display: "none"}} id='warning2to3truck'>Vui lòng sắp xếp tài xế đầy đủ</h2>
                     <button onClick={()=>{
                         setPathCalcGoods([]);
                         setPathCalcTruck([]);
@@ -602,6 +859,7 @@ const Path = () =>{
                         setPathCalcDrivers([]);
                         setPathCalcShowDrivers([]);
                         document.getElementById('popupCalcPathTruck2').style.display="none";
+                        document.getElementById('warning2to3truck').style.display="none";
                         document.getElementById('overlay').style.display="none";
                     }}>Huỷ</button>
                     {/* <button onClick={()=>{
@@ -610,10 +868,16 @@ const Path = () =>{
                     }}>Quay Lại</button> */}
                     <button onClick={()=>{
                         //distance
-                        document.getElementById('popupCalcPathTruck2').style.display="none";
-                        document.getElementById('popupCalcPathTruck3').style.display="block";
-                        // kiểm tra xem đã nhập tài xế chưa?
-                        //arr of dest
+                        if(pathCalcTruckUsed.find(truck=>Object.keys(truck.driver).length===0)){
+                            document.getElementById('warning2to3truck').style.display="block";
+                        }
+                        else{
+                            document.getElementById('warning2to3truck').style.display="none";
+                            document.getElementById('popupCalcPathTruck2').style.display="none";
+                            document.getElementById('popupCalcPathTruck3').style.display="block";
+                            // kiểm tra xem đã nhập tài xế chưa?
+                            //arr of dest
+                        }
                     }}>Tiếp theo</button>
                 </div>
             </div>
@@ -658,13 +922,19 @@ const Path = () =>{
                     <button onClick={()=>{
                         const d=new Date();
                         pathCalcTruckUsed.forEach(async (truck)=>{
-                            truck.arriveTime=d.getTime()+Math.round((Math.sqrt(((pathCalcStation.xCoordinate-stationArr.find(station=>station.name==truck.arrayOfDests[0]).xCoordinate)**2)
-                            +((pathCalcStation.yCoordinate-stationArr.find(station=>station.name==truck.arrayOfDests[0]).yCoordinate)**2))/50)*3600*1000);
+                            truck.arrayOfTimeDests.push(d.getTime()+Math.round((Math.sqrt(((pathCalcStation.xCoordinate-stationArr.find(station=>station.name==truck.arrayOfDests[0]).xCoordinate)**2)
+                            +((pathCalcStation.yCoordinate-stationArr.find(station=>station.name==truck.arrayOfDests[0]).yCoordinate)**2))/50)*3600*1000));
+                            truck.arriveTime=truck.arrayOfTimeDests[0];
+                            for(let i=1;i<truck.arrayOfDests.length;i++){
+                                truck.arrayOfTimeDests.push(truck.arrayOfTimeDests[i-1]+Math.round((Math.sqrt(((stationArr.find(station=>station.name==truck.arrayOfDests[i-1]).xCoordinate-stationArr.find(station=>station.name==truck.arrayOfDests[i]).xCoordinate)**2)
+                                +((stationArr.find(station=>station.name==truck.arrayOfDests[i-1]).yCoordinate-stationArr.find(station=>station.name==truck.arrayOfDests[i]).yCoordinate)**2))/50)*3600*1000));
+                            }
                             const truckDoc=doc(db, "truck", truck.id);
                             await updateDoc(truckDoc, {status: "Running",
                                 arriveTime: truck.arriveTime,
                                 carrying: truck.carrying,
                                 arrayOfDests: truck.arrayOfDests,
+                                arrayOfTimeDests:truck.arrayOfTimeDests,
                                 arrayOfGoods: truck.arrayOfGoods,
                                 driver: truck.driver,
                                 cost: truck.cost,
@@ -700,8 +970,310 @@ const Path = () =>{
                     }}>Bắt đầu vận chuyển</button>
                 </div>
             </div>
+            {/* Hiển thị tính đường đi cho xe khách */}
+            <div id='popupCalcPathBus1'>
+                <div id='calcPathBusPage'>
+                <div id='calcPathDriversList'>
+                        <div id='currentBus'>
+                            <p>Biển số xe: {pathCalcBus[pathCalcBusChosenIndex]?.liplate}</p>
+                            <p>Loại xe: {pathCalcBus[pathCalcBusChosenIndex]?.cartype}</p>
+                            <p>Số ghế xe: {pathCalcBus[pathCalcBusChosenIndex]?.numOfSeats} ghế</p>
+                            <p>Số khách hiện tại: {pathCalcBus[pathCalcBusChosenIndex]?.passengers} người</p>
+                            <hr></hr>
+                        </div>
+                        <div id='allBusPage1'>
+                            {pathCalcBus.map((bus)=>(<div>
+                                <button onClick={()=>{
+                                setPathCalcBusChosenIndex(pathCalcBus.indexOf(bus));
+                                // console.log(pathCalcTruck.indexOf(truck));
+                                setPathCalcBusPassengerArray([...pathCalcBus[pathCalcBus.indexOf(bus)]?.arrayOfPassenger]);
+                                // console.log(pathCalcTruckGoodsArray);
+                                }}><div className='displayBusPage1'>
+                                <p>Biển số xe: {bus.liplate}</p>
+                                <p>Loại xe: {bus.cartype}</p>
+                                <p>Số ghế xe: {bus.numOfSeats} ghế</p>
+                                <p>Số khách hiện tại: {bus.passengers} người</p>
+                            </div></button>
+                            <br></br>
+                            </div>
+                            ))}
+                        </div>
+                    </div>
+                    <div id='calcPathPassengerList'>
+                        <div id='currentBusPassenger'>
+                            {pathCalcBusPassengerArray.map((passenger)=>(
+                                <div className='displayGoods'>
+                                <p>Tên hành khách: {passenger.name}</p>
+                                <p>SĐT: {passenger.phone}</p>
+                                <p>Đích đến: {passenger.dest}</p>
+                                <button onClick={()=>{
+                                    // let i=pathCalcTruckChosenIndex;
+                                    // pathCalcTruck[i].arrayOfGoods=pathCalcTruck[i].arrayOfGoods.filter(good=>good=goods);
+                                    pathCalcBus[pathCalcBusChosenIndex].arrayOfPassenger.splice(pathCalcBus[pathCalcBusChosenIndex].arrayOfPassenger.indexOf(passenger),1);
+                                    pathCalcBus[pathCalcBusChosenIndex].passenger-=1;
+                                    setPathCalcPassenger([...pathCalcPassenger,passenger]);
+                                    // console.log();
+                                    setPathCalcBusPassengerArray(pathCalcBusPassengerArray=>pathCalcBusPassengerArray.filter(pass=>pass.id!=passenger.id));
+                                    if(pathCalcBus[pathCalcBusChosenIndex].arrayOfPassenger.find(pass=>pass.dest==passenger.dest)==undefined) pathCalcBus[pathCalcBusChosenIndex].arrayOfDests.filter(dest=>dest!=passenger.dest);
+                                    // if (pathCalcTruck[pathCalcTruckChosenIndex].arrayOfGoods.length==0) setPathCalcTruckUsed(pathCalcTruckUsed=>pathCalcTruckUsed.filter(truck=>truck!=pathCalcTruck[pathCalcTruckChosenIndex]));
+                                }}>Xoá khỏi xe</button>
+                            </div>))}
+                            <hr></hr>
+                        </div>
+                        <div id='allPassenger'>
+                            {pathCalcPassenger.map((passenger)=>(<div className='displayPassenger'>
+                                <p>Tên hành khách: {passenger.name}</p>
+                                <p>SĐT: {passenger.phone}</p>
+                                <p>Đích đến: {passenger.dest}</p>
+                                <button onClick={()=>{
+                                    if(pathCalcBus[pathCalcBusChosenIndex].passengers<pathCalcBus[pathCalcBusChosenIndex].numOfSeats){
+                                        pathCalcBus[pathCalcBusChosenIndex]?.arrayOfPassenger.push(passenger);
+                                        setPathCalcBusPassengerArray([...pathCalcBusPassengerArray,passenger]);
+                                        setPathCalcPassenger(pathCalcPassenger=>pathCalcPassenger.filter(good=>good.id!=passenger.id));
+                                        pathCalcBus[pathCalcBusChosenIndex].passengers+=1;
+                                        if(!pathCalcBus[pathCalcBusChosenIndex].arrayOfDests.includes(passenger.dest)) pathCalcBus[pathCalcBusChosenIndex].arrayOfDests.push(passenger.dest);
+                                        document.getElementById(passenger.id+"warning").style.display='none';
+                                        // if(!pathCalcTruckUsed.includes(pathCalcTruck[pathCalcTruckChosenIndex])) setPathCalcTruckUsed([...pathCalcTruckUsed,pathCalcTruck[pathCalcTruckChosenIndex]]);
+                                    }
+                                    else document.getElementById(passenger.id+"warning").style.display='block';
+                                }}>Thêm vào xe</button>
+                                <p style={{display:'none'}} id={passenger.id+"warning"}>Vượt quá số ghé của xe</p>
+                            </div>))}
+                        </div>
+                    </div>
+                </div>
+                <div id='calcPathBusControl'>
+                    <h2 style={{display: "none"}} id='warning1to2bus'>Vui lòng sắp xếp khách</h2>
+                    <button onClick={()=>{
+                        setPathCalcPassenger([]);
+                        setPathCalcBus([]);
+                        setPathCalcBusPassengerArray([]);
+                        setPathCalcBusChosenIndex(0);
+                        setPathCalcStation({});
+                        setPathCalcBusUsed([]);
+                        document.getElementById('popupCalcPathBus1').style.display="none";
+                        document.getElementById('overlay').style.display="none";
+                    }}>Huỷ</button>
+                    <button onClick={()=>{
+                        setPathCalcBusUsed(pathCalcBus);
+                        setPathCalcBusUsed(pathCalcBusUsed=>pathCalcBusUsed.filter(bus=>bus.passengers!=0));
+                        const tempBusUsed=pathCalcBus;
+                        const busUsed=tempBusUsed.filter((bus)=>{return bus.passengers!=0});
+                        if (busUsed.length==0) {
+                            document.getElementById('warning1to2bus').style.display="block";
+                        }
+                        else {
+                            console.log(busUsed);
+                            // console.log(pathCalcDrivers);
+                            // console.log(pathCalcTruckUsed);
+                            document.getElementById('warning1to2bus').style.display="none";
+                            document.getElementById('popupCalcPathBus1').style.display="none";
+                            document.getElementById('popupCalcPathBus2').style.display="block";
+                            setPathCalcBusChosenIndex(0);
+                            setPathCalcShowDrivers(pathCalcDrivers);
+                            setPathCalcShowDrivers(pathCalcShowDrivers=>pathCalcShowDrivers.filter(driver=>driver.license>=busUsed[0].license));
+                            setPathCalcShowDrivers(pathCalcShowDrivers=>pathCalcShowDrivers.sort(function(a,b){
+                                let sumA=0;
+                                a.history.forEach((his)=>{sumA+=his});
+                                let sumB=0;
+                                b.history.forEach((his)=>{sumB+=his});
+                                console.log(sumA);
+                                console.log(sumB);
+                                return sumA-sumB;
+                            }))
+                            setShowDriversMode(false);
+                            console.log(pathCalcShowDrivers);
+                        }}}>Tiếp theo</button>
+                </div>
+            </div>
 
+            <div id='popupCalcPathBus2'>
+                <div id='calcPathBusPage'>
+                    <div>
+                        {pathCalcBusUsed.map(bus=>(<div>
+                            <button onClick={()=>{
+                                setPathCalcTruckChosenIndex(pathCalcBusUsed.indexOf(bus));
+                                setShowDriversMode(!(pathCalcBusUsed[pathCalcBusUsed.indexOf(bus)].driver.name==undefined));
+                                setPathCalcShowDrivers(pathCalcDrivers);
+                                // const tempCalcDriver=pathCalcDrivers.filter(driver=>{return driver>=pathCalcTruckUsed[pathCalcTruckUsed.indexOf(truck)].license});
+                                setPathCalcShowDrivers(pathCalcShowDrivers=>pathCalcShowDrivers.filter(driver=>driver.license>=pathCalcBusUsed[pathCalcBusUsed.indexOf(bus)].license));
+                                // setPathCalcShowDrivers(tempCalcDriver);
+                                setPathCalcShowDrivers(pathCalcShowDrivers=>pathCalcShowDrivers.sort(function(a,b){
+                                    let sumA=0;
+                                    a.history.forEach((his)=>{sumA+=his});
+                                    let sumB=0;
+                                    b.history.forEach((his)=>{sumB+=his});
+                                    console.log(sumA);
+                                    console.log(sumB);
+                                    return sumA-sumB;
+                                }))
+                            }}>
+                                <div>
+                                    <h2>Biển số xe {bus.liplate}</h2>
+                                    <h2>Loại bằng yêu cầu: {bus.license}</h2>
+                                    <h2>Tên tài xế : {bus.driver.name==undefined?"None":bus.driver.name}</h2>
+                                </div>
+                            </button>
+                        </div>))}
+                    </div>
+                    <div>{!showDriversMode && pathCalcBusUsed.length!==0 && <div>
+                        {pathCalcShowDrivers.map(driver=>(<div>
+                            <p>Tên tài xế: {driver.name}</p>
+                            <p>Bằng lái: {driver.license}</p>
+                            <p>Số điện thoại: {driver.phone} </p>
+                            <p>Lịch sử lái xe: {driver.history}</p>
+                            <button onClick={()=>{
+                                pathCalcBusUsed[pathCalcBusChosenIndex].driver=driver;
+                                setPathCalcDrivers(pathCalcDrivers=>pathCalcDrivers.filter(drivers=>drivers!=driver));
+                                setPathCalcShowDrivers(pathCalcShowDrivers=>pathCalcShowDrivers.filter(drivers=>drivers!=driver));
+                                // setPathCalcShowDrivers(pathCalcDrivers);
+                                setShowDriversMode(true);
+                            }}>Chọn tài xế</button>
+                        </div>))}
+                        </div>}
+                        {showDriversMode && pathCalcBusUsed.length!==0 &&  <div>
+                            <p>Tên tài xế: {pathCalcBusUsed[pathCalcBusChosenIndex].driver?.name}</p>
+                            <p>Bằng lái: {pathCalcBusUsed[pathCalcBusChosenIndex].driver?.license}</p>
+                            <p>Số điện thoại: {pathCalcBusUsed[pathCalcBusChosenIndex].driver?.phone} </p>
+                            <p>Lịch sử lái xe: {pathCalcBusUsed[pathCalcBusChosenIndex].driver?.history}</p>
+                            <button onClick={()=>{
+                                setPathCalcDrivers([...pathCalcDrivers,pathCalcBusUsed[pathCalcBusChosenIndex].driver]);
+                                setPathCalcShowDrivers([...pathCalcShowDrivers,pathCalcBusUsed[pathCalcBusChosenIndex].driver]);
+                                pathCalcBusUsed[pathCalcBusChosenIndex].driver={};
+                                setShowDriversMode(false);
+                            }}>Xoá tài xế</button>
+                        </div>}
+                    </div>
+                </div>
+                <div id='calcPathBusControl'>
+                <h2 style={{display: "none"}} id='warning2to3bus'>Vui lòng sắp xếp tài xế đầy đủ</h2>
+                    <button onClick={()=>{
+                        setPathCalcGoods([]);
+                        setPathCalcTruck([]);
+                        setPathCalcBusPassengerArray([]);
+                        setPathCalcTruckChosenIndex(0);
+                        setPathCalcStation({});
+                        setPathCalcBusUsed([]);
+                        setShowDriversMode(false);
+                        setPathCalcDrivers([]);
+                        setPathCalcShowDrivers([]);
+                        document.getElementById('popupCalcPathBus2').style.display="none";
+                        document.getElementById('warning2to3bus').style.display="none";
+                        document.getElementById('overlay').style.display="none";
+                    }}>Huỷ</button>
+                    {/* <button onClick={()=>{
+                        document.getElementById('popupCalcPathTruck2').style.display="none";
+                        document.getElementById('popupCalcPathTruck1').style.display="block";
+                    }}>Quay Lại</button> */}
+                    <button onClick={()=>{
+                        //distance
+                        if(pathCalcBusUsed.find(truck=>Object.keys(truck.driver).length===0)){
+                            document.getElementById('warning2to3bus').style.display="block";
+                        }
+                        else{
+                            document.getElementById('warning2to3bus').style.display="none";
+                            document.getElementById('popupCalcPathBus2').style.display="none";
+                            document.getElementById('popupCalcPathBus3').style.display="block";
+                        }
+                        
+                        // kiểm tra xem đã nhập tài xế chưa?
+                        //arr of dest
+                    }}>Tiếp theo</button>
+                </div>
+            </div>
+
+            <div id='popupCalcPathBus3'>
+                <div id='calcPathBusPage3'>
+                    {pathCalcBusUsed.map((bus,index)=>(<div>
+                        <div className='popupCalcPathBus3InfoCar'>
+                            <div>
+                                <h1>Thông tin xe</h1>
+                                <p>Biển số xe: {bus.liplate}</p>
+                                <p>Loại xe: {bus.cartype}</p>
+                                <p>Tổng số khách: {bus.carrying} người</p>
+                            </div>
+                            <div>
+                                <h1>Thông tin tài xế</h1>
+                                <p>Tên: {bus.driver?.name}</p>
+                                <p>Loại bằng lái: {bus.driver?.license}</p>
+                                <p>SĐT: {bus.driver?.phone}</p>
+                            </div>
+                        </div>
+                        <div>
+                            <h2>Kéo và thả để thay đổi thứ tự điểm đến</h2>
+                            <DndDisplay currentStation={pathCalcStation} arrStation={stationArr} car={bus}/>
+                            <hr></hr>
+                        </div>
+                    </div>))}
+                </div>
+                <div id='calcPathBusControl'>
+                    <button onClick={()=>{
+                        setPathCalcPassenger([]);
+                        setPathCalcBus([]);
+                        setPathCalcBusPassengerArray([]);
+                        setPathCalcBusChosenIndex(0);
+                        setPathCalcStation({});
+                        setPathCalcBusUsed([]);
+                        setShowDriversMode(false);
+                        setPathCalcDrivers([]);
+                        setPathCalcShowDrivers([]);
+                        document.getElementById('popupCalcPathBus3').style.display="none";
+                        document.getElementById('overlay').style.display="none";
+                    }}>Huỷ</button>
+                    <button onClick={()=>{
+                        const d=new Date();
+                        pathCalcBusUsed.forEach(async (bus)=>{
+                            bus.arrayOfTimeDests.push(d.getTime()+Math.round((Math.sqrt(((pathCalcStation.xCoordinate-stationArr.find(station=>station.name==bus.arrayOfDests[0]).xCoordinate)**2)
+                            +((pathCalcStation.yCoordinate-stationArr.find(station=>station.name==bus.arrayOfDests[0]).yCoordinate)**2))/50)*3600*1000));
+                            bus.arriveTime=bus.arrayOfTimeDests[0];
+                            for(let i=1;i<bus.arrayOfDests.length;i++){
+                                bus.arrayOfTimeDests.push(bus.arrayOfTimeDests[i-1]+Math.round((Math.sqrt(((stationArr.find(station=>station.name==bus.arrayOfDests[i-1]).xCoordinate-stationArr.find(station=>station.name==bus.arrayOfDests[i]).xCoordinate)**2)
+                                +((stationArr.find(station=>station.name==bus.arrayOfDests[i-1]).yCoordinate-stationArr.find(station=>station.name==bus.arrayOfDests[i]).yCoordinate)**2))/50)*3600*1000));
+                            }
+                            const busDoc=doc(db, "bus", bus.id);
+                            await updateDoc(busDoc, {status: "Running",
+                                arriveTime: bus.arriveTime,
+                                passengers: bus.passengers,
+                                arrayOfDests: bus.arrayOfDests,
+                                arrayOfTimeDests:bus.arrayOfTimeDests,
+                                arrayOfPassenger: bus.arrayOfPassenger,
+                                driver: bus.driver,
+                                cost: bus.cost,
+                                dest: bus.arrayOfDests[0]
+                            });
+                            bus.arrayOfPassenger.forEach(async(pass)=>{
+                                const passDoc=doc(db,"passenger", pass.id);
+                                await updateDoc(passDoc,{
+                                    isMoving: true,
+                                    carId: bus.id,
+                                })
+                            });
+                            const driverDoc=doc(db, "drivers", bus.driver.id);
+                            await updateDoc(driverDoc,{
+                                status: "Running",
+                                arrayOfDests: bus.arrayOfDests,
+                                arriveTime: bus.arriveTime,
+                                car: bus.liplate,
+                                dest: bus.arrayOfDests[0],
+                            })
+                            setPathCalcGoods([]);
+                            setPathCalcTruck([]);
+                            setPathCalcBusPassengerArray([]);
+                            setPathCalcTruckChosenIndex(0);
+                            setPathCalcStation({});
+                            setPathCalcBusUsed([]);
+                            setShowDriversMode(false);
+                            setPathCalcDrivers([]);
+                            setPathCalcShowDrivers([]);
+                            document.getElementById('popupCalcPathBus3').style.display="none";
+                            document.getElementById('overlay').style.display="none";
+                        })
+                    }}>Bắt đầu vận chuyển</button>
+                </div>
+            </div>
+            {/* Làm mới dữ liệu */}
             <button onClick={()=>updatePerMinute()}>Làm mới dữ liệu</button>
+            {/* Hiển thị trạm */}
             <div className='displaystation'>
                 {stationArr.map((station)=>(<div id={station.id}>
                     <hr></hr>
@@ -711,10 +1283,13 @@ const Path = () =>{
                     <button onClick={()=>showPopupBox(station)}>Chi tiết</button>
                     <button onClick={()=>deleteStationArr(station.id)}>Xoá trạm</button>
                     <button onClick={()=>showPopupAddGoods(station)}>Thêm hàng hoá</button>
+                    <button onClick={()=>showPopupAddPassenger(station)}>Thêm khách</button>
                     <h1>Lên kế hoạch vận chuyển</h1>
                     <button onClick={()=>showPopupCalcPathTruck(station)}>Hàng hoá</button>
+                    <button onClick={()=>showPopupCalcPathBus(station)}>Khách</button>
                 </div>))}
             </div>
+            {/* thêm trạm */}
             <div className='addStation'>
                 <hr></hr>
                 <input placeholder='Tên trạm?' type='text' onChange={(e)=>setNewStationName(e.target.value)}/>
@@ -726,7 +1301,7 @@ const Path = () =>{
             <button onClick={()=>{
                 const d=new Date();
                 console.log(d.getTime());
-            }}>CheckTime</button>
+            }}>Checktime</button>
         </div>
     )
     // TODO

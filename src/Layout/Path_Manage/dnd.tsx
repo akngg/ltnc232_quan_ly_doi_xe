@@ -2,7 +2,6 @@ import React, {useState, useRef, useEffect} from 'react';
 
 const DndDisplay=({currentStation, arrStation, car})=>{
     const [destination, setDestination]=useState(car.arrayOfDests);
-    const [arrDistance, setArrDistance]=useState([]);
     const [totalCost, setTotalCost]=useState(0);
 
     const dragDest=useRef<number>(0)
@@ -26,20 +25,42 @@ const DndDisplay=({currentStation, arrStation, car})=>{
         }
         let tempTotalCost=0;
         // setArrDistance([...cloneArrDistance]);
-        for(let index=0;index<car.arrayOfGoods.length;index++){
-            let totalDistance=0;
-            for(let i=0;i<destination.length;i++){
-                totalDistance+=parseFloat(cloneArrDistance[i]);
-                if (destination.indexOf(car.arrayOfGoods[index].dest)===i) break;
-            }
-            // parseFloat(cloneArrDistance[destination.indexOf(car.arrayOfGoods[index].dest)])
-            tempTotalCost+=100*totalDistance*car.arrayOfGoods[index].weight;
-            if(index+1==car.arrayOfGoods.length){
-                tempTotalCost+=100*parseFloat(cloneArrDistance[cloneArrDistance.length-1])*(car.weight+50);
+        if(car.class==="truck"){
+            for(let index=0;index<car.arrayOfGoods.length;index++){
+                let totalDistance=0;
+                for(let i=0;i<destination.length;i++){
+                    totalDistance+=parseFloat(cloneArrDistance[i]);
+                    if (destination.indexOf(car.arrayOfGoods[index].dest)===i) break;
+                }
+                // parseFloat(cloneArrDistance[destination.indexOf(car.arrayOfGoods[index].dest)])
+                tempTotalCost+=50*totalDistance*car.arrayOfGoods[index].weight;
+                if(index+1==car.arrayOfGoods.length){
+                    tempTotalCost+=75*totalDistance*(car.weight+150);
+                }
             }
         }
-        setTotalCost(tempTotalCost);
-        car.cost=tempTotalCost;
+        else{
+            // console.log("passengers");
+            // console.log(car.passengers);
+            // console.log(car.arrayOfPassenger.length);
+            for(let index=0;index<car.arrayOfPassenger.length;index++){
+                let totalDistance=0;
+                for(let i=0;i<destination.length;i++){
+                    totalDistance+=parseFloat(cloneArrDistance[i]);
+                    if (destination.indexOf(car.arrayOfPassenger[index].dest)===i) break;
+                    // console.log("test");
+                }
+                // parseFloat(cloneArrDistance[destination.indexOf(car.arrayOfGoods[index].dest)])
+                tempTotalCost+=1000*totalDistance
+                if(index+1==car.arrayOfPassenger.length){
+                    tempTotalCost+=75*totalDistance*(car.weight+150);
+                }
+                // console.log("uhhhh");
+                // console.log(tempTotalCost);
+            }
+        }
+        setTotalCost(Math.round(tempTotalCost));
+        car.cost=Math.round(tempTotalCost);
     },[destination])
 
     return (<div>

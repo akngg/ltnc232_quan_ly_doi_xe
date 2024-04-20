@@ -81,6 +81,8 @@ li a{
 
 .theoutlet{
     position: relative;
+    max-width: 100vw;
     margin-left: 220px;
     margin-right: 0px;
+    
 }

@@ -64,6 +64,7 @@ const Car = () =>{
     const addTruckCarList=async ()=>{
         try{
             await addDoc(collection(db,"truck"),{
+                class: "truck",
                 position: newPosition,
                 dest: "",
                 cartype: newTruckCarType==="small"? "Xe tải nhỏ": newTruckCarType==="medium"? "Xe tải vừa": "Xe container",
@@ -78,6 +79,7 @@ const Car = () =>{
                 liplate: newLicensePlate,
                 userId: auth?.currentUser?.uid,
                 arrayOfDests: [],
+                arrayOfTimeDests: [],
                 arrayOfGoods: [],
                 arriveTime: 0,
                 weight: newCarWeight,
@@ -95,6 +97,7 @@ const Car = () =>{
     const addBusCarList=async ()=>{
         try{
             await addDoc(collection(db,"bus"),{
+                class: "bus",
                 position: newPosition,
                 cartype: newBusCarType==="small"? "Xe 7 chỗ": newBusCarType==="medium"? "Xe 16 chỗ": "Xe 24 chỗ",
                 driver: {},
@@ -111,8 +114,9 @@ const Car = () =>{
                 weight: newCarWeight,
                 arriveTime: 0,
                 arrayOfDests: [],
+                arrayOfTimeDests: [],
                 dest: "",
-                arrayOfPassengers: [],
+                arrayOfPassenger: [],
             });
             getBusCarList();
         }catch(error){
