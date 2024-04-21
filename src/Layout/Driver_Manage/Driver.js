@@ -160,8 +160,8 @@ function Driver(){
         try{
             await addDoc(driversCollectionRef, {
                 name: driverName,
-                license: driverDegree,
-                phone: driverPhone,
+                license: Number(driverDegree),
+                phone: Number(driverPhone),
                 address: driverAddress,
                 position: driverPosition,
                 status: driverStatus,
@@ -258,7 +258,7 @@ function Driver(){
                                                 <button id="updateName-button"  onClick={() => updateName(driver.id)}>Update</button> <br/>
                             </div>
                             <div className="li-driver-info-elements">
-                            <strong>Bằng cấp:</strong> {driver.degree} <select id="driver-updated-degree" className="driver-updated" value={updatedDriverDegree} onChange={(e) => setUpdatedDriverDegree(e.target.value)} >
+                            <strong>Bằng cấp:</strong> {driver.license} <select id="driver-updated-degree" className="driver-updated" value={updatedDriverDegree} onChange={(e) => setUpdatedDriverDegree(e.target.value)} >
                                             <option value="">Select an option</option>
                                             <option value="1">1 (lái xe ô tô, xe buýt)</option>
                                             <option value="2">2 (lái xe tải)</option>
@@ -311,8 +311,8 @@ function Driver(){
                             <label className="driver-input" id="driver-input-degree"  for="degree"><strong>Bằng cấp</strong></label><br></br>
                             <select id="degree" name="degree" onChange={(e) => setDriverDegree(e.target.value)} className="degree-select">
                                 <option value="0">Select an option</option>
-                                <option value="1">1 (lái xe ô tô, xe buýt)</option>
-                                <option value="2">2 (lái xe tải)</option>
+                                <option value="1">1 (lái xe tải nhỏ, xe oto con)</option>
+                                <option value="2">2 (lái xe tải, oto loại vừa, nhỏ)</option>
                                 <option value="3">3 (lái mọi loại xe)</option>
                             </select>
                         </div>
