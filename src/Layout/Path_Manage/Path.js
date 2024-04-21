@@ -637,7 +637,7 @@ const Path = () =>{
             </div>
             {/* Hiển thị thêm hàng hoá */}
             <div id='popupAddGoods'>
-                <button onClick={()=>hidePopupAddGoods()}>X</button>
+                <button className='closebtn' onClick={()=>hidePopupAddGoods()}>X</button>
                 <h1>Thêm hàng hoá vào kho</h1>
                 <h2>Hàng đã được thêm: </h2>
                 {addedGoods.map((goods)=>(<div id={goods.id}>
@@ -653,7 +653,7 @@ const Path = () =>{
             </div>
             {/* Hiển thị thêm khách */}
             <div id='popupAddPassenger'>
-                <button onClick={()=>hidePopupAddPassenger()}>X</button>
+                <button className='closebtn' onClick={()=>hidePopupAddPassenger()}>X</button>
                 <h1>Thêm khách vào danh sách</h1>
                 <h2>Khách đã được thêm: </h2>
                 {addedPassenger.map((passenger)=>(<div id={passenger.id}>
@@ -668,7 +668,7 @@ const Path = () =>{
                 <h2 id='successAddPassenger' style={{display:"none"}}>Đã thêm hàng thành công</h2>
             </div>
             {/* Hiển thị tính đường đi cho xe tải */}
-            <div id='popupCalcPathTruck1'>
+            <div id='popupCalcPathTruck1' style={{padding: "20px",boxSizing: "border-box"}}>
                 <div id='calcPathTruckPage'>
                 <div id='calcPathDriversList'>
                         <div id='currentTruck'>
@@ -676,11 +676,10 @@ const Path = () =>{
                             <p>Loại xe: {pathCalcTruck[pathCalcTruckChosenIndex]?.cartype}</p>
                             <p>Tải trong xe: {pathCalcTruck[pathCalcTruckChosenIndex]?.payload} Kg</p>
                             <p>KL Hàng Hiện tại: {pathCalcTruck[pathCalcTruckChosenIndex]?.carrying} Kg</p>
-                            <hr></hr>
                         </div>
                         <div id='allTruckPage1'>
                             {pathCalcTruck.map((truck)=>(<div>
-                                <button onClick={()=>{
+                                <button className='chooseTruck' onClick={()=>{
                                 setPathCalcTruckChosenIndex(pathCalcTruck.indexOf(truck));
                                 // console.log(pathCalcTruck.indexOf(truck));
                                 setPathCalcTruckGoodsArray([...pathCalcTruck[pathCalcTruck.indexOf(truck)]?.arrayOfGoods]);
@@ -716,7 +715,6 @@ const Path = () =>{
                                     // if (pathCalcTruck[pathCalcTruckChosenIndex].arrayOfGoods.length==0) setPathCalcTruckUsed(pathCalcTruckUsed=>pathCalcTruckUsed.filter(truck=>truck!=pathCalcTruck[pathCalcTruckChosenIndex]));
                                 }}>Xoá khỏi xe</button>
                             </div>))}
-                            <hr></hr>
                         </div>
                         <div id='allGoods'>
                             {pathCalcGoods.map((goods)=>(<div className='displayGoods'>
@@ -785,11 +783,11 @@ const Path = () =>{
                 </div>
             </div>
 
-            <div id='popupCalcPathTruck2'>
+            <div id='popupCalcPathTruck2' style={{padding: "20px"}}>
                 <div id='calcPathTruckPage'>
-                    <div>
+                    <div id='allTruckPage2'>
                         {pathCalcTruckUsed.map(truck=>(<div>
-                            <button onClick={()=>{
+                            <button className='chooseTruck' onClick={()=>{
                                 setPathCalcTruckChosenIndex(pathCalcTruckUsed.indexOf(truck));
                                 setShowDriversMode(!(pathCalcTruckUsed[pathCalcTruckUsed.indexOf(truck)].driver.name==undefined));
                                 setPathCalcShowDrivers(pathCalcDrivers);
@@ -814,8 +812,8 @@ const Path = () =>{
                             </button>
                         </div>))}
                     </div>
-                    <div>{!showDriversMode && pathCalcTruckUsed.length!==0 && <div>
-                        {pathCalcShowDrivers.map(driver=>(<div>
+                    <div  className='allDrivers'>{!showDriversMode && pathCalcTruckUsed.length!==0 && <div>
+                        {pathCalcShowDrivers.map(driver=>(<div className='driver'>
                             <p>Tên tài xế: {driver.name}</p>
                             <p>Bằng lái: {driver.license}</p>
                             <p>Số điện thoại: {driver.phone} </p>
@@ -829,7 +827,7 @@ const Path = () =>{
                             }}>Chọn tài xế</button>
                         </div>))}
                         </div>}
-                        {showDriversMode && pathCalcTruckUsed.length!==0 && <div>
+                        {showDriversMode && pathCalcTruckUsed.length!==0 && <div className='driver'>
                             <p>Tên tài xế: {pathCalcTruckUsed[pathCalcTruckChosenIndex].driver?.name}</p>
                             <p>Bằng lái: {pathCalcTruckUsed[pathCalcTruckChosenIndex].driver?.license}</p>
                             <p>Số điện thoại: {pathCalcTruckUsed[pathCalcTruckChosenIndex].driver?.phone} </p>
@@ -879,16 +877,16 @@ const Path = () =>{
                 </div>
             </div>
 
-            <div id='popupCalcPathTruck3'>
+            <div id='popupCalcPathTruck3' style={{padding: "20px"}}>
                 <div id='calcPathTruckPage3'>
                     {pathCalcTruckUsed.map((truck,index)=>(<div>
                         <div className='popupCalcPathTruck3InfoCar'>
-                            <div>
+                            <div style={{width: "50%"}}>
                                 <h1>Thông tin xe</h1>
                                 <p>Biển số xe: {truck.liplate}</p>
                                 <p>Tổng KL hàng hoá: {truck.carrying} Kg</p>
                             </div>
-                            <div>
+                            <div style={{width: "50%"}}>
                                 <h1>Thông tin tài xế</h1>
                                 <p>Tên: {truck.driver?.name}</p>
                                 <p>Loại bằng lái: {truck.driver?.license}</p>
@@ -1287,23 +1285,26 @@ const Path = () =>{
             {/* Hiển thị trạm */}
             <div className='displayStation'>
                 {stationArr.map((station)=>(<div id={station.id} className='eachStation'>
-                    <h1>Tên trạm: {station.name}</h1>
-                    <h1>Toạ độ X: {station.xCoordinate}</h1>
-                    <h1>Toạ độ Y: {station.yCoordinate}</h1>
-                    <button onClick={()=>showPopupBox(station)}>Chi tiết</button>
-                    <button onClick={()=>deleteStationArr(station.id)}>Xoá trạm</button>
-                    <button onClick={()=>showPopupAddGoods(station)}>Thêm hàng hoá</button>
-                    <button onClick={()=>showPopupAddPassenger(station)}>Thêm khách</button>
-                    <h1>Lên kế hoạch vận chuyển</h1>
-                    <button onClick={()=>showPopupCalcPathTruck(station)}>Hàng hoá</button>
-                    <button onClick={()=>showPopupCalcPathBus(station)}>Khách</button>
+                    <div>
+                        <h1>Tên trạm: {station.name}</h1>
+                        <h1>Toạ độ X: {station.xCoordinate}</h1>
+                        <h1>Toạ độ Y: {station.yCoordinate}</h1>
+                    </div>
+                    <div>
+                        <button onClick={()=>showPopupBox(station)}>Chi tiết</button>
+                        <button onClick={()=>deleteStationArr(station.id)}>Xoá trạm</button>
+                        <button onClick={()=>showPopupAddGoods(station)}>Thêm hàng hoá</button>
+                        <button onClick={()=>showPopupAddPassenger(station)}>Thêm khách</button>
+                        <button onClick={()=>showPopupCalcPathTruck(station)}>Vận chuyển hàng hoá</button>
+                        <button onClick={()=>showPopupCalcPathBus(station)}>Vận chuyển khách</button>
+                    </div>
                 </div>))}
             </div>
              
-            <button onClick={()=>{
+            {/* <button onClick={()=>{
                 const d=new Date();
                 console.log(d.getTime());
-            }}>Checktime</button>
+            }}>Checktime</button> */}
         </div>
     )
     // TODO

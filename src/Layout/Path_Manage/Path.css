@@ -28,8 +28,10 @@
     z-index: 2;
     padding: 20px;
     box-sizing: border-box;
-    overflow-y: scroll;
-    overflow-x: hidden;
+    overflow: auto;
+}
+button{
+    cursor: pointer;
 }
 #popupAddGoods{
     display: none;
@@ -43,7 +45,7 @@
     z-index: 2;
     padding: 20px;
     box-sizing: border-box;
-    overflow: scroll;
+    overflow: auto;
 }
 #popupAddPassenger{
     display: none;
@@ -91,6 +93,43 @@
 }
 #calcPathTruckPage{
     display: flex;
+    height: 90%;
+    width: 100%;
+}
+#calcPathDriversList{
+    width: 50%;
+    border-right: 2px solid black;
+    border-bottom: 2px solid black;
+}
+#calcPathGoodsList{
+    width: 50%;
+    border-bottom: 2px solid black;
+}
+.chooseTruck{
+    width: 100%;
+}
+.allTruckPage1{
+    overflow-y: auto;
+}
+#allTruckPage2{
+    width: 50%;
+    border-right: 2px solid black;
+    border-bottom: 2px solid black;
+    overflow-y: auto;
+}
+#currentTruck{
+    height: 100px;
+    border-bottom: 2px solid black;
+}
+#currentTruckGoods{
+    height: 100px;
+    overflow-y: auto;
+    border-bottom: 2px solid black;
+}
+.allDrivers{
+    width: 50%;
+    border-bottom: 2px solid black;
+    overflow-y: auto;
 }
 #popupCalcPathTruck2{
     display: none;
@@ -119,7 +158,9 @@
 .popupCalcPathTruck3InfoCar{
     display: flex;
 }
-
+.driver{
+    border-bottom: 2px solid black;
+}
 #popupCalcPathBus1{
     display: none;
     position: fixed;
@@ -196,6 +237,16 @@
     float: left;
     border: 2px solid black;
     margin: 1%;
+    height: 150px;
+}
+.eachStation div{
+    float: left;
+    width: 50%;
+}
+.eachStation div button{
+    float:left;
+    width: 50%;
+    height: 49px;
 }
 .headerPath{
     width: 100%;
@@ -207,5 +258,6 @@
     align-items: center;
 }
 .addStation{
-    border: 4px solid black;
+    /* border: 4px solid black; */
+    background-color: aquamarine;
 }
