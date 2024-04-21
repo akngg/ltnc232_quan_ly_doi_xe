@@ -686,7 +686,6 @@ const Path = () =>{
                                 <p>Tải trong xe: {truck.payload} Kg</p>
                                 <p>KL Hàng Hiện tại: {truck.carrying} Kg</p>
                             </div></button>
-                            <br></br>
                             </div>
                             ))}
                         </div>
@@ -820,6 +819,15 @@ const Path = () =>{
                                 setPathCalcDrivers(pathCalcDrivers=>pathCalcDrivers.filter(drivers=>drivers!=driver));
                                 setPathCalcShowDrivers(pathCalcShowDrivers=>pathCalcShowDrivers.filter(drivers=>drivers!=driver));
                                 // setPathCalcShowDrivers(pathCalcDrivers);
+                                setPathCalcShowDrivers(pathCalcShowDrivers=>pathCalcShowDrivers.sort(function(a,b){
+                                    let sumA=0;
+                                    a.history.forEach((his)=>{sumA+=his});
+                                    let sumB=0;
+                                    b.history.forEach((his)=>{sumB+=his});
+                                    console.log(sumA);
+                                    console.log(sumB);
+                                    return sumA-sumB;
+                                }))
                                 setShowDriversMode(true);
                             }}>Chọn tài xế</button>
                         </div>))}
@@ -834,6 +842,15 @@ const Path = () =>{
                                 setPathCalcDrivers([...pathCalcDrivers,pathCalcTruckUsed[pathCalcTruckChosenIndex].driver]);
                                 setPathCalcShowDrivers([...pathCalcShowDrivers,pathCalcTruckUsed[pathCalcTruckChosenIndex].driver]);
                                 pathCalcTruckUsed[pathCalcTruckChosenIndex].driver={};
+                                setPathCalcShowDrivers(pathCalcShowDrivers=>pathCalcShowDrivers.sort(function(a,b){
+                                    let sumA=0;
+                                    a.history.forEach((his)=>{sumA+=his});
+                                    let sumB=0;
+                                    b.history.forEach((his)=>{sumB+=his});
+                                    console.log(sumA);
+                                    console.log(sumB);
+                                    return sumA-sumB;
+                                }))
                                 setShowDriversMode(false);
                             }}>Xoá tài xế</button>
                         </div>}
@@ -1122,6 +1139,15 @@ const Path = () =>{
                                 setPathCalcDrivers(pathCalcDrivers=>pathCalcDrivers.filter(drivers=>drivers!=driver));
                                 setPathCalcShowDrivers(pathCalcShowDrivers=>pathCalcShowDrivers.filter(drivers=>drivers!=driver));
                                 // setPathCalcShowDrivers(pathCalcDrivers);
+                                setPathCalcShowDrivers(pathCalcShowDrivers=>pathCalcShowDrivers.sort(function(a,b){
+                                    let sumA=0;
+                                    a.history.forEach((his)=>{sumA+=his});
+                                    let sumB=0;
+                                    b.history.forEach((his)=>{sumB+=his});
+                                    console.log(sumA);
+                                    console.log(sumB);
+                                    return sumA-sumB;
+                                }))
                                 setShowDriversMode(true);
                             }}>Chọn tài xế</button>
                         </div>))}
