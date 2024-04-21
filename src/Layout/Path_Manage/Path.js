@@ -813,7 +813,8 @@ const Path = () =>{
                             <p>Tên tài xế: {driver.name}</p>
                             <p>Bằng lái: {driver.license}</p>
                             <p>Số điện thoại: {driver.phone} </p>
-                            <p>Lịch sử lái xe: {driver.history}</p>
+                            <p>Lịch sử lái xe: </p>
+                            {driver.history.map((his, index)=>(<p>{index+1}. {his===0? "Lái xe an toàn":his===1?"Làm hỏng hàng hoá":his===2?"Vi phạm luật giao thông":"Vi phạm luât, làm hỏng hàng"}</p>))}
                             <button onClick={()=>{
                                 pathCalcTruckUsed[pathCalcTruckChosenIndex].driver=driver;
                                 setPathCalcDrivers(pathCalcDrivers=>pathCalcDrivers.filter(drivers=>drivers!=driver));
@@ -827,7 +828,8 @@ const Path = () =>{
                             <p>Tên tài xế: {pathCalcTruckUsed[pathCalcTruckChosenIndex].driver?.name}</p>
                             <p>Bằng lái: {pathCalcTruckUsed[pathCalcTruckChosenIndex].driver?.license}</p>
                             <p>Số điện thoại: {pathCalcTruckUsed[pathCalcTruckChosenIndex].driver?.phone} </p>
-                            <p>Lịch sử lái xe: {pathCalcTruckUsed[pathCalcTruckChosenIndex].driver?.history}</p>
+                            <p>Lịch sử lái xe: </p>
+                            {pathCalcTruckUsed[pathCalcTruckChosenIndex].driver.history.map((his, index)=>(<p>{index+1}. {his===0? "Lái xe an toàn":his===1?"Làm hỏng hàng hoá":his===2?"Vi phạm luật giao thông":"Vi phạm luât, làm hỏng hàng"}</p>))}
                             <button onClick={()=>{
                                 setPathCalcDrivers([...pathCalcDrivers,pathCalcTruckUsed[pathCalcTruckChosenIndex].driver]);
                                 setPathCalcShowDrivers([...pathCalcShowDrivers,pathCalcTruckUsed[pathCalcTruckChosenIndex].driver]);
@@ -880,6 +882,7 @@ const Path = () =>{
                             <div style={{width: "50%"}}>
                                 <h1>Thông tin xe</h1>
                                 <p>Biển số xe: {truck.liplate}</p>
+                                <p>Loại xe: {truck.cartype}</p>
                                 <p>Tổng KL hàng hoá: {truck.carrying} Kg</p>
                             </div>
                             <div style={{width: "50%"}}>
@@ -1112,7 +1115,8 @@ const Path = () =>{
                             <p>Tên tài xế: {driver.name}</p>
                             <p>Bằng lái: {driver.license}</p>
                             <p>Số điện thoại: {driver.phone} </p>
-                            <p>Lịch sử lái xe: {driver.history}</p>
+                            <p>Lịch sử lái xe: </p>
+                            {driver.history.map((his, index)=>(<p>{index+1}. {his===0? "Lái xe an toàn":his===1?"Làm hỏng hàng hoá":his===2?"Vi phạm luật giao thông":"Vi phạm luât, làm hỏng hàng"}</p>))}
                             <button onClick={()=>{
                                 pathCalcBusUsed[pathCalcBusChosenIndex].driver=driver;
                                 setPathCalcDrivers(pathCalcDrivers=>pathCalcDrivers.filter(drivers=>drivers!=driver));
@@ -1126,7 +1130,8 @@ const Path = () =>{
                             <p>Tên tài xế: {pathCalcBusUsed[pathCalcBusChosenIndex].driver?.name}</p>
                             <p>Bằng lái: {pathCalcBusUsed[pathCalcBusChosenIndex].driver?.license}</p>
                             <p>Số điện thoại: {pathCalcBusUsed[pathCalcBusChosenIndex].driver?.phone} </p>
-                            <p>Lịch sử lái xe: {pathCalcBusUsed[pathCalcBusChosenIndex].driver?.history}</p>
+                            <p>Lịch sử lái xe: </p>
+                            {pathCalcBusUsed[pathCalcBusChosenIndex].driver.history.map((his, index)=>(<p>{index+1}. {his===0? "Lái xe an toàn":his===1?"Làm hỏng hàng hoá":his===2?"Vi phạm luật giao thông":"Vi phạm luât, làm hỏng hàng"}</p>))}
                             <button onClick={()=>{
                                 setPathCalcDrivers([...pathCalcDrivers,pathCalcBusUsed[pathCalcBusChosenIndex].driver]);
                                 setPathCalcShowDrivers([...pathCalcShowDrivers,pathCalcBusUsed[pathCalcBusChosenIndex].driver]);
@@ -1181,7 +1186,7 @@ const Path = () =>{
                                 <h1>Thông tin xe</h1>
                                 <p>Biển số xe: {bus.liplate}</p>
                                 <p>Loại xe: {bus.cartype}</p>
-                                <p>Tổng số khách: {bus.carrying} người</p>
+                                <p>Tổng số khách: {bus.passengers} người</p>
                             </div>
                             <div>
                                 <h1>Thông tin tài xế</h1>
