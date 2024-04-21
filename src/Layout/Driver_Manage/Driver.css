@@ -1,17 +1,12 @@
 
 
 .header{
-    /* position: fixed; */
-    /* top: 0;
-    left: 0; */
     width: 100%;
     height: 100px;
-    /* padding: 20px; */
     background: rgb(157, 219, 227);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* z-index: 99; */
 } 
 .logo{
     width: 10%;
@@ -21,26 +16,28 @@
 }
 .site-name{
     font-size: 3rem;
-    /* width: 30%;
-    height:50%; */
     margin-right: 20%;;
     background: rgb(157, 219, 227);
     font-weight: bold;
     user-select: none; 
 }
 .driver-input-form {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    display: none;
+    background-color: white;
+    padding: 20px;
+    max-width: 60%;
+    margin-left: 18%;
+}
+#add-button{
+    visibility: hidden;
+    cursor: pointer;
+    margin-top:5px;
+    margin-left: 45%;
     background-color: white;
     padding: 20px;
     border: 2px solid black;
     border-radius: 10px;
-    display: none;
-    z-index: 999; 
 }
-
 
 .driver-input-form legend {
     font-size: 25px;
@@ -50,10 +47,8 @@
 
 .driver-input-form label {
     font-size:20px;
-    /* display: block; */
     font-weight: bold;
     margin: 5px;
-    /* border:none; */
 }
 
 .driver-input label{
@@ -104,7 +99,6 @@
 }
 .li-driver-info{
     font-size: 25px;
-    /* font-weight:bold; */
     padding: 15px;
     margin: 20px 0px;
     border: 5px solid hsla(141, 53%, 43%, 0.75);
@@ -119,40 +113,7 @@
 #red-text{
     color: rgb(236, 37, 80);
 }
-#add-button{
-    visibility: hidden;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.5s ease;
-    position: fixed;
-    top: 82%;
-    left: 50%;
-    margin-top: 1%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
-    border: 2px solid black;
-    border-radius: 10px;
-    z-index: 999;
-}
-/* #add-button {
-    visibility: hidden;
-    padding: 2%;
-    border-radius: 1%;
-    cursor: pointer;
-    transition: background-color 0.5s ease;
-    position: fixed;
-    top: 84%;
-    left: 50%;
-    margin-top: 1%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 2%;
-    border: 2px solid black;
-    border-radius: 2%;
-    z-index: 999;
-} */
+
 #add-button:hover{
     background-color: grey;
     color: black;
