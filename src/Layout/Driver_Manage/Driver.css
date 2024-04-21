@@ -31,16 +31,21 @@
     user-select: none; 
 }
 .driver-input-form {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    display: none;
+    background-color: white;
+    padding: 20px;
+    max-width: 60%;
+    margin-left: 18%;
+}
+#add-button{
+    visibility: hidden;
+    cursor: pointer;
+    margin-top:5px;
+    margin-left: 45%;
     background-color: white;
     padding: 20px;
     border: 2px solid black;
     border-radius: 10px;
-    display: none;
-    z-index: 999; 
 }
 
 
@@ -121,40 +126,7 @@
 #red-text{
     color: rgb(236, 37, 80);
 }
-#add-button{
-    visibility: hidden;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.5s ease;
-    position: fixed;
-    top: 82%;
-    left: 50%;
-    margin-top: 1%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
-    border: 2px solid black;
-    border-radius: 10px;
-    z-index: 999;
-}
-/* #add-button {
-    visibility: hidden;
-    padding: 2%;
-    border-radius: 1%;
-    cursor: pointer;
-    transition: background-color 0.5s ease;
-    position: fixed;
-    top: 84%;
-    left: 50%;
-    margin-top: 1%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 2%;
-    border: 2px solid black;
-    border-radius: 2%;
-    z-index: 999;
-} */
+
 #add-button:hover{
     background-color: grey;
     color: black;
