@@ -9,6 +9,7 @@
 }
 .dashboardiv #side{
     flex:1;
+    height: 100vh;
 }
 .Sidebar{
     display: flex;
