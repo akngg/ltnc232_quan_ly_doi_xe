@@ -4,12 +4,6 @@
   height: 100%;
   margin-left: 220px;
 }
-html {
-    font-family: Arial, Helvetica, sans-serif;
-}
-div{    
-    grid-template-rows: auto 1fr;
-}
 #root{
   width: 100%;
   height: 100%;
@@ -59,22 +53,22 @@ div{
     justify-content: center;
     align-items: center;
 }
- .navigation {
+.navigation {
     justify-content: center;
     align-items: center;
  }
  
- #nav{
+#nav{
     background-color: rgb(69, 63, 92);
     width: 100%;
  }
- #nav li{
+#nav li{
     background-color: rgb(69, 63, 92);
     display: inline-block;
     font-weight: bold;
     user-select: none; 
  }
- #nav li button {
+#nav li button {
     font-family: Arial, Helvetica, sans-serif;
     border: none;
     text-transform: uppercase;
@@ -86,17 +80,17 @@ div{
     line-height: 50px;
     padding: 0 24px 0 24px;
  }
- #nav li :hover{
+#nav li :hover{
     color: rgb(34, 182, 54);
     background-color: rgb(94, 40, 210);
  }
- .thongtinchung{
+.thongtinchung{
   display: flex;
   justify-content: center;
   height: 70%;
  }
  /* thong tin chung */
- .general{
+.general{
   width: 30%;
   height: 70%;
   background-color: rgba(140, 230, 104, 0.137); /* Màu ghi trắng mờ */
@@ -109,7 +103,7 @@ div{
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5); /* Hiệu ứng nổi */
 
  }
- .general h2 {
+.general h2 {
   font-size: 24px;
   color: #495057;
  }
@@ -120,23 +114,23 @@ div{
   text-align: left;
   font-weight: bold;
 }
- .search{
+.search{
   width: 70%;
   height: 100%;
   margin-top: 20px;
  }
- .search h2{
+.search h2{
   font-size: 33px;
   color: #495057;
   text-align: center;
  }
- .search h3{
+.search h3{
   font-size: 24px;
   color: #495057;
   text-align: left;
   margin-left: 80px;
  }
- .search input[type="text"] {
+.search input[type="text"] {
   width: 80%;
   padding: 10px;
   margin-top: 5px;
@@ -144,7 +138,7 @@ div{
   border: 1px solid #ccc;
   border-radius: 5px;
  }
- .search button{
+.search button{
   padding: 10px 20px;
   width: 20%;
   margin-top: 5px;
@@ -154,10 +148,10 @@ div{
   border-radius: 5px;
   cursor: pointer;
  }
-  .search button:hover {
+.search button:hover {
     background-color: #45a049;
   }
-  .searchInfo {
+.searchInfo {
   width: 75%;
   display: flex;
   flex-direction: column;
@@ -169,7 +163,7 @@ div{
   border-radius: 10px; 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
   }
-  .searchInfo h4 {
+.searchInfo h4 {
     font-size: 24px;
     color: #1778d9;
     text-align: center;
@@ -188,21 +182,20 @@ div{
     margin-top: 20px;
   }
   
-  table {
+.table {
     width: 100%;
     background-color: #f3f3f3;
   }
-  
-  th, td {
+.table th, td {
     text-align: left;
     border: 1px solid #ddd;
     padding: 8px;
-  }
+}
   
-  tr:nth-child(even) {
+.table tr:nth-child(even) {
     background-color: #dddddd;
   }
-  th {
+.table th {
     background-color: #04AA6D;
     color: white;
   }
@@ -236,19 +229,12 @@ div{
 .form-container p {
   background-color: transparent;
 }
-/* Style cho label */
-label {
-  margin-bottom: 15px; /* Khoảng cách giữa các label */
-  font-size: 16px; /* Kích thước chữ */
-}
-
 /* Style cho input */
-input[type="text"] {
-  /* width: 100%; */
+.form-container input[type="text"] {
   padding: 10px;
-  margin-top: 5px; /* Khoảng cách giữa label và input */
-  border: 1px solid #ccc; /* Viền cho input */
-  border-radius: 5px; /* Bo góc cho input */
+  margin-top: 5px; 
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 .submit-button {
   padding: 10px 20px;
