@@ -62,7 +62,7 @@ function Driver(){
     }
     const handleAddDriver = async() => {
         const newDriver = {name: driverName,
-                            degree: driverDegree,
+                            degree: Number(driverDegree),
                             phone: driverPhone,
                             status: driverStatus,
                             address: driverAddress,
@@ -334,12 +334,12 @@ function Driver(){
                         <div>
                             <label><strong>Vị trí</strong></label><br></br>
                             <input id="driver-input-position" className="driver-input" type="text" value={driverPosition} onChange={(e) => setDriverPosition(e.target.value)}
-                            placeholder="Enter driver's task: " /> <br/>
+                            placeholder="Enter driver's position: " /> <br/>
                         </div>
                         <div>
                             <label><strong>Địa chỉ</strong></label><br></br>
                             <input id="driver-input-address" className="driver-input" type="text" value={driverAddress} onChange={(e) => setDriverAddress(e.target.value)}
-                            placeholder="Enter driver's task: " /> <br/>
+                            placeholder="Enter driver's address: " /> <br/>
                         </div>
                 </form>
                 <button id="add-button" onClick={handleAddDriver}>Xác nhận</button>

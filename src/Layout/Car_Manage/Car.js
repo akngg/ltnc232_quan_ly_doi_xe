@@ -113,7 +113,7 @@ function Car() {
     });
   }
   const sortedBusMain = busmain.filter(bus => bus.status === 'maintenance');
-  const activeBuses = buses.filter(bus => bus.status === "active");  
+  const activeBuses = buses.filter(bus => bus.status === "Active");  
   const [search, setSearch] = useState('');
   const [busInfo, setBusInfo] = useState(null);
   const [truckInfo, setTruckInfo] = useState(null);
@@ -181,12 +181,12 @@ function Car() {
   const reversedBusMain = busmain.slice(0, -1).reverse();
   const busInMain = reversedBusMain.find(bus => bus.liplate === liplateBus);
   if (busInMain) {
-    await updateBusMainStatus(busInMain.id, 'active');
+    await updateBusMainStatus(busInMain.id, 'Active');
     setBusMainList(busmain.filter(bus => bus.liplate !== liplateBus));
   }
   const bus = buses.find(bus => bus.liplate === liplateBus);
   if (bus) {
-    await updateBusStatus(bus.id, 'active');
+    await updateBusStatus(bus.id, 'Active');
   }
   };
   const sortedBusesMain = busmain.slice(-4, -1).reverse();
@@ -222,7 +222,7 @@ function Car() {
     const truckDoc= doc(database, 'trucks', id);
     await updateDoc(truckDoc, {status});
   }
-  const activeTrucks = trucks.filter(truck => truck.status === "active");
+  const activeTrucks = trucks.filter(truck => truck.status === "Active");
       // bao duong xe tai
   const truckMainCollectionRef = collection(database, 'truckMain');
   const getTruckMain = async () => {
@@ -288,12 +288,12 @@ function Car() {
     const reversedTruckMain = truckmain.slice(0, -1).reverse();
     const truckInMain = reversedTruckMain.find(truck => truck.liplate === liplateTruck);
     if (truckInMain) {
-      await updateTruckMainStatus(truckInMain.id, 'active');
+      await updateTruckMainStatus(truckInMain.id, 'Active');
       setTruckMain(truckmain.filter(truck => truck.liplate !== liplateTruck));
     }
     const truck = trucks.find(truck => truck.liplate === liplateTruck);
     if (truck) {
-      await updateTruckStatus(truck.id, 'active');
+      await updateTruckStatus(truck.id, 'Active');
     }
   }
   const sortedTrucksMain = truckmain.slice(-4,-1).reverse();
@@ -486,7 +486,7 @@ function Car() {
       driver: {},
       height: 0,
       length: 0,
-      license : license,
+      license : Number(license),
       cost : 0,
       userId: '',
       weight: 0,
@@ -498,11 +498,11 @@ function Car() {
       add: arrayUnion( 'Thêm xe: '+liplate + ' : Thời gian thêm : ' + new Date().toLocaleString(  'vi-VN', { hour: 'numeric', minute: 'numeric', day: 'numeric', month: 'numeric', year: 'numeric'} ))
     });
   };
-  const addTruck = async (liplate, cartype,license, carrying,position, releaseDate, status) => {
+  const addTruck = async (liplate, cartype,license, payload,position, releaseDate, status) => {
     await addDoc(truckCollectionRef, {
       liplate: liplate,
       cartype: cartype,
-      carrying: Number(carrying),
+      carrying: 0,
       position: position,
       releaseDate: releaseDate,
       status: status,
@@ -517,10 +517,10 @@ function Car() {
       fueltype: '',
       height: 0,
       length: 0,
-      license: license,
+      license: Number(license),
       userId: '',
       weight: 0,
-      payload: 0,
+      payload: Number(payload),
     });
     const truckDoc = doc(database, 'trucks','history-truck');
     await updateDoc(truckDoc, {
@@ -539,10 +539,10 @@ function Car() {
       return;
     }
     if (selectedValue === 'bus') {
-      addBus(liplate, cartype,license, numOfSeats, position, releaseDate, 'active');
+      addBus(liplate, cartype,license, numOfSeats, position, releaseDate, 'Active');
       alert('Thêm xe thành công');
     } else if (selectedValue === 'truck') {
-      addTruck(liplate, cartype,license, numOfSeats, position, releaseDate, 'active');
+      addTruck(liplate, cartype,license, numOfSeats, position, releaseDate, 'Active');
       alert('Thêm xe thành công');
     }
     else {
@@ -683,7 +683,7 @@ function Car() {
                   <div className='inputRadio'>
                   <input type="radio"
                   onChange={() => handleMaintenance(bus.liplate)}
-                  checked={bus.status === "active"}
+                  checked={bus.status === "Active"}
                   />
                    Hoàn thành bảo dưỡng
                   <input type="radio"
@@ -712,7 +712,7 @@ function Car() {
                   <div className='inputRadio'>
                   <input type="radio"
                   onChange={() => handleMaintenanceTruck(truck.liplate)}
-                  checked={truck.status === "active"}
+                  checked={truck.status === "Active"}
                   />
                    Hoàn thành bảo dưỡng
                   <input type="radio"

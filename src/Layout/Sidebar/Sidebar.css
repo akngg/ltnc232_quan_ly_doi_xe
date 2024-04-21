@@ -5,7 +5,7 @@
     flex-direction: row;
     /* align-items: flex-start; */
     justify-items: center;
-    background-color: gray;
+    background-color: aliceblue;
 }
 .dashboardiv #side{
     flex:1;
@@ -53,7 +53,7 @@ li a{
     display: inline-flex;
 }
 .title{
-    color: aqua;
+    color: white;
     text-align: left;
     margin-left: 20px;
 }

@@ -403,11 +403,28 @@ const Path = () =>{
                     //random tình huống xe
                     const trafficViolation=Math.floor(Math.random()*100);
                     const goodsDamaging=Math.floor(Math.random()*100);
+                    const carDamaging=Math.floor(Math.random()*100);
                     let allViolations=0;
-                    if(trafficViolation<=7) allViolations+=2;
-                    if(goodsDamaging<=5) allViolations+=1;
-                    if (truck.driver.history.length===10) truck.driver.history.pop();
-                    truck.driver.history.unshift(allViolations);
+                    let violationType="";
+                    if(trafficViolation<=7) {
+                        allViolations++;
+                        violationType+="X";
+                    }
+                    else violationType+="O";
+                    if(goodsDamaging<=7) {
+                        allViolations++;
+                        violationType+="X";
+                    }
+                    else violationType+="O";
+                    violationType+="O";
+                    if(carDamaging<=7) {
+                        allViolations++;
+                        violationType+="X";
+                    }
+                    else violationType+="O";
+                    violationType=allViolations+violationType
+                    if (bus.driver.history.length===10) bus.driver.history.pop();
+                    bus.driver.history.unshift(violationType);
 
                     if(truck.arrayOfDests.length!=0){
                         truck.arriveTime=truck.arrayOfTimeDests[0];
@@ -492,11 +509,28 @@ const Path = () =>{
                     //random tình huống xe
                     const trafficViolation=Math.floor(Math.random()*100);
                     const passengersDamaging=Math.floor(Math.random()*100);
+                    const carDamaging=Math.floor(Math.random()*100);
                     let allViolations=0;
-                    if(trafficViolation<=7) allViolations+=2;
-                    if(passengersDamaging<=5) allViolations+=1;
+                    let violationType="";
+                    if(trafficViolation<=7) {
+                        allViolations++;
+                        violationType+="X";
+                    }
+                    else violationType+="O";
+                    violationType+="O";
+                    if(passengersDamaging<=7) {
+                        allViolations++;
+                        violationType+="X";
+                    }
+                    else violationType+="O";
+                    if(carDamaging<=7) {
+                        allViolations++;
+                        violationType+="X";
+                    }
+                    else violationType+="O";
+                    violationType=allViolations+violationType
                     if (bus.driver.history.length===10) bus.driver.history.pop();
-                    bus.driver.history.unshift(allViolations);
+                    bus.driver.history.unshift(violationType);
 
                     if(bus.arrayOfDests.length!=0){
                         bus.arriveTime=bus.arrayOfTimeDests[0];
@@ -556,6 +590,21 @@ const Path = () =>{
         return () => clearInterval(interval);
     },[])
     //
+    //8. Tính tổng số lỗi mà tài xế vi phạm
+    function violationCalc(driver){
+        let sum=0;
+        driver.history.forEach((his)=>{sum+=parseFloat(his)});
+        return sum;
+    }
+    function showHistory(id){
+        var x = document.getElementById(id);
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+    //
 
     return (
         <div className='Path'>
@@ -564,66 +613,66 @@ const Path = () =>{
             <div id='popupStationDetail'>
                 <button className='closebtn' onClick={()=>hidePopupStationBox()}>X</button>
                 <h1>Thông tin chi tiết về trạm {popupStation.name}</h1>
-                <div className='popupStationDriver'>
+                <div className='popupStationDTB'>
                     <h1>Danh sách tài xế</h1>
-                    {popupDriverList.map((driver)=>(<div id={driver.id}>
+                    {popupDriverList.map((driver)=>(<div id={driver.id} className='eachDTB'>
                         <p>Tên: {driver.name}</p>
                         <p>SĐT: {driver.phone}</p>
-                        <p>Trạng thái: {driver.status}</p>
+                        <p>Bằng lái: {driver.license}</p>
                         </div>))}
                 </div>
-                <div className='popupStationIncomingDriver'>
+                <div className='popupStationDTB'>
                     <h1>Danh sách tài xế đang đến</h1>
-                    {popupIncomingDriverList.map((driver)=>(<div id={driver.id}>
+                    {popupIncomingDriverList.map((driver)=>(<div id={driver.id} className='eachDTB'>
                         <p>Tên: {driver.name}</p>
                         <p>SĐT: {driver.phone}</p>
-                        <p>Trạng thái: {driver.status}</p>
+                        <p>Bằng lái: {driver.license}</p>
                         </div>))}
                 </div>
-                <div className='popupStationTruck'>
+                <div className='popupStationDTB'>
                     <h1>Danh sách xe tải</h1>
-                    {popupTruckList.map((truck)=>(<div id={truck.id}>
+                    {popupTruckList.map((truck)=>(<div id={truck.id} className='eachDTB'>
                         <p>Loại xe: {truck.cartype}</p>
                         <p>Biển số: {truck.liplate}</p>
-                        <p>Trạng thái: {truck.status}</p>
+                        <p>Tải trọng: {truck.payload}</p>
                         </div>))}
                 </div>
-                <div className='popupStationIncomingTruck'>
+                <div className='popupStationDTB'>
                     <h1>Danh sách xe tải đang đến</h1>
-                    {popupIncomingTruck.map((truck)=>(<div id={truck.id}>
+                    {popupIncomingTruck.map((truck)=>(<div id={truck.id} className='eachDTB'>
                         <p>Loại xe: {truck.cartype}</p>
                         <p>Biển số: {truck.liplate}</p>
-                        <p>Trạng thái: {truck.status}</p>
+                        <p>Tải trọng: {truck.payload}</p>
                         </div>))}
                 </div>
-                <div className='popupStationBus'>
+                <div className='popupStationDTB'>
                     <h1>Danh sách xe khách</h1>
-                    {popupBusList.map((bus)=>(<div id={bus.id}>
+                    {popupBusList.map((bus)=>(<div id={bus.id} className='eachDTB'>
                         <p>Loại xe: {bus.cartype}</p>
                         <p>Biển số: {bus.liplate}</p>
-                        <p>Trạng thái: {bus.status}</p>
+                        <p>Số ghế: {bus.numOfSeats}</p>
                         </div>))}
                 </div>
-                <div className='popupStationIncomingBus'>
+                <div className='popupStationDTB'>
                     <h1>Danh sách xe khách đang đến</h1>
-                    {popupIncomingBus.map((bus)=>(<div id={bus.id}>
+                    {popupIncomingBus.map((bus)=>(<div id={bus.id} className='eachDTB'>
                         <p>Loại xe: {bus.cartype}</p>
                         <p>Biển số: {bus.liplate}</p>
-                        <p>Trạng thái: {bus.status}</p>
+                        <p>Số ghế: {bus.numOfSeats}</p>
                         </div>))}
                 </div>
-                <div className='popupStationGoods'>
+                <div className='popupStationDTB'>
                     <h1>Danh sách hàng hoá</h1>
-                    {popupGoodsList.map((goods)=>(<div id={goods.id}>
+                    {popupGoodsList.map((goods)=>(<div id={goods.id} className='eachDTB'>
                         <p>Tên hàng hoá: {goods.name}</p>
                         <p>Trọng lượng: {goods.weight}</p>
                         <p>Đích đến: {goods.dest}</p>
                         <button onClick={()=>deleteGoods(goods.id,popupStation)}>Xoá hàng hoá</button>
                         </div>))}
                 </div>
-                <div className='popupStationPassenger'>
+                <div className='popupStationDTB'>
                     <h1>Danh sách khách</h1>
-                    {popupPassengerList.map((passenger)=>(<div id={passenger.id}>
+                    {popupPassengerList.map((passenger)=>(<div id={passenger.id} className='eachDTB'>
                         <p>Tên khách: {passenger.name}</p>
                         <p>SĐT: {passenger.phone}</p>
                         <p>Đích đến: {passenger.dest}</p>
@@ -661,10 +710,10 @@ const Path = () =>{
                 <input placeholder='SĐT' type='number' onChange={(e)=>setNewPassengerPhone(Number(e.target.value))}/>
                 <input placeholder='Đích đến' type='text' onChange={(e)=>setNewPassengerDest(e.target.value)}/>
                 <button onClick={addNewPassenger}>Thêm vào</button>
-                <h2 id='successAddPassenger' style={{display:"none"}}>Đã thêm hàng thành công</h2>
+                <h2 id='successAddPassenger' style={{display:"none"}}>Đã thêm khách thành công</h2>
             </div>
             {/* Hiển thị tính đường đi cho xe tải */}
-            <div id='popupCalcPathTruck1' style={{padding: "20px",boxSizing: "border-box"}}>
+            <div id='popupCalcPathTruck1' >
                 <div id='calcPathTruckPage'>
                 <div id='calcPathCarsList'>
                         <div id='currentTruck'>
@@ -686,7 +735,6 @@ const Path = () =>{
                                 <p>Tải trong xe: {truck.payload} Kg</p>
                                 <p>KL Hàng Hiện tại: {truck.carrying} Kg</p>
                             </div></button>
-                            <br></br>
                             </div>
                             ))}
                         </div>
@@ -709,7 +757,7 @@ const Path = () =>{
                                     setPathCalcTruckGoodsArray(pathCalcTruckGoodsArray=>pathCalcTruckGoodsArray.filter(good=>good.id!=goods.id));
                                     if(pathCalcTruck[pathCalcTruckChosenIndex].arrayOfGoods.find(good=>good.dest==goods.dest)==undefined) pathCalcTruck[pathCalcTruckChosenIndex].arrayOfDests.filter(dest=>dest!=goods.dest);
                                     // if (pathCalcTruck[pathCalcTruckChosenIndex].arrayOfGoods.length==0) setPathCalcTruckUsed(pathCalcTruckUsed=>pathCalcTruckUsed.filter(truck=>truck!=pathCalcTruck[pathCalcTruckChosenIndex]));
-                                }}>Xoá khỏi xe</button>
+                                }} className='chooseDelete'>Xoá khỏi xe</button>
                             </div>))}
                         </div>
                         <div id='allGoods'>
@@ -728,14 +776,14 @@ const Path = () =>{
                                         // if(!pathCalcTruckUsed.includes(pathCalcTruck[pathCalcTruckChosenIndex])) setPathCalcTruckUsed([...pathCalcTruckUsed,pathCalcTruck[pathCalcTruckChosenIndex]]);
                                     }
                                     else document.getElementById(goods.id+"warning").style.display='block';
-                                }}>Thêm vào xe</button>
+                                }} className='chooseDelete'>Thêm vào xe</button>
                                 <p style={{display:'none'}} id={goods.id+"warning"}>Vượt quá trọng tải xe</p>
                             </div>))}
                         </div>
                     </div>
                 </div>
                 <div id='calcPathTruckControl'>
-                    <h2 style={{display: "none"}} id='warning1to2truck'>Vui lòng sắp xếp hàng hoá</h2>
+                    <h3 style={{display: "none"}} id='warning1to2truck'>Vui lòng sắp xếp hàng hoá</h3>
                     <button onClick={()=>{
                         setPathCalcGoods([]);
                         setPathCalcTruck([]);
@@ -766,9 +814,9 @@ const Path = () =>{
                             setPathCalcShowDrivers(pathCalcShowDrivers=>pathCalcShowDrivers.filter(driver=>driver.license>=truckUsed[0].license));
                             setPathCalcShowDrivers(pathCalcShowDrivers=>pathCalcShowDrivers.sort(function(a,b){
                                 let sumA=0;
-                                a.history.forEach((his)=>{sumA+=his});
+                                a.history.forEach((his)=>{sumA+=parseFloat(his)});
                                 let sumB=0;
-                                b.history.forEach((his)=>{sumB+=his});
+                                b.history.forEach((his)=>{sumB+=parseFloat(his)});
                                 console.log(sumA);
                                 console.log(sumB);
                                 return sumA-sumB;
@@ -792,18 +840,18 @@ const Path = () =>{
                                 // setPathCalcShowDrivers(tempCalcDriver);
                                 setPathCalcShowDrivers(pathCalcShowDrivers=>pathCalcShowDrivers.sort(function(a,b){
                                     let sumA=0;
-                                    a.history.forEach((his)=>{sumA+=his});
+                                    a.history.forEach((his)=>{sumA+=parseFloat(his)});
                                     let sumB=0;
-                                    b.history.forEach((his)=>{sumB+=his});
+                                    b.history.forEach((his)=>{sumB+=parseFloat(his)});
                                     console.log(sumA);
                                     console.log(sumB);
                                     return sumA-sumB;
-                                }));
+                                }))
                             }}>
                                 <div>
                                     <h2>Biển số xe {truck.liplate}</h2>
                                     <h2>Loại bằng yêu cầu: {truck.license}</h2>
-                                    <h2>Tên tài xế : {truck.driver.name==undefined?"None":truck.driver.name}</h2>
+                                    <h2>Tên tài xế : {truck.driver.name==undefined?"Chưa chọn":truck.driver.name}</h2>
                                 </div>
                             </button>
                         </div>))}
@@ -814,14 +862,35 @@ const Path = () =>{
                             <p>Bằng lái: {driver.license}</p>
                             <p>Số điện thoại: {driver.phone} </p>
                             <p>Lịch sử lái xe: </p>
-                            {driver.history.map((his, index)=>(<p>{index+1}. {his===0? "Lái xe an toàn":his===1?"Làm hỏng hàng hoá":his===2?"Vi phạm luật giao thông":"Vi phạm luât, làm hỏng hàng"}</p>))}
+                            <p>{violationCalc(driver)} lỗi trên {driver.history.length} chuyến đi gần đây</p>
+                            <button className='chooseDelete' onClick={()=>{showHistory(driver.id)}}>Hiển thị/Ẩn lịch sử chi tiết</button>
+                            <div id={driver.id} style={{display:"none"}}>
+                                <p>Ghi chú về lịch sử</p>
+                                <p>O: tuân thủ, X: vi phạm</p>
+                                <p>1: Tuân thủ luật giao thông</p>
+                                <p>2: Giữ gìn hàng hoá tốt</p>
+                                <p>3: Hành khách hài lòng</p>
+                                <p>4: Giữ gìn xe tốt</p>
+                                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;4</p>
+                                {driver.history.map((his,index)=>(<p>{index+1}&nbsp;&nbsp;&nbsp;{his[1]}&nbsp;&nbsp;{his[2]}&nbsp;&nbsp;{his[3]}&nbsp;&nbsp;{his[4]}</p>))}
+                            </div>
+                            {/* {driver.history.map((his, index)=>(<p>{index+1}. {his===0? "Lái xe an toàn":his===1?"Làm hỏng hàng hoá":his===2?"Vi phạm luật giao thông":"Vi phạm luât, làm hỏng hàng"}</p>))} */}
                             <button onClick={()=>{
                                 pathCalcTruckUsed[pathCalcTruckChosenIndex].driver=driver;
                                 setPathCalcDrivers(pathCalcDrivers=>pathCalcDrivers.filter(drivers=>drivers!=driver));
                                 setPathCalcShowDrivers(pathCalcShowDrivers=>pathCalcShowDrivers.filter(drivers=>drivers!=driver));
                                 // setPathCalcShowDrivers(pathCalcDrivers);
+                                setPathCalcShowDrivers(pathCalcShowDrivers=>pathCalcShowDrivers.sort(function(a,b){
+                                    let sumA=0;
+                                    a.history.forEach((his)=>{sumA+=parseFloat(his)});
+                                    let sumB=0;
+                                    b.history.forEach((his)=>{sumB+=parseFloat(his)});
+                                    console.log(sumA);
+                                    console.log(sumB);
+                                    return sumA-sumB;
+                                }))
                                 setShowDriversMode(true);
-                            }}>Chọn tài xế</button>
+                            }} className='chooseDelete'>Chọn tài xế</button>
                         </div>))}
                         </div>}
                         {showDriversMode && pathCalcTruckUsed.length!==0 && <div className='driver'>
@@ -829,13 +898,34 @@ const Path = () =>{
                             <p>Bằng lái: {pathCalcTruckUsed[pathCalcTruckChosenIndex].driver?.license}</p>
                             <p>Số điện thoại: {pathCalcTruckUsed[pathCalcTruckChosenIndex].driver?.phone} </p>
                             <p>Lịch sử lái xe: </p>
-                            {pathCalcTruckUsed[pathCalcTruckChosenIndex].driver.history.map((his, index)=>(<p>{index+1}. {his===0? "Lái xe an toàn":his===1?"Làm hỏng hàng hoá":his===2?"Vi phạm luật giao thông":"Vi phạm luât, làm hỏng hàng"}</p>))}
+                            <p>{violationCalc(pathCalcTruckUsed[pathCalcTruckChosenIndex].driver)} lỗi trên {pathCalcTruckUsed[pathCalcTruckChosenIndex].driver.history.length} chuyến đi gần đây</p>
+                            <button className='chooseDelete' onClick={()=>{showHistory(pathCalcTruckUsed[pathCalcTruckChosenIndex].driver.id)}}>Hiển thị/Ẩn lịch sử chi tiết</button>
+                            <div id={pathCalcTruckUsed[pathCalcTruckChosenIndex].driver.id} style={{display:"none"}}>
+                                <p>Ghi chú về lịch sử</p>
+                                <p>O: tuân thủ, X: vi phạm</p>
+                                <p>1: Tuân thủ luật giao thông</p>
+                                <p>2: Giữ gìn hàng hoá tốt</p>
+                                <p>3: Hành khách hài lòng</p>
+                                <p>4: Giữ gìn xe tốt</p>
+                                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;4</p>
+                                {pathCalcTruckUsed[pathCalcTruckChosenIndex].driver.history.map((his,index)=>(<p>{index+1}&nbsp;&nbsp;&nbsp;{his[1]}&nbsp;&nbsp;{his[2]}&nbsp;&nbsp;{his[3]}&nbsp;&nbsp;{his[4]}</p>))}
+                            </div>
+                            {/* {pathCalcTruckUsed[pathCalcTruckChosenIndex].driver.history.map((his, index)=>(<p>{index+1}. {his===0? "Lái xe an toàn":his===1?"Làm hỏng hàng hoá":his===2?"Vi phạm luật giao thông":"Vi phạm luât, làm hỏng hàng"}</p>))} */}
                             <button onClick={()=>{
                                 setPathCalcDrivers([...pathCalcDrivers,pathCalcTruckUsed[pathCalcTruckChosenIndex].driver]);
                                 setPathCalcShowDrivers([...pathCalcShowDrivers,pathCalcTruckUsed[pathCalcTruckChosenIndex].driver]);
                                 pathCalcTruckUsed[pathCalcTruckChosenIndex].driver={};
+                                setPathCalcShowDrivers(pathCalcShowDrivers=>pathCalcShowDrivers.sort(function(a,b){
+                                    let sumA=0;
+                                    a.history.forEach((his)=>{sumA+=parseFloat(his)});
+                                    let sumB=0;
+                                    b.history.forEach((his)=>{sumB+=parseFloat(his)});
+                                    console.log(sumA);
+                                    console.log(sumB);
+                                    return sumA-sumB;
+                                }))
                                 setShowDriversMode(false);
-                            }}>Xoá tài xế</button>
+                            }} className='chooseDelete'>Xoá tài xế</button>
                         </div>}
                     </div>
                 </div>
@@ -877,15 +967,15 @@ const Path = () =>{
 
             <div id='popupCalcPathTruck3' style={{padding: "20px"}}>
                 <div id='calcPathTruckPage3'>
-                    {pathCalcTruckUsed.map((truck,index)=>(<div>
+                    {pathCalcTruckUsed.map((truck,index)=>(<div className='eachTruckPage3'>
                         <div className='popupCalcPathTruck3InfoCar'>
-                            <div style={{width: "50%"}}>
+                            <div className='truckInfo'>
                                 <h1>Thông tin xe</h1>
                                 <p>Biển số xe: {truck.liplate}</p>
                                 <p>Loại xe: {truck.cartype}</p>
                                 <p>Tổng KL hàng hoá: {truck.carrying} Kg</p>
                             </div>
-                            <div style={{width: "50%"}}>
+                            <div className='driverInfo'>
                                 <h1>Thông tin tài xế</h1>
                                 <p>Tên: {truck.driver?.name}</p>
                                 <p>Loại bằng lái: {truck.driver?.license}</p>
@@ -895,7 +985,6 @@ const Path = () =>{
                         <div>
                             <h2>Kéo và thả để thay đổi thứ tự điểm đến</h2>
                             <DndDisplay currentStation={pathCalcStation} arrStation={stationArr} car={truck}/>
-                            <hr></hr>
                         </div>
                     </div>))}
                 </div>
@@ -973,11 +1062,10 @@ const Path = () =>{
                             <p>Loại xe: {pathCalcBus[pathCalcBusChosenIndex]?.cartype}</p>
                             <p>Số ghế xe: {pathCalcBus[pathCalcBusChosenIndex]?.numOfSeats} ghế</p>
                             <p>Số khách hiện tại: {pathCalcBus[pathCalcBusChosenIndex]?.passengers} người</p>
-                            <hr></hr>
                         </div>
                         <div id='allBusPage1'>
                             {pathCalcBus.map((bus)=>(<div>
-                                <button onClick={()=>{
+                                <button className='chooseBus' onClick={()=>{
                                 setPathCalcBusChosenIndex(pathCalcBus.indexOf(bus));
                                 // console.log(pathCalcTruck.indexOf(truck));
                                 setPathCalcBusPassengerArray([...pathCalcBus[pathCalcBus.indexOf(bus)]?.arrayOfPassenger]);
@@ -1010,9 +1098,8 @@ const Path = () =>{
                                     setPathCalcBusPassengerArray(pathCalcBusPassengerArray=>pathCalcBusPassengerArray.filter(pass=>pass.id!=passenger.id));
                                     if(pathCalcBus[pathCalcBusChosenIndex].arrayOfPassenger.find(pass=>pass.dest==passenger.dest)==undefined) pathCalcBus[pathCalcBusChosenIndex].arrayOfDests.filter(dest=>dest!=passenger.dest);
                                     // if (pathCalcTruck[pathCalcTruckChosenIndex].arrayOfGoods.length==0) setPathCalcTruckUsed(pathCalcTruckUsed=>pathCalcTruckUsed.filter(truck=>truck!=pathCalcTruck[pathCalcTruckChosenIndex]));
-                                }}>Xoá khỏi xe</button>
+                                }} className='chooseDelete'>Xoá khỏi xe</button>
                             </div>))}
-                            <hr></hr>
                         </div>
                         <div id='allPassenger'>
                             {pathCalcPassenger.map((passenger)=>(<div className='displayPassenger'>
@@ -1030,14 +1117,14 @@ const Path = () =>{
                                         // if(!pathCalcTruckUsed.includes(pathCalcTruck[pathCalcTruckChosenIndex])) setPathCalcTruckUsed([...pathCalcTruckUsed,pathCalcTruck[pathCalcTruckChosenIndex]]);
                                     }
                                     else document.getElementById(passenger.id+"warning").style.display='block';
-                                }}>Thêm vào xe</button>
+                                }} className='chooseDelete'>Thêm vào xe</button>
                                 <p style={{display:'none'}} id={passenger.id+"warning"}>Vượt quá số ghé của xe</p>
                             </div>))}
                         </div>
                     </div>
                 </div>
                 <div id='calcPathBusControl'>
-                    <h2 style={{display: "none"}} id='warning1to2bus'>Vui lòng sắp xếp khách</h2>
+                    <h3 style={{display: "none"}} id='warning1to2bus'>Vui lòng sắp xếp khách</h3>
                     <button onClick={()=>{
                         setPathCalcPassenger([]);
                         setPathCalcBus([]);
@@ -1068,9 +1155,9 @@ const Path = () =>{
                             setPathCalcShowDrivers(pathCalcShowDrivers=>pathCalcShowDrivers.filter(driver=>driver.license>=busUsed[0].license));
                             setPathCalcShowDrivers(pathCalcShowDrivers=>pathCalcShowDrivers.sort(function(a,b){
                                 let sumA=0;
-                                a.history.forEach((his)=>{sumA+=his});
+                                a.history.forEach((his)=>{sumA+=parseFloat(his)});
                                 let sumB=0;
-                                b.history.forEach((his)=>{sumB+=his});
+                                b.history.forEach((his)=>{sumB+=parseFloat(his)});
                                 console.log(sumA);
                                 console.log(sumB);
                                 return sumA-sumB;
@@ -1083,9 +1170,9 @@ const Path = () =>{
 
             <div id='popupCalcPathBus2'>
                 <div id='calcPathBusPage'>
-                    <div>
+                    <div id='allTruckPage2'>
                         {pathCalcBusUsed.map(bus=>(<div>
-                            <button onClick={()=>{
+                            <button className='chooseBus' onClick={()=>{
                                 setPathCalcTruckChosenIndex(pathCalcBusUsed.indexOf(bus));
                                 setShowDriversMode(!(pathCalcBusUsed[pathCalcBusUsed.indexOf(bus)].driver.name==undefined));
                                 setPathCalcShowDrivers(pathCalcDrivers);
@@ -1094,9 +1181,9 @@ const Path = () =>{
                                 // setPathCalcShowDrivers(tempCalcDriver);
                                 setPathCalcShowDrivers(pathCalcShowDrivers=>pathCalcShowDrivers.sort(function(a,b){
                                     let sumA=0;
-                                    a.history.forEach((his)=>{sumA+=his});
+                                    a.history.forEach((his)=>{sumA+=parseFloat(his)});
                                     let sumB=0;
-                                    b.history.forEach((his)=>{sumB+=his});
+                                    b.history.forEach((his)=>{sumB+=parseFloat(his)});
                                     console.log(sumA);
                                     console.log(sumB);
                                     return sumA-sumB;
@@ -1105,39 +1192,81 @@ const Path = () =>{
                                 <div>
                                     <h2>Biển số xe {bus.liplate}</h2>
                                     <h2>Loại bằng yêu cầu: {bus.license}</h2>
-                                    <h2>Tên tài xế : {bus.driver.name==undefined?"None":bus.driver.name}</h2>
+                                    <h2>Tên tài xế : {bus.driver.name==undefined?"Chưa chọn":bus.driver.name}</h2>
                                 </div>
                             </button>
                         </div>))}
                     </div>
-                    <div>{!showDriversMode && pathCalcBusUsed.length!==0 && <div>
-                        {pathCalcShowDrivers.map(driver=>(<div>
+                    <div className='allDrivers'>{!showDriversMode && pathCalcBusUsed.length!==0 && <div>
+                        {pathCalcShowDrivers.map(driver=>(<div className='driver'>
                             <p>Tên tài xế: {driver.name}</p>
                             <p>Bằng lái: {driver.license}</p>
                             <p>Số điện thoại: {driver.phone} </p>
                             <p>Lịch sử lái xe: </p>
-                            {driver.history.map((his, index)=>(<p>{index+1}. {his===0? "Lái xe an toàn":his===1?"Làm hỏng hàng hoá":his===2?"Vi phạm luật giao thông":"Vi phạm luât, làm hỏng hàng"}</p>))}
+                            <p>{violationCalc(driver)} lỗi trên {driver.history.length} chuyến đi gần đây</p>
+                            <button className='chooseDelete' onClick={()=>{showHistory(driver.id)}}>Hiển thị/Ẩn lịch sử chi tiết</button>
+                            <div id={driver.id} style={{display:"none"}}>
+                                <p>Ghi chú về lịch sử</p>
+                                <p>O: tuân thủ, X: vi phạm</p>
+                                <p>1: Tuân thủ luật giao thông</p>
+                                <p>2: Giữ gìn hàng hoá tốt</p>
+                                <p>3: Hành khách hài lòng</p>
+                                <p>4: Giữ gìn xe tốt</p>
+                                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;4</p>
+                                {driver.history.map((his,index)=>(<p>{index+1}&nbsp;&nbsp;&nbsp;{his[1]}&nbsp;&nbsp;{his[2]}&nbsp;&nbsp;{his[3]}&nbsp;&nbsp;{his[4]}</p>))}
+                            </div>
+                            {/* {driver.history.map((his, index)=>(<p>{index+1}. {his===0? "Lái xe an toàn":his===1?"Làm hỏng hàng hoá":his===2?"Vi phạm luật giao thông":"Vi phạm luât, làm hỏng hàng"}</p>))} */}
                             <button onClick={()=>{
                                 pathCalcBusUsed[pathCalcBusChosenIndex].driver=driver;
                                 setPathCalcDrivers(pathCalcDrivers=>pathCalcDrivers.filter(drivers=>drivers!=driver));
                                 setPathCalcShowDrivers(pathCalcShowDrivers=>pathCalcShowDrivers.filter(drivers=>drivers!=driver));
                                 // setPathCalcShowDrivers(pathCalcDrivers);
+                                setPathCalcShowDrivers(pathCalcShowDrivers=>pathCalcShowDrivers.sort(function(a,b){
+                                    let sumA=0;
+                                    a.history.forEach((his)=>{sumA+=parseFloat(his)});
+                                    let sumB=0;
+                                    b.history.forEach((his)=>{sumB+=parseFloat(his)});
+                                    console.log(sumA);
+                                    console.log(sumB);
+                                    return sumA-sumB;
+                                }))
                                 setShowDriversMode(true);
-                            }}>Chọn tài xế</button>
+                            }} className='chooseDelete'>Chọn tài xế</button>
                         </div>))}
                         </div>}
-                        {showDriversMode && pathCalcBusUsed.length!==0 &&  <div>
+                        {showDriversMode && pathCalcBusUsed.length!==0 &&  <div className='driver'>
                             <p>Tên tài xế: {pathCalcBusUsed[pathCalcBusChosenIndex].driver?.name}</p>
                             <p>Bằng lái: {pathCalcBusUsed[pathCalcBusChosenIndex].driver?.license}</p>
                             <p>Số điện thoại: {pathCalcBusUsed[pathCalcBusChosenIndex].driver?.phone} </p>
                             <p>Lịch sử lái xe: </p>
-                            {pathCalcBusUsed[pathCalcBusChosenIndex].driver.history.map((his, index)=>(<p>{index+1}. {his===0? "Lái xe an toàn":his===1?"Làm hỏng hàng hoá":his===2?"Vi phạm luật giao thông":"Vi phạm luât, làm hỏng hàng"}</p>))}
+                            <p>{violationCalc(pathCalcBusUsed[pathCalcBusChosenIndex].driver)} lỗi trên {pathCalcBusUsed[pathCalcBusChosenIndex].driver.history.length} chuyến đi gần đây</p>
+                            <button className='chooseDelete' onClick={()=>{showHistory(pathCalcBusUsed[pathCalcBusChosenIndex].driver.id)}}>Hiển thị/Ẩn lịch sử chi tiết</button>
+                            <div id={pathCalcBusUsed[pathCalcBusChosenIndex].driver.id} style={{display:"none"}}>
+                                <p>Ghi chú về lịch sử</p>
+                                <p>O: tuân thủ, X: vi phạm</p>
+                                <p>1: Tuân thủ luật giao thông</p>
+                                <p>2: Giữ gìn hàng hoá tốt</p>
+                                <p>3: Hành khách hài lòng</p>
+                                <p>4: Giữ gìn xe tốt</p>
+                                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;4</p>
+                                {pathCalcBusUsed[pathCalcBusChosenIndex].driver.history.map((his,index)=>(<p>{index+1}&nbsp;&nbsp;&nbsp;{his[1]}&nbsp;&nbsp;{his[2]}&nbsp;&nbsp;{his[3]}&nbsp;&nbsp;{his[4]}</p>))}
+                            </div>
+                            {/* {pathCalcBusUsed[pathCalcBusChosenIndex].driver.history.map((his, index)=>(<p>{index+1}. {his===0? "Lái xe an toàn":his===1?"Làm hỏng hàng hoá":his===2?"Vi phạm luật giao thông":"Vi phạm luât, làm hỏng hàng"}</p>))} */}
                             <button onClick={()=>{
                                 setPathCalcDrivers([...pathCalcDrivers,pathCalcBusUsed[pathCalcBusChosenIndex].driver]);
                                 setPathCalcShowDrivers([...pathCalcShowDrivers,pathCalcBusUsed[pathCalcBusChosenIndex].driver]);
                                 pathCalcBusUsed[pathCalcBusChosenIndex].driver={};
+                                setPathCalcShowDrivers(pathCalcShowDrivers=>pathCalcShowDrivers.sort(function(a,b){
+                                    let sumA=0;
+                                    a.history.forEach((his)=>{sumA+=parseFloat(his)});
+                                    let sumB=0;
+                                    b.history.forEach((his)=>{sumB+=parseFloat(his)});
+                                    console.log(sumA);
+                                    console.log(sumB);
+                                    return sumA-sumB;
+                                }))
                                 setShowDriversMode(false);
-                            }}>Xoá tài xế</button>
+                            }} className='chooseDelete'>Xoá tài xế</button>
                         </div>}
                     </div>
                 </div>
@@ -1179,16 +1308,16 @@ const Path = () =>{
             </div>
 
             <div id='popupCalcPathBus3'>
-                <div id='calcPathBusPage3'>
-                    {pathCalcBusUsed.map((bus,index)=>(<div>
-                        <div className='popupCalcPathBus3InfoCar'>
-                            <div>
+                <div id='calcPathTruckPage3'>
+                    {pathCalcBusUsed.map((bus,index)=>(<div className='eachTruckPage3'>
+                        <div className='popupCalcPathTruck3InfoCar'>
+                            <div className='truckInfo'>
                                 <h1>Thông tin xe</h1>
                                 <p>Biển số xe: {bus.liplate}</p>
                                 <p>Loại xe: {bus.cartype}</p>
                                 <p>Tổng số khách: {bus.passengers} người</p>
                             </div>
-                            <div>
+                            <div className='driverInfo'>
                                 <h1>Thông tin tài xế</h1>
                                 <p>Tên: {bus.driver?.name}</p>
                                 <p>Loại bằng lái: {bus.driver?.license}</p>
@@ -1198,7 +1327,6 @@ const Path = () =>{
                         <div>
                             <h2>Kéo và thả để thay đổi thứ tự điểm đến</h2>
                             <DndDisplay currentStation={pathCalcStation} arrStation={stationArr} car={bus}/>
-                            <hr></hr>
                         </div>
                     </div>))}
                 </div>
@@ -1275,12 +1403,14 @@ const Path = () =>{
             {/* thêm trạm */}
             
             <div className="addStation">
-                <h1>Thêm trạm</h1>
-                <input placeholder='Tên trạm?' type='text' onChange={(e)=>setNewStationName(e.target.value)}/>
-                <input placeholder='Toạ độ X?' type='number' onChange={(e)=>setNewXCoordinate(e.target.value)}/>
-                <input placeholder='Toạ độ Y?' type='number' onChange={(e)=>setNewYCoordinate(e.target.value)}/>
-
-                <button onClick={addStationArr}>Thêm vào</button>
+                <h1>Thêm trạm :</h1>
+                <div>
+                    <input className='inputAddStation' placeholder='Tên trạm?' type='text' onChange={(e)=>setNewStationName(e.target.value)}/>
+                    <input className='inputAddStation' placeholder='Toạ độ X?' type='number' onChange={(e)=>setNewXCoordinate(e.target.value)}/>
+                    <input className='inputAddStation' placeholder='Toạ độ Y?' type='number' onChange={(e)=>setNewYCoordinate(e.target.value)}/>
+                    <button className='inputAddStation' onClick={addStationArr}>Thêm vào</button>
+                </div>
+                
             </div>
            
             {/* Hiển thị trạm */}
