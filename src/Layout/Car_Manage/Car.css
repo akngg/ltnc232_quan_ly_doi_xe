@@ -6,9 +6,6 @@
 html {
     font-family: Arial, Helvetica, sans-serif;
 }
-div{    
-    grid-template-rows: auto 1fr;
-}
 #root{
   width: 100%;
   height: 100%;
@@ -58,22 +55,22 @@ div{
     justify-content: center;
     align-items: center;
 }
- .navigation {
+.navigation {
     justify-content: center;
     align-items: center;
  }
  
- #nav{
+#nav{
     background-color: rgb(69, 63, 92);
     width: 100%;
  }
- #nav li{
+#nav li{
     background-color: rgb(69, 63, 92);
     display: inline-block;
     font-weight: bold;
     user-select: none; 
  }
- #nav li button {
+#nav li button {
     font-family: Arial, Helvetica, sans-serif;
     border: none;
     text-transform: uppercase;
@@ -85,17 +82,17 @@ div{
     line-height: 50px;
     padding: 0 24px 0 24px;
  }
- #nav li :hover{
+#nav li :hover{
     color: rgb(34, 182, 54);
     background-color: rgb(94, 40, 210);
  }
- .thongtinchung{
+.thongtinchung{
   display: flex;
   justify-content: center;
   height: 70%;
  }
  /* thong tin chung */
- .general{
+.general{
   width: 30%;
   height: 70%;
   background-color: rgba(140, 230, 104, 0.137); /* Màu ghi trắng mờ */
@@ -108,7 +105,7 @@ div{
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5); /* Hiệu ứng nổi */
 
  }
- .general h2 {
+.general h2 {
   font-size: 24px;
   color: #495057;
  }
@@ -119,23 +116,23 @@ div{
   text-align: left;
   font-weight: bold;
 }
- .search{
+.search{
   width: 70%;
   height: 100%;
   margin-top: 20px;
  }
- .search h2{
+.search h2{
   font-size: 33px;
   color: #495057;
   text-align: center;
  }
- .search h3{
+.search h3{
   font-size: 24px;
   color: #495057;
   text-align: left;
   margin-left: 80px;
  }
- .search input[type="text"] {
+.search input[type="text"] {
   width: 80%;
   padding: 10px;
   margin-top: 5px;
@@ -143,7 +140,7 @@ div{
   border: 1px solid #ccc;
   border-radius: 5px;
  }
- .search button{
+.search button{
   padding: 10px 20px;
   width: 20%;
   margin-top: 5px;
@@ -191,7 +188,6 @@ div{
     width: 100%;
     background-color: #f3f3f3;
   }
-  
   th, td {
     text-align: left;
     border: 1px solid #ddd;

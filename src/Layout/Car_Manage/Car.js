@@ -497,7 +497,7 @@ function Car() {
       add: arrayUnion( 'Thêm xe: '+liplate + ' : Thời gian thêm : ' + new Date().toLocaleString(  'vi-VN', { hour: 'numeric', minute: 'numeric', day: 'numeric', month: 'numeric', year: 'numeric'} ))
     });
   };
-  const addTruck = async (liplate, cartype,license, carrying,position, releaseDate, status) => {
+  const addTruck = async (liplate, cartype,license, carrying,position, releaseDate, status) => {  
     await addDoc(truckCollectionRef, {
       liplate: liplate,
       cartype: cartype,
