@@ -45,7 +45,6 @@ button{
     z-index: 2;
     padding: 20px;
     box-sizing: border-box;
-    overflow: auto;
 }
 #popupAddPassenger{
     display: none;
@@ -59,12 +58,13 @@ button{
     z-index: 2;
     padding: 20px;
     box-sizing: border-box;
+    overflow: auto;
 }
 #successAddGoods{
     display: none;
 }
 .closebtn{
-    position: fixed;
+    position: absolute;
     right: 20px;
     top: 20px;
     width: 30px;
@@ -89,50 +89,99 @@ button{
     height:600px;
     z-index: 2;
     box-sizing: border-box;
+    padding: 20px;
+    /* overflow: scroll; */
+}
+#popupCalcPathTruck2{
+    display: none;
+    position: fixed;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: #fff;
+    width: 600px;
+    height:600px;
+    z-index: 2;
+    box-sizing: border-box;
+    padding: 20px;
+    /* overflow: scroll; */
+}
+#popupCalcPathTruck3{
+    display: none;
+    position: fixed;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: #fff;
+    width: 600px;
+    height:600px;
+    z-index: 2;
+    box-sizing: border-box;
+    padding: 20px;
     /* overflow: scroll; */
 }
 #calcPathTruckPage{
     display: flex;
-    height: 90%;
+    height: 97%;
     width: 100%;
 }
 #calcPathBusPage{
     display: flex;
-    height: 90%;
+    height: 97%;
     width: 100%;
 }
 #calcPathCarsList{
     width: 50%;
-    border-right: 2px solid black;
-    border-bottom: 2px solid black;
+    border: 2px solid black;
     /* overflow-y: auto; */
 }
 #calcPathGoodsList{
     width: 50%;
     border-bottom: 2px solid black;
+    border-top: 2px solid black;
+    border-right: 2px solid black;
 }
 #calcPathPassengerList{
     width: 50%;
     border-bottom: 2px solid black;
+    border-top: 2px solid black;
+    border-right: 2px solid black;
 }
 .chooseTruck{
     width: 100%;
 }
+.chooseBus{
+    width: 100%;
+}
+.chooseDelete{
+    width: 100%;
+}  
 #allTruckPage1{
     overflow-y: auto;
-    max-height: 400px;
+    max-height: 440px;
+}
+#allBusPage1{
+    overflow-y: auto;
+    max-height: 440px;
 }
 #allGoods{
     overflow-y: auto;
-    height: 400px;
+    height: 440px;
+}
+#allPassenger{
+    overflow-y: auto;
+    height: 440px;
 }
 #allTruckPage2{
     width: 50%;
-    border-right: 2px solid black;
-    border-bottom: 2px solid black;
+    border: 2px solid black;
     overflow-y: auto;
 }
 #currentTruck{
+    height: 100px;
+    border-bottom: 2px solid black;
+}
+#currentBus{
     height: 100px;
     border-bottom: 2px solid black;
 }
@@ -141,9 +190,21 @@ button{
     overflow-y: auto;
     border-bottom: 2px solid black;
 }
+#currentBusPassenger{
+    height: 100px;
+    overflow-y: auto;
+    border-bottom: 2px solid black;
+}
+#currentBusPassenger{
+    height: 100px;
+    overflow-y: auto;
+    border-bottom: 2px solid black;
+}
 .allDrivers{
     width: 50%;
     border-bottom: 2px solid black;
+    border-top: 2px solid black;
+    border-right: 2px solid black;
     overflow-y: auto;
 }
 #popupCalcPathTruck2{
@@ -158,6 +219,12 @@ button{
     z-index: 2;
     box-sizing: border-box;
 }
+.displayPassenger{
+    border-bottom: 2px solid black;
+}
+.displayGoods{
+    border-bottom: 2px solid black;
+}
 #popupCalcPathTruck3{
     display: none;
     position: fixed;
@@ -170,8 +237,25 @@ button{
     z-index: 2;
     box-sizing: border-box;
 }
+#calcPathTruckPage3{
+    border: 2px solid black;
+    overflow-y: auto;
+    height: 97%;
+}
 .popupCalcPathTruck3InfoCar{
     display: flex;
+}
+.eachTruckPage3{
+    border-bottom: 2px solid black;
+}
+.truckInfo{
+    width: 50%;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
+}
+.driverInfo{
+    width: 50%;
+    border-bottom: 2px solid black;
 }
 .driver{
     border-bottom: 2px solid black;
@@ -187,6 +271,7 @@ button{
     height:600px;
     z-index: 2;
     box-sizing: border-box;
+    padding: 20px;
     /* overflow: scroll; */
 }
 #calcPathBusPage{
@@ -203,6 +288,7 @@ button{
     height:600px;
     z-index: 2;
     box-sizing: border-box;
+    padding: 20px;
 }
 #popupCalcPathBus3{
     display: none;
@@ -215,6 +301,7 @@ button{
     height:600px;
     z-index: 2;
     box-sizing: border-box;
+    padding: 20px;
 }
 .popupCalcPathBus3InfoCar{
     display: flex;
@@ -276,5 +363,10 @@ button{
 }
 .addStation{
     /* border: 4px solid black; */
+    display: flex;
     background-color: aquamarine;
+    justify-content: space-between;
+}
+.inputAddStation{
+    height: 100%;
 }
