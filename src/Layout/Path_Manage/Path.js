@@ -16,11 +16,7 @@ const Path = () =>{
                 ...doc.data(),
                 id:doc.id,
             }));
-            console.log(filteredData);
-            const authFilterData = filteredData.filter((data)=>{
-                return data.userId === auth?.currentUser?.uid;
-            })
-            setStationArr(authFilterData);
+            setStationArr(filteredData);
         }catch(error){
             const errorCode = error.code;
             const errorMessage = error.message;
@@ -207,49 +203,49 @@ const Path = () =>{
 
     const displayPopupBox= async(station)=>{
         setPopupStation(station);
-        const queryDriver=query(collection(db, "drivers"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name),where("status","==","Active"));
+        const queryDriver=query(collection(db, "drivers"),where("position","==",station.name),where("status","==","Active"));
         const driver=await getDocs(queryDriver);
         const filteredDriver = driver.docs.map((doc)=>({
             ...doc.data(),
             id:doc.id,
         }));
         setPopupDriverList(filteredDriver);
-        const queryIncomingDriver=query(collection(db, "drivers"), where("userId","==",auth?.currentUser?.uid),where("dest","==",station.name),where("status","==","Running"));
+        const queryIncomingDriver=query(collection(db, "drivers"),where("dest","==",station.name),where("status","==","Running"));
         const Incomingdriver=await getDocs(queryIncomingDriver);
         const filteredIncomingDriver = Incomingdriver.docs.map((doc)=>({
             ...doc.data(),
             id:doc.id,
         }));
         setPopupIncomingDriverList(filteredIncomingDriver);
-        const queryTruck=query(collection(db, "truck"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name),where("status","==","Active"));
+        const queryTruck=query(collection(db, "truck"),where("position","==",station.name),where("status","==","Active"));
         const truck=await getDocs(queryTruck);
         const filteredTruck = truck.docs.map((doc)=>({
             ...doc.data(),
             id:doc.id,
         }));
         setPopupTruckList(filteredTruck);
-        const queryIncomingTruck=query(collection(db, "truck"), where("userId","==",auth?.currentUser?.uid),where("dest","==",station.name),where("status","==","Running"));
+        const queryIncomingTruck=query(collection(db, "truck"),where("dest","==",station.name),where("status","==","Running"));
         const incomingTruck=await getDocs(queryIncomingTruck);
         const filteredIncomingTruck = incomingTruck.docs.map((doc)=>({
             ...doc.data(),
             id:doc.id,
         }));
         setPopupIncomingTruck(filteredIncomingTruck);
-        const queryBus=query(collection(db, "bus"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name),where("status","==","Active"));
+        const queryBus=query(collection(db, "bus"), where("position","==",station.name),where("status","==","Active"));
         const bus=await getDocs(queryBus);
         const filteredBus = bus.docs.map((doc)=>({
             ...doc.data(),
             id:doc.id,
         }));
         setPopupBusList(filteredBus);
-        const queryIncomingBus=query(collection(db, "bus"), where("userId","==",auth?.currentUser?.uid),where("dest","==",station.name),where("status","==","Running"));
+        const queryIncomingBus=query(collection(db, "bus"), where("dest","==",station.name),where("status","==","Running"));
         const Incomingbus=await getDocs(queryIncomingBus);
         const filteredIncomingBus = Incomingbus.docs.map((doc)=>({
             ...doc.data(),
             id:doc.id,
         }));
         setPopupIncomingBus(filteredIncomingBus);
-        const queryGoods=query(collection(db, "goods"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name), where("isMoving","==",false));
+        const queryGoods=query(collection(db, "goods"),where("position","==",station.name), where("isMoving","==",false));
         // ,where("isMoving","==",false)
         const goods=await getDocs(queryGoods);
         const filteredGoods = goods.docs.map((doc)=>({
@@ -257,7 +253,7 @@ const Path = () =>{
             id:doc.id,
         }));
         setPopupGoodsList(filteredGoods);
-        const queryPassenger=query(collection(db, "passenger"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name), where("isMoving","==",false));
+        const queryPassenger=query(collection(db, "passenger"),where("position","==",station.name), where("isMoving","==",false));
         // ,where("isMoving","==",false)
         const passenger=await getDocs(queryPassenger);
         const filteredPassenger = passenger.docs.map((doc)=>({
@@ -299,7 +295,7 @@ const Path = () =>{
 
 
     const showPopupCalcPathTruck= async(station)=>{
-        const queryDriver=query(collection(db, "drivers"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name),where("status","==","Active"));
+        const queryDriver=query(collection(db, "drivers"),where("position","==",station.name),where("status","==","Active"));
         const driver=await getDocs(queryDriver);
         const filteredDriver = driver.docs.map((doc)=>({
             ...doc.data(),
@@ -307,7 +303,7 @@ const Path = () =>{
         }));
         setPathCalcDrivers(filteredDriver);
         setPathCalcStation(station);
-        const queryTruck=query(collection(db, "truck"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name),where("status","==","Active"));
+        const queryTruck=query(collection(db, "truck"),where("position","==",station.name),where("status","==","Active"));
         const truck=await getDocs(queryTruck);
         const filteredTruck = truck.docs.map((doc)=>({
             ...doc.data(),
@@ -315,7 +311,7 @@ const Path = () =>{
         }));
         const sortedTruck=filteredTruck.sort(function(a, b){return b.payload - a.payload});
         setPathCalcTruck(sortedTruck);
-        const queryGoods=query(collection(db, "goods"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name), where("isMoving","==",false));
+        const queryGoods=query(collection(db, "goods"),where("position","==",station.name), where("isMoving","==",false));
         const goods=await getDocs(queryGoods);
         const filteredGoods = goods.docs.map((doc)=>({
             ...doc.data(),
@@ -337,7 +333,7 @@ const Path = () =>{
     const [pathCalcPassenger, setPathCalcPassenger] = useState([]);
 
     const showPopupCalcPathBus= async(station)=>{
-        const queryDriver=query(collection(db, "drivers"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name),where("status","==","Active"));
+        const queryDriver=query(collection(db, "drivers"),where("position","==",station.name),where("status","==","Active"));
         const driver=await getDocs(queryDriver);
         const filteredDriver = driver.docs.map((doc)=>({
             ...doc.data(),
@@ -345,7 +341,7 @@ const Path = () =>{
         }));
         setPathCalcDrivers(filteredDriver);
         setPathCalcStation(station);
-        const queryBus=query(collection(db, "bus"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name),where("status","==","Active"));
+        const queryBus=query(collection(db, "bus"),where("position","==",station.name),where("status","==","Active"));
         const bus=await getDocs(queryBus);
         const filteredBus = bus.docs.map((doc)=>({
             ...doc.data(),
@@ -353,7 +349,7 @@ const Path = () =>{
         }));
         const sortedBus=filteredBus.sort(function(a, b){return b.numOfSeats - a.numOfSeats});
         setPathCalcBus(sortedBus);
-        const queryPassenger=query(collection(db, "passenger"), where("userId","==",auth?.currentUser?.uid),where("position","==",station.name), where("isMoving","==",false));
+        const queryPassenger=query(collection(db, "passenger"),where("position","==",station.name), where("isMoving","==",false));
         const goods=await getDocs(queryPassenger);
         const filteredPassenger = goods.docs.map((doc)=>({
             ...doc.data(),
