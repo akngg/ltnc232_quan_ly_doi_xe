@@ -370,3 +370,11 @@ button{
 .inputAddStation{
     height: 100%;
 }
+.eachDTB{
+    border-top: 1px solid black;
+    display: flex;
+    justify-content: space-between;
+}
+.popupStationDTB{
+    border: 1px solid black;
+}
