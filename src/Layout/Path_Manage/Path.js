@@ -670,7 +670,7 @@ const Path = () =>{
             {/* Hiển thị tính đường đi cho xe tải */}
             <div id='popupCalcPathTruck1' style={{padding: "20px",boxSizing: "border-box"}}>
                 <div id='calcPathTruckPage'>
-                <div id='calcPathDriversList'>
+                <div id='calcPathCarsList'>
                         <div id='currentTruck'>
                             <p>Biển số xe: {pathCalcTruck[pathCalcTruckChosenIndex]?.liplate}</p>
                             <p>Loại xe: {pathCalcTruck[pathCalcTruckChosenIndex]?.cartype}</p>
@@ -968,7 +968,7 @@ const Path = () =>{
             {/* Hiển thị tính đường đi cho xe khách */}
             <div id='popupCalcPathBus1'>
                 <div id='calcPathBusPage'>
-                <div id='calcPathDriversList'>
+                <div id='calcPathCarsList'>
                         <div id='currentBus'>
                             <p>Biển số xe: {pathCalcBus[pathCalcBusChosenIndex]?.liplate}</p>
                             <p>Loại xe: {pathCalcBus[pathCalcBusChosenIndex]?.cartype}</p>

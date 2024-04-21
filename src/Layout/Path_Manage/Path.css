@@ -96,12 +96,21 @@ button{
     height: 90%;
     width: 100%;
 }
-#calcPathDriversList{
+#calcPathBusPage{
+    display: flex;
+    height: 90%;
+    width: 100%;
+}
+#calcPathCarsList{
     width: 50%;
     border-right: 2px solid black;
     border-bottom: 2px solid black;
 }
 #calcPathGoodsList{
+    width: 50%;
+    border-bottom: 2px solid black;
+}
+#calcPathPassengerList{
     width: 50%;
     border-bottom: 2px solid black;
 }
@@ -237,16 +246,18 @@ button{
     float: left;
     border: 2px solid black;
     margin: 1%;
-    height: 150px;
+    height: 50%px;
 }
 .eachStation div{
     float: left;
     width: 50%;
+    height: 100%;
 }
 .eachStation div button{
     float:left;
     width: 50%;
     height: 49px;
+    /* border-radius: 3px; */
 }
 .headerPath{
     width: 100%;
