@@ -1,11 +1,382 @@
 .Path{
-    width: 100%;
+    width: calc(100%-220p);
     height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;  
+    margin-left: 220px;
 }
 .titlePath{
     color: black;
     margin-bottom: 10px;
+}
+#overlay{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: 1;
+    display: none;
+}
+#popupStationDetail{
+    display: none;
+    position: fixed;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: #fff;
+    width: 600px;
+    height:600px;
+    z-index: 2;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow: auto;
+}
+button{
+    cursor: pointer;
+}
+#popupAddGoods{
+    display: none;
+    position: fixed;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: #fff;
+    width: 600px;
+    height:300px;
+    z-index: 2;
+    padding: 20px;
+    box-sizing: border-box;
+}
+#popupAddPassenger{
+    display: none;
+    position: fixed;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: #fff;
+    width: 600px;
+    height:300px;
+    z-index: 2;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow: auto;
+}
+#successAddGoods{
+    display: none;
+}
+.closebtn{
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 30px;
+    height: 30px;
+    background: none;
+    color: #000000;
+    font-size: 25px;
+    font-weight: 600;
+    line-height: 30px;
+    text-align: center;
+    border-style: none;
+    cursor: pointer;
+}
+#popupCalcPathTruck1{
+    display: none;
+    position: fixed;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: #fff;
+    width: 600px;
+    height:600px;
+    z-index: 2;
+    box-sizing: border-box;
+    padding: 20px;
+    /* overflow: scroll; */
+}
+#popupCalcPathTruck2{
+    display: none;
+    position: fixed;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: #fff;
+    width: 600px;
+    height:600px;
+    z-index: 2;
+    box-sizing: border-box;
+    padding: 20px;
+    /* overflow: scroll; */
+}
+#popupCalcPathTruck3{
+    display: none;
+    position: fixed;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: #fff;
+    width: 600px;
+    height:600px;
+    z-index: 2;
+    box-sizing: border-box;
+    padding: 20px;
+    /* overflow: scroll; */
+}
+#calcPathTruckPage{
+    display: flex;
+    height: 97%;
+    width: 100%;
+}
+#calcPathBusPage{
+    display: flex;
+    height: 97%;
+    width: 100%;
+}
+#calcPathCarsList{
+    width: 50%;
+    border: 2px solid black;
+    /* overflow-y: auto; */
+}
+#calcPathGoodsList{
+    width: 50%;
+    border-bottom: 2px solid black;
+    border-top: 2px solid black;
+    border-right: 2px solid black;
+}
+#calcPathPassengerList{
+    width: 50%;
+    border-bottom: 2px solid black;
+    border-top: 2px solid black;
+    border-right: 2px solid black;
+}
+.chooseTruck{
+    width: 100%;
+}
+.chooseBus{
+    width: 100%;
+}
+.chooseDelete{
+    width: 100%;
+}  
+#allTruckPage1{
+    overflow-y: auto;
+    max-height: 440px;
+}
+#allBusPage1{
+    overflow-y: auto;
+    max-height: 440px;
+}
+#allGoods{
+    overflow-y: auto;
+    height: 440px;
+}
+#allPassenger{
+    overflow-y: auto;
+    height: 440px;
+}
+#allTruckPage2{
+    width: 50%;
+    border: 2px solid black;
+    overflow-y: auto;
+}
+#currentTruck{
+    height: 100px;
+    border-bottom: 2px solid black;
+}
+#currentBus{
+    height: 100px;
+    border-bottom: 2px solid black;
+}
+#currentTruckGoods{
+    height: 100px;
+    overflow-y: auto;
+    border-bottom: 2px solid black;
+}
+#currentBusPassenger{
+    height: 100px;
+    overflow-y: auto;
+    border-bottom: 2px solid black;
+}
+#currentBusPassenger{
+    height: 100px;
+    overflow-y: auto;
+    border-bottom: 2px solid black;
+}
+.allDrivers{
+    width: 50%;
+    border-bottom: 2px solid black;
+    border-top: 2px solid black;
+    border-right: 2px solid black;
+    overflow-y: auto;
+}
+#popupCalcPathTruck2{
+    display: none;
+    position: fixed;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: #fff;
+    width: 600px;
+    height:600px;
+    z-index: 2;
+    box-sizing: border-box;
+}
+.displayPassenger{
+    border-bottom: 2px solid black;
+}
+.displayGoods{
+    border-bottom: 2px solid black;
+}
+#popupCalcPathTruck3{
+    display: none;
+    position: fixed;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: #fff;
+    width: 600px;
+    height:600px;
+    z-index: 2;
+    box-sizing: border-box;
+}
+#calcPathTruckPage3{
+    border: 2px solid black;
+    overflow-y: auto;
+    height: 97%;
+}
+.popupCalcPathTruck3InfoCar{
+    display: flex;
+}
+.eachTruckPage3{
+    border-bottom: 2px solid black;
+}
+.truckInfo{
+    width: 50%;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
+}
+.driverInfo{
+    width: 50%;
+    border-bottom: 2px solid black;
+}
+.driver{
+    border-bottom: 2px solid black;
+}
+#popupCalcPathBus1{
+    display: none;
+    position: fixed;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: #fff;
+    width: 600px;
+    height:600px;
+    z-index: 2;
+    box-sizing: border-box;
+    padding: 20px;
+    /* overflow: scroll; */
+}
+#calcPathBusPage{
+    display: flex;
+}
+#popupCalcPathBus2{
+    display: none;
+    position: fixed;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: #fff;
+    width: 600px;
+    height:600px;
+    z-index: 2;
+    box-sizing: border-box;
+    padding: 20px;
+}
+#popupCalcPathBus3{
+    display: none;
+    position: fixed;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: #fff;
+    width: 600px;
+    height:600px;
+    z-index: 2;
+    box-sizing: border-box;
+    padding: 20px;
+}
+.popupCalcPathBus3InfoCar{
+    display: flex;
+}
+
+.destOrder{
+    display: flex;
+}
+.dragAndDrop{
+    border-style: solid;
+    border-width: 1px;
+    width: 30px;
+    text-align: center;
+    cursor: pointer;
+}
+#calcPathBusControl{
+    display: flex;
+    position: absolute;
+    bottom: 5px;
+    justify-content: right;
+    right: 10px;
+}
+#calcPathTruckControl{
+    display: flex;
+    position: absolute;
+    bottom: 5px;
+    justify-content: right;
+    right: 10px;
+}
+.displayStation{
+    overflow: auto;
+}
+.eachStation{
+    width: 48%;
+    float: left;
+    border: 2px solid black;
+    margin: 1%;
+    height: 50%px;
+}
+.eachStation div{
+    float: left;
+    width: 50%;
+    height: 100%;
+}
+.eachStation div button{
+    float:left;
+    width: 50%;
+    height: 49px;
+    /* border-radius: 3px; */
+}
+.headerPath{
+    width: 100%;
+    height: 50px;
+    /* padding: 20px; */
+    background: rgb(157, 219, 227);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.addStation{
+    /* border: 4px solid black; */
+    display: flex;
+    background-color: aquamarine;
+    justify-content: space-between;
+    height: 50px;
+}
+.inputAddStation{
+    height: 100%;
+}
+.eachDTB{
+    border-top: 1px solid black;
+    display: flex;
+    justify-content: space-between;
+}
+.popupStationDTB{
+    border: 1px solid black;
 }

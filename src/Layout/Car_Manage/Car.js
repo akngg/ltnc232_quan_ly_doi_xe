@@ -474,10 +474,11 @@ function Car() {
     await addDoc(busCollectionRef, {
       liplate: liplate,
       cartype: cartype,
-      numOfSeats: numOfSeats,
+      numOfSeats: Number(numOfSeats),
       position: position,
       releaseDate: releaseDate,
       status: status,
+      dest: "",
       arrayOfDests: [],
       arrayOfGoods: [],
       arrayOfTimeDests: [],
@@ -486,7 +487,7 @@ function Car() {
       driver: [],
       height: 0,
       length: 0,
-      license : license,
+      license : Number(license),
       cost : 0,
       userId: '',
       weight: weight,
@@ -499,6 +500,7 @@ function Car() {
     });
   };
   const addTruck = async (liplate, cartype,weight,license, payload,position, releaseDate, status) => {  
+
     await addDoc(truckCollectionRef, {
       liplate: liplate,
       cartype: cartype,
@@ -506,6 +508,7 @@ function Car() {
       position: position,
       releaseDate: releaseDate,
       status: status,
+      dest: "",
       arrayOfDests: [],
       arrayOfGoods: [],
       arrayOfTimeDests: [],
@@ -516,7 +519,7 @@ function Car() {
       fueltype: '',
       height: 0,
       length: 0,
-      license: license,
+      license: Number(license),
       userId: '',
       weight: weight,
       payload: payload,

@@ -1,12 +1,299 @@
-.Driver{
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    display: flex;
-    align-items: center;
-    justify-content: center;  
+
+.driver-container{
+    margin-left: 220px;
 }
-.titleDriver{
+.header{
+    /* position: fixed; */
+    /* top: 0;
+    left: 0; */
+    width: 100%;
+    height: 100px;
+    /* padding: 20px; */
+    background: rgb(157, 219, 227);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* z-index: 99; */
+} 
+.logo{
+    width: 10%;
+    height:100%;
+    border-radius: 5px;
+    background: rgb(157, 219, 227);
+}
+.site-name{
+    font-size: 3rem;
+    /* width: 30%;
+    height:50%; */
+    margin-right: 20%;;
+    background: rgb(157, 219, 227);
+    font-weight: bold;
+    user-select: none; 
+}
+.driver-input-form {
+    display: none;
+    background-color: white;
+    padding: 20px;
+    max-width: 60%;
+    margin-left: 18%;
+}
+#add-button{
+    visibility: hidden;
+    cursor: pointer;
+    margin-top:5px;
+    margin-left: 45%;
+    background-color: white;
+    padding: 20px;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+
+.driver-input-form legend {
+    font-size: 25px;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.driver-input-form label {
+    font-size:20px;
+    /* display: block; */
+    font-weight: bold;
+    margin: 5px;
+    /* border:none; */
+}
+
+.driver-input label{
+    border:none;
+}
+
+
+.driver-input-form select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.driver-title{
+    text-align: center;
+    font-size: 80px;
+    background: linear-gradient(87deg, #b0e5e9, #86cdf1);
+    padding: 20px;
+    margin-top: 10px;
+    user-select: none;
+}
+#count-info{
+    background: linear-gradient(87deg, rgb(237, 226, 129), #e1ee6d);
+    margin-top: 3px;
+    padding: 5px;
+}
+.button-option{
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
+    font-size: 20px;
+}
+.driver-input{
+    font-size: 1.5rem;
+    padding: 3px;
+    border:none;
     color: black;
-    margin-bottom: 10px;
+    display:inline-flex;
+    font-weight: normal;
+    transition: 0.5s;
+}
+.driver-input:focus {
+    border: 2px solid hsla(0, 0%, 80%, 1.5);
+}
+.li-driver-info{
+    font-size: 25px;
+    /* font-weight:bold; */
+    padding: 15px;
+    margin: 20px 0px;
+    border: 5px solid hsla(141, 53%, 43%, 0.75);
+    background-color: hsl(0,0%,97%);
+    border-radius: 5px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.li-driver-info:hover{
+    background-color: hsl(0,0%,87%);
+}
+#red-text{
+    color: rgb(236, 37, 80);
+}
+
+#add-button:hover{
+    background-color: grey;
+    color: black;
+    background-color: rgb(98, 233, 98);
+}
+#open-add-button{
+    visibility: visible;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
+    font-size: 20px;
+    display: block;
+    margin: auto;
+}
+#open-add-button:hover{
+    background-color: rgb(130, 230, 121);
+    color: black;
+}
+#delete-button{
+    background-color:  grey;
+    border: none;
+}
+#delete-button:hover{
+    background-color: rgb(247, 113, 113);
+    color: black;
+    transition: 0.3s;
+}
+#open-change-button{
+    background-color:  grey;
+    border: none;
+}
+#open-change-button:hover{
+    background-color: rgb(238, 238, 120);
+    color: black;
+    transition: 0.3s;
+}
+.bar-control{
+    padding: 30px 60px;
+    background-color: whitesmoke;
+    margin: 0px;
+}
+.degree-select{
+    width: 100%;
+    padding: 4px 5px;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 1.5rem;
+    border: none;
+    margin-bottom:10px;
+}
+.degree-select:hover{
+    cursor: pointer;
+}
+.status-select{
+    width: 100%;
+    padding: 4px 5px;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 1.5rem;
+    border: none;
+    margin-bottom:10px;
+}
+.status-select:hover{
+    cursor: pointer;
+}
+.close-btn {
+    position: absolute;
+    top: 6px;
+    right: 12px;
+    cursor: pointer;
+    font-size: 15px;
+    color: #666;
+    background-color: lightgray;
+    padding: 10px 15px;
+    border: none;
+}
+
+.close-btn:hover {
+    background-color: rgb(225, 13, 13);
+    cursor: pointer;
+}
+
+
+.li-driver-info .driver-updated{
+    visibility: hidden;
+}
+.li-driver-info-elements{
+    flex: 0 0 25%; 
+    box-sizing: border-box;
+}
+
+
+#updateName-button{
+    visibility: hidden;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+#updatePhone-button{
+    visibility: hidden;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+#updatePosition-button{
+    visibility: hidden;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+#updateStatus-button{
+    visibility: hidden;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+#updateAddress-button{
+    visibility: hidden;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+#updateDegree-button{
+    visibility: hidden;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+#updateName-button:hover{    
+    background-color: lightgray;
+    transition: 0.5s;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+#updatePhone-button:hover{    
+    background-color: lightgray;
+    transition: 0.5s;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+#updateDegree-button:hover{    
+    background-color: lightgray;
+    transition: 0.5s;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+#updateStatus-button:hover{    
+    background-color: lightgray;
+    transition: 0.5s;
+    cursor: pointer;
+    border-radius: 2px;
+}
+#updateAddress-button:hover{    
+    background-color: lightgray;
+    transition: 0.5s;
+    cursor: pointer;
+    border-radius: 2px;
+}
+#updatePosition-button:hover{    
+    background-color: lightgray;
+    transition: 0.5s;
+    cursor: pointer;
+    border-radius: 2px;
 }

@@ -50,7 +50,7 @@ const Sidebar = () => {
             </li>
           </ul>
           
-            {showDriverInfo && (
+            {/* {showDriverInfo && (
               <div className="driverInfo">
                 <div className="login">
                   <img src ='./1214059.png' alt=""></img>
@@ -59,7 +59,7 @@ const Sidebar = () => {
                   </div>
                 </div>
               </div>
-            )}
+            )} */}
         </div>
         </nav>
         <div id="side">

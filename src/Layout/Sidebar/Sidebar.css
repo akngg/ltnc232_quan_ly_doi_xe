@@ -5,10 +5,11 @@
     flex-direction: row;
     /* align-items: flex-start; */
     justify-items: center;
-    background-color: gray;
+    background-color: aliceblue;
 }
 .dashboardiv #side{
     flex:1;
+    height: 100vh;
 }
 .Sidebar{
     display: flex;
@@ -17,6 +18,7 @@
     height: 100vh;  
     width: 220px;
     background-color: #2F4050;
+    position: fixed;
 }
 .Sidebarlist{
     margin-top: 1px;
@@ -51,7 +53,7 @@ li a{
     display: inline-flex;
 }
 .title{
-    color: aqua;
+    color: white;
     text-align: left;
     margin-left: 20px;
 }
