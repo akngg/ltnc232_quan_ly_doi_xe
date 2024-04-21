@@ -14,7 +14,7 @@ import
 } from 'firebase/firestore';
 function Car() {
   // state
-  const [activeTab, setActiveTab] = useState('thayDoiThongTin');
+  const [activeTab, setActiveTab] = useState('infor');
   const [buses, setBusesList] = useState([]);
   const [trucks, setTrucks] = useState([]);
   const [busmain, setBusMainList] = useState([]);
@@ -96,7 +96,8 @@ function Car() {
       position: position,
       releaseDate: releaseDate,
       status: status,
-      dateSignIn: new Date().toLocaleString(  'vi-VN', { hour: 'numeric', minute: 'numeric', day: 'numeric', month: 'numeric', year: 'numeric' })
+      dateSignIn: new Date().toLocaleString(  'vi-VN', { hour: 'numeric', minute: 'numeric', day: 'numeric', month: 'numeric', year: 'numeric' }),
+      dateFinish: ''
     });
     updateCount();
     }
@@ -106,7 +107,10 @@ function Car() {
   };
   const updateBusMainStatus = async (id, status) => {
     const busMainDoc= doc(database, 'busMain', id);
-    await updateDoc(busMainDoc, {status});
+    await updateDoc(busMainDoc, {
+    status: status, 
+    dateFinish: new Date().toLocaleString(  'vi-VN', { hour: 'numeric', minute: 'numeric', day: 'numeric', month: 'numeric', year: 'numeric' })
+    });
   }
   const sortedBusMain = busmain.filter(bus => bus.status === 'maintenance');
   const activeBuses = buses.filter(bus => bus.status === "active");  
@@ -148,14 +152,22 @@ function Car() {
     alert('Xe này đã được đăng ký bảo dưỡng.');
     return;
   }
-    const bus = buses.find(bus => bus.liplate === liplateBus);
-    if (bus) {
+  const bus = buses.find(bus => bus.liplate === liplateBus);
+  if (bus && bus.status === 'Running') {
+    alert('Xe này đang hoạt động.');
+    return;
+  }
+  if (bus) {
       await addBusMain(bus.liplate, bus.cartype, bus.numOfSeats, bus.position, bus.releaseDate, 'maintenance');
       await updateBusStatus(bus.id, 'maintenance');
       alert('Đăng ký bảo dưỡng thành công');
       return;
     }
-    const truck = trucks.find(truck => truck.liplate === liplateTruck);
+    const truck = trucks.find(truck => truck.liplate === liplateBus);
+    if (truck && truck.status === 'Running') {
+      alert('Xe này đang hoạt động.');
+      return;
+    }
     if (truck) {
       await addTruckMain(truck.liplate, truck.cartype, truck.carrying, truck.position, truck.releaseDate, 'maintenance');
       await updateTruckStatus(truck.id, 'maintenance');
@@ -252,7 +264,8 @@ function Car() {
       position: position,
       releaseDate: releaseDate,
       status: status,
-      dateSignIn: new Date().toLocaleString(  'vi-VN', { hour: 'numeric', minute: 'numeric', day: 'numeric', month: 'numeric', year: 'numeric' })
+      dateSignIn: new Date().toLocaleString(  'vi-VN', { hour: 'numeric', minute: 'numeric', day: 'numeric', month: 'numeric', year: 'numeric' }),
+      dayFinish: ''
     });
     updateTruckCount();
     }
@@ -262,7 +275,10 @@ function Car() {
   };
   const updateTruckMainStatus = async (id, status) => {
     const truckMainDoc= doc(database, 'truckMain', id);
-    await updateDoc(truckMainDoc, {status});
+    await updateDoc(truckMainDoc, {
+      status: status,
+      dateFinish: new Date().toLocaleString(  'vi-VN', { hour: 'numeric', minute: 'numeric', day: 'numeric', month: 'numeric', year: 'numeric' })
+    });
   }
   const sortedTruckMain = truckmain.filter(truck => truck.status === 'maintenance');
   // const sortedTrucksMain = trucks.reverse().slice(1,6);
@@ -286,6 +302,7 @@ function Car() {
   const [liplate, setLiplate] = useState('');
   const [position, setPosition] = useState('');
   const [cartype, setCartype] = useState('');
+  const [license, setLicense] = useState('');
   const [numOfSeats, setNumOfSeats] = useState('');
   const [releaseDate, setReleaseDate] = useState('');
   const[busInforChange, setBusInforChange] = useState('');
@@ -452,7 +469,7 @@ function Car() {
       //
   //
   // Thêm xe
-  const addBus = async (liplate, cartype, numOfSeats,position, releaseDate, status) => {
+  const addBus = async (liplate, cartype,license, numOfSeats,position, releaseDate, status) => {
     await addDoc(busCollectionRef, {
       liplate: liplate,
       cartype: cartype,
@@ -469,7 +486,7 @@ function Car() {
       driver: {},
       height: 0,
       length: 0,
-      license : 0,
+      license : license,
       cost : 0,
       userId: '',
       weight: 0,
@@ -481,7 +498,7 @@ function Car() {
       add: arrayUnion( 'Thêm xe: '+liplate + ' : Thời gian thêm : ' + new Date().toLocaleString(  'vi-VN', { hour: 'numeric', minute: 'numeric', day: 'numeric', month: 'numeric', year: 'numeric'} ))
     });
   };
-  const addTruck = async (liplate, cartype, carrying,position, releaseDate, status) => {
+  const addTruck = async (liplate, cartype,license, carrying,position, releaseDate, status) => {
     await addDoc(truckCollectionRef, {
       liplate: liplate,
       cartype: cartype,
@@ -500,7 +517,7 @@ function Car() {
       fueltype: '',
       height: 0,
       length: 0,
-      license: 0,
+      license: license,
       userId: '',
       weight: 0,
       payload: 0,
@@ -522,10 +539,10 @@ function Car() {
       return;
     }
     if (selectedValue === 'bus') {
-      addBus(liplate, cartype, numOfSeats, position, releaseDate, 'active');
+      addBus(liplate, cartype,license, numOfSeats, position, releaseDate, 'active');
       alert('Thêm xe thành công');
     } else if (selectedValue === 'truck') {
-      addTruck(liplate, cartype, numOfSeats, position, releaseDate, 'active');
+      addTruck(liplate, cartype,license, numOfSeats, position, releaseDate, 'active');
       alert('Thêm xe thành công');
     }
     else {
@@ -731,7 +748,8 @@ function Car() {
                     <tr>
                       <th>STT</th>
                       <th>Biển số</th>
-                      <th>THỜI GIAN BẢO DƯỠNG</th>
+                      <th>THỜI GIAN ĐĂNG KÝ BẢO DƯỠNG</th>
+                      <th>THỜI GIAN HOÀN THÀNH BẢO DƯỠNG</th>
                       <th></th>
                     </tr>
                   </thead>
@@ -742,6 +760,7 @@ function Car() {
                           <td>{index+1}</td>
                           <td>{bus.liplate}</td>
                           <td>{bus.dateSignIn}</td>
+                          <td>{bus.dateFinish}</td>
                             <td>
                               <button onClick={() => deleteBusMain(bus.id)}
                               >Xóa thông tin</button>
@@ -758,7 +777,8 @@ function Car() {
                     <tr>
                       <th>STT</th>
                       <th>Biển số</th>
-                      <th>THỜI GIAN BẢO DƯỠNG</th>
+                      <th>THỜI GIAN ĐĂNG KÝ BẢO DƯỠNG</th>
+                      <th>THỜI GIAN HOÀN THÀNH BẢO DƯỠNG</th>
                       <th></th>
                     </tr>
                   </thead>
@@ -769,6 +789,7 @@ function Car() {
                           <td>{index+1}</td>
                           <td>{bus.liplate}</td>
                           <td>{bus.dateSignIn}</td>
+                          <td>{bus.dateFinish}</td>
                             <td>
                               <button onClick={() => deleteTruckMain(bus.id)}
                               >Xóa thông tin</button>
@@ -805,7 +826,8 @@ function Car() {
                       <th>LOẠI XE</th>
                       <th>TẢI TRỌNG/SỐ KHÁCH TỐI ĐA</th>
                       <th>NGÀY SẢN XUẤT</th>
-                      <th>THỜI GIAN BẢO DƯỠNG</th>
+                      <th>THỜI GIAN ĐĂNG KÝ BẢO DƯỠNG</th>
+                      <th>THỜI GIAN HOÀN THÀNH</th>
                   </tr>
                 </thead>
               <tbody>
@@ -818,6 +840,7 @@ function Car() {
                 <td>{bus.numOfSeats} khách</td>
                 <td>{bus.releaseDate}</td>
                 <td>{bus.dateSignIn}</td>
+                <td>{bus.dateFinish}</td>
               </tr>
               ))
               }
@@ -832,6 +855,7 @@ function Car() {
                 <td>{truck.carrying} kg</td>  
                 <td>{truck.releaseDate}</td>
                 <td>{truck.dateSignIn}</td>
+                <td>{truck.dateFinish}</td>
               </tr>
                   );
                 })
@@ -1019,6 +1043,9 @@ function Car() {
         onChange={(e) => setCartype(e.target.value)}
         ></input>
         </div>
+        <input type='text' placeholder='Nhập bằng lái yêu cầu...'
+        onChange={(e) => setLicense(e.target.value)}
+        ></input>
         <input type='text' placeholder='Nhập số ghế/ trọng tải...'
         onChange={(e) => setNumOfSeats(e.target.value)}
         ></input>
