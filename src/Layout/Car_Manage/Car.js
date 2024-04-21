@@ -25,11 +25,7 @@ const Car = () =>{
                 ...doc.data(),
                 id:doc.id,
             }));
-            console.log(filteredData);
-            const authFilterData = filteredData.filter((data)=>{
-                return data.userId === auth?.currentUser?.uid;
-            })
-            setTruckCarList(authFilterData);
+            setTruckCarList(filteredData);
         }catch(error){
             const errorCode = error.code;
             const errorMessage = error.message;
@@ -44,11 +40,7 @@ const Car = () =>{
                 ...doc.data(),
                 id:doc.id,
             }));
-            console.log(filteredData);
-            const authFilterData = filteredData.filter((data)=>{
-                return data.userId === auth?.currentUser?.uid;
-            })
-            setBusCarList(authFilterData);
+            setBusCarList(filteredData);
         }catch(error){
             const errorCode = error.code;
             const errorMessage = error.message;

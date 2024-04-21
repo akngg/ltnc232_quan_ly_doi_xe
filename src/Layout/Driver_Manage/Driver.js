@@ -26,11 +26,7 @@ const Driver = () =>{
                 ...doc.data(),
                 id:doc.id,
             }));
-            console.log(filteredData);
-            const authFilterData = filteredData.filter((data)=>{
-                return data.userId === auth?.currentUser?.uid;
-            })
-            setDriverList(authFilterData);
+            setDriverList(filteredData);
         }catch(error){
             const errorCode = error.code;
             const errorMessage = error.message;
