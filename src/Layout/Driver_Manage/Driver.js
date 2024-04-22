@@ -177,63 +177,63 @@ function Driver(){
         await deleteDoc(driverDoc);
         getDriverList();
     }
-    function openHandleChangeInfoDriver(driver, index) {
-        document.getElementById('driver-updated-name').style.visibility = 'visible';
-        document.getElementById('driver-updated-degree').style.visibility = 'visible';
-        document.getElementById('driver-updated-phone').style.visibility = 'visible';
-        document.getElementById('driver-updated-status').style.visibility = 'visible';
-        document.getElementById('driver-updated-position').style.visibility = 'visible';
-        document.getElementById('driver-updated-address').style.visibility = 'visible';
+    function openHandleChangeInfoDriver(id) {
+        document.getElementById(id + 'driver-updated-name').style.visibility = 'visible';
+        document.getElementById(id + 'driver-updated-degree').style.visibility = 'visible';
+        document.getElementById(id + 'driver-updated-phone').style.visibility = 'visible';
+        document.getElementById(id + 'driver-updated-status').style.visibility = 'visible';
+        document.getElementById(id + 'driver-updated-position').style.visibility = 'visible';
+        document.getElementById(id + 'driver-updated-address').style.visibility = 'visible';
 
 
-        document.getElementById('updateName-button').style.visibility = 'visible';
-        document.getElementById('updatePhone-button').style.visibility = 'visible';
-        document.getElementById('updateStatus-button').style.visibility = 'visible';
-        document.getElementById('updatePosition-button').style.visibility = 'visible';
-        document.getElementById('updateAddress-button').style.visibility = 'visible';
-        document.getElementById('updateDegree-button').style.visibility = 'visible';
+        document.getElementById(id + 'updateName-button').style.visibility = 'visible';
+        document.getElementById(id + 'updatePhone-button').style.visibility = 'visible';
+        document.getElementById(id + 'updateStatus-button').style.visibility = 'visible';
+        document.getElementById(id + 'updatePosition-button').style.visibility = 'visible';
+        document.getElementById(id + 'updateAddress-button').style.visibility = 'visible';
+        document.getElementById(id + 'updateDegree-button').style.visibility = 'visible';
     }
     const updateName = async(id) => {
         const driverDoc = doc(database, "drivers", id);
         await updateDoc(driverDoc, {name: updatedDriverName});
         getDriverList();
-        document.getElementById("updateName-button").style.visibility = 'hidden';
-        document.getElementById('driver-updated-name').style.visibility = 'hidden';
+        document.getElementById(id + "updateName-button").style.visibility = 'hidden';
+        document.getElementById(id + 'driver-updated-name').style.visibility = 'hidden';
     }
     const updatePhone = async(id) => {
         const driverDoc = doc(database, "drivers", id);
         await updateDoc(driverDoc, {phone: updatedDriverPhone});
         getDriverList();
-        document.getElementById("updatePhone-button").style.visibility = 'hidden';
-        document.getElementById('driver-updated-phone').style.visibility = 'hidden';
+        document.getElementById(id + "updatePhone-button").style.visibility = 'hidden';
+        document.getElementById(id + 'driver-updated-phone').style.visibility = 'hidden';
     }
     const updateStatus = async(id) => {
         const driverDoc = doc(database, "drivers", id);
         await updateDoc(driverDoc, {status: updatedDriverStatus});
         getDriverList();
-        document.getElementById("updateStatus-button").style.visibility = 'hidden';
-        document.getElementById('driver-updated-status').style.visibility = 'hidden';
+        document.getElementById(id + "updateStatus-button").style.visibility = 'hidden';
+        document.getElementById(id + 'driver-updated-status').style.visibility = 'hidden';
     }
     const updatePosition = async(id) => {
         const driverDoc = doc(database, "drivers", id);
         await updateDoc(driverDoc, {position: updatedDriverPosition});
         getDriverList();
-        document.getElementById("updatePosition-button").style.visibility = 'hidden';
-        document.getElementById('driver-updated-position').style.visibility = 'hidden';
+        document.getElementById(id + "updatePosition-button").style.visibility = 'hidden';
+        document.getElementById(id + 'driver-updated-position').style.visibility = 'hidden';
     }
     const updateAddress = async(id) => {
         const driverDoc = doc(database, "drivers", id);
         await updateDoc(driverDoc, {address: updatedDriverAddress});
         getDriverList();
-        document.getElementById("updateAddress-button").style.visibility = 'hidden';
-        document.getElementById('driver-updated-address').style.visibility = 'hidden';
+        document.getElementById(id + "updateAddress-button").style.visibility = 'hidden';
+        document.getElementById(id + 'driver-updated-address').style.visibility = 'hidden';
     }
     const updateDegree = async(id) => {
         const driverDoc = doc(database, "drivers", id);
         await updateDoc(driverDoc, {license: updatedDriverDegree});
         getDriverList();
-        document.getElementById("updateDegree-button").style.visibility = 'hidden';
-        document.getElementById('driver-updated-degree').style.visibility = 'hidden';
+        document.getElementById(id + "updateDegree-button").style.visibility = 'hidden';
+        document.getElementById(id + 'driver-updated-degree').style.visibility = 'hidden';
     }
     return(
         <>
@@ -250,46 +250,46 @@ function Driver(){
                     {drivers.map((driver, index) => 
                         <li className="li-driver-info">
                             <div className="li-driver-info-elements">
-                            <strong>Tên:</strong> {driver.name}  <input id="driver-updated-name"  className="driver-updated" type="text" value={updatedDriverName} onChange={(e) => setUpdatedDriverName(e.target.value.toUpperCase())}
+                            <strong>Tên:</strong> {driver.name}  <input style={{visibility: 'hidden'}} id={driver.id + "driver-updated-name"}  className="driver-updated" type="text" value={updatedDriverName} onChange={(e) => setUpdatedDriverName(e.target.value.toUpperCase())}
                                                 placeholder="Enter driver's name: "/>
-                                                <button id="updateName-button"  onClick={() => updateName(driver.id)}>Update</button> <br/>
+                                                <button style={{visibility: 'hidden'}} id={driver.id + "updateName-button"}  onClick={() => updateName(driver.id)}>Update</button> <br/>
                             </div>
                             <div className="li-driver-info-elements">
-                            <strong>Bằng cấp:</strong> {driver.license} <select id="driver-updated-degree" className="driver-updated" value={updatedDriverDegree} onChange={(e) => setUpdatedDriverDegree(e.target.value)} >
+                            <strong>Bằng cấp:</strong> {driver.license} <select style={{visibility: 'hidden'}} id={driver.id + "driver-updated-degree"} className="driver-updated" value={updatedDriverDegree} onChange={(e) => setUpdatedDriverDegree(e.target.value)} >
                                             <option value="">Select an option</option>
                                             <option value="1">1 (lái xe ô tô, xe buýt)</option>
                                             <option value="2">2 (lái xe tải)</option>
                                             <option value="3">3 (lái mọi loại xe)</option>
 
-                                        </select> <button id="updateDegree-button"  onClick={() => updateDegree(driver.id)}>Update</button> <br/>
+                                        </select> <button style={{visibility: 'hidden'}} id={driver.id + "updateDegree-button"}  onClick={() => updateDegree(driver.id)}>Update</button> <br/>
                             </div>
                             <div className="li-driver-info-elements">
-                            <strong>SĐT:</strong> {driver.phone} <input id="driver-updated-phone" className="driver-updated" type="text" value={updatedDriverPhone} onChange={(e) => setUpdatedDriverPhone(e.target.value)}
-                                        placeholder="Enter driver's phone: " /><button id="updatePhone-button" onClick={() => updatePhone(driver.id)}>Update</button>  <br/>
+                            <strong>SĐT:</strong> {driver.phone} <input style={{visibility: 'hidden'}} id={driver.id +"driver-updated-phone"} className="driver-updated" type="text" value={updatedDriverPhone} onChange={(e) => setUpdatedDriverPhone(e.target.value)}
+                                        placeholder="Enter driver's phone: " /><button style={{visibility: 'hidden'}} id={driver.id + "updatePhone-button"} onClick={() => updatePhone(driver.id)}>Update</button>  <br/>
                             </div>  
                             <div className="li-driver-info-elements">
-                            <strong>Trạng thái:</strong> {driver.status} <select id="driver-updated-status" className="driver-updated" value={updatedDriverStatus} onChange={(e) => setUpdatedDriverStatus(e.target.value)} >
+                            <strong>Trạng thái:</strong> {driver.status} <select style={{visibility: 'hidden'}} id={driver.id + "driver-updated-status"} className="driver-updated" value={updatedDriverStatus} onChange={(e) => setUpdatedDriverStatus(e.target.value)} >
                                             <option value="">Select an option</option>
                                             <option value="Active">Hoạt động</option>
                                             <option value="Inactive">Không hoạt động</option>
 
-                            </select> <button id="updateStatus-button"  onClick={() => updateStatus(driver.id)}>Update</button> <br/>
+                            </select> <button style={{visibility: 'hidden'}} id={driver.id + "updateStatus-button"}  onClick={() => updateStatus(driver.id)}>Update</button> <br/>
 
                             </div>
                             <div className="li-driver-info-elements">
-                            <strong>Vị trí:</strong> {driver.position} <input id="driver-updated-position" className="driver-updated" type="text" value={updatedDriverPosition} onChange={(e) => setUpdatedDriverPosition(e.target.value)}
-                                        placeholder="Enter driver's position: " /><button id="updatePosition-button" onClick={() => updatePosition(driver.id)}>Update</button> <br/>
+                            <strong>Vị trí:</strong> {driver.position} <input style={{visibility: 'hidden'}} id={driver.id + "driver-updated-position"} className="driver-updated" type="text" value={updatedDriverPosition} onChange={(e) => setUpdatedDriverPosition(e.target.value)}
+                                        placeholder="Enter driver's position: " /><button style={{visibility: 'hidden'}} id={driver.id + "updatePosition-button"} onClick={() => updatePosition(driver.id)}>Update</button> <br/>
                             </div>
                             <div className="li-driver-info-elements">
-                            <strong>Địa chỉ:</strong> {driver.address} <input id="driver-updated-address" className="driver-updated" type="text" value={updatedDriverAddress} onChange={(e) => setUpdatedDriverAddress(e.target.value)}
-                                        placeholder="Enter driver's address: " /> <button id="updateAddress-button" onClick={() => updateAddress(driver.id)}>Update</button> <br/>
+                            <strong>Địa chỉ:</strong> {driver.address} <input style={{visibility: 'hidden'}} id={driver.id + "driver-updated-address"} className="driver-updated" type="text" value={updatedDriverAddress} onChange={(e) => setUpdatedDriverAddress(e.target.value)}
+                                        placeholder="Enter driver's address: " /> <button style={{visibility: 'hidden'}} id={driver.id + "updateAddress-button"} onClick={() => updateAddress(driver.id)}>Update</button> <br/>
                             </div>
                             <div className="li-driver-info-elements">
 
                             </div>
                             <div className="remain-buttons">
                             <button id="delete-button" className="button-option" onClick={() => handleRemoveDriver(driver.id)}>Xóa</button>
-                            <button id="open-change-button" className="button-option" onClick={() => openHandleChangeInfoDriver(driver, index)}>Thay đổi</button>
+                            <button id="open-change-button" className="button-option" onClick={() => openHandleChangeInfoDriver(driver.id)}>Thay đổi</button>
                             </div>
                         </li>)}
                 </ul>
@@ -329,12 +329,12 @@ function Driver(){
                             <div>
                                 <label><strong>Vị trí</strong></label><br></br>
                                 <input id="driver-input-position" className="driver-input" type="text" value={driverPosition} onChange={(e) => setDriverPosition(e.target.value)}
-                                placeholder="Enter driver's task: " /> <br/>
+                                placeholder="Enter driver's position: " /> <br/>
                             </div>
                             <div>
                                 <label><strong>Địa chỉ</strong></label><br></br>
                                 <input id="driver-input-address" className="driver-input" type="text" value={driverAddress} onChange={(e) => setDriverAddress(e.target.value)}
-                                placeholder="Enter driver's task: " /> <br/>
+                                placeholder="Enter driver's address: " /> <br/>
                             </div>
                     </form>
                     <button id="add-button" onClick={handleAddDriver}>Xác nhận</button>
