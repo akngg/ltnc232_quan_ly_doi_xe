@@ -50,11 +50,7 @@ function Driver(){
       }, [])
 
     function openAddDrvier(){
-        if (driverDegree ==""){
-            document.getElementById("driver-input-degree").value = "select an option";
-        }
         document.getElementById('driver-list').style.opacity = 0.4;
-        
         setShowForm(true);
         document.getElementById("driver-input-form").style.display = "block";
         document.getElementById("add-button").style.visibility = "visible";
@@ -70,10 +66,8 @@ function Driver(){
         if(driverName != "" && driverDegree != "" && driverPhone != "" && driverStatus != "" && driverAddress != "" && driverPosition != "" && (/[a-zA-Z]/.test(driverPhone)==false)){
             alert("Thêm thành công!");
             setDrivers(d => [...d, newDriver]);
-            setDriverName("hahaha");   
-            setDriverDegree("");   
+            setDriverName("");
             setDriverPhone("");
-            setDriverStatus("");
             setDriverAddress("");
             setDriverPosition("");
             document.getElementById('driver-input-name').style.borderColor = "black";
@@ -153,7 +147,6 @@ function Driver(){
         setDriverPhone("");
         setDriverAddress("");
         setDriverPosition("");
-        setDriverStatus("");
         try{
             await addDoc(driversCollectionRef, {
                 name: driverName,
@@ -192,6 +185,7 @@ function Driver(){
         document.getElementById(id + 'updatePosition-button').style.visibility = 'visible';
         document.getElementById(id + 'updateAddress-button').style.visibility = 'visible';
         document.getElementById(id + 'updateDegree-button').style.visibility = 'visible';
+        setUpdatedDriverName(document.getElementById(id + "driver-updated-name").value);
     }
     const updateName = async(id) => {
         const driverDoc = doc(database, "drivers", id);
@@ -237,7 +231,6 @@ function Driver(){
     }
     return(
         <>
-            
             <div className="driver-container">
                 <div className='header'>
                 <img src="https://upload.wikimedia.org/wikipedia/commons/f/f0/HCMCUT.svg" className='logo' alt='Logo' ></img>
@@ -256,7 +249,7 @@ function Driver(){
                             </div>
                             <div className="li-driver-info-elements">
                             <strong>Bằng cấp:</strong> {driver.license} <select style={{visibility: 'hidden'}} id={driver.id + "driver-updated-degree"} className="driver-updated" value={updatedDriverDegree} onChange={(e) => setUpdatedDriverDegree(e.target.value)} >
-                                            <option value="">Select an option</option>
+                                            <option value="0">Select an option</option>
                                             <option value="1">1 (lái xe ô tô, xe buýt)</option>
                                             <option value="2">2 (lái xe tải)</option>
                                             <option value="3">3 (lái mọi loại xe)</option>
@@ -269,7 +262,7 @@ function Driver(){
                             </div>  
                             <div className="li-driver-info-elements">
                             <strong>Trạng thái:</strong> {driver.status} <select style={{visibility: 'hidden'}} id={driver.id + "driver-updated-status"} className="driver-updated" value={updatedDriverStatus} onChange={(e) => setUpdatedDriverStatus(e.target.value)} >
-                                            <option value="">Select an option</option>
+                                            <option value="0">Select an option</option>
                                             <option value="Active">Hoạt động</option>
                                             <option value="Inactive">Không hoạt động</option>
 
@@ -304,7 +297,7 @@ function Driver(){
                             </div>
                             <div>                            
                                 <label className="driver-input" id="driver-input-degree"  for="degree"><strong>Bằng cấp</strong></label><br></br>
-                                <select id="degree" name="degree" onChange={(e) => setDriverDegree(e.target.value)} className="degree-select">
+                                <select id="degree" name="degree"  onChange={(e) => setDriverDegree(e.target.value)} className="degree-select">
                                     <option value="0">Select an option</option>
                                     <option value="1">1 (lái xe ô tô, xe buýt)</option>
                                     <option value="2">2 (lái xe tải)</option>
@@ -320,7 +313,7 @@ function Driver(){
                             <div>                            
                                 <label className="driver-input" id="driver-input-status"  for="status"><strong>Trạng thái</strong></label><br></br>
                                 <select id="status" name="status" onChange={(e) => setDriverStatus(e.target.value)} className="status-select">
-                                    <option value="">Select an option</option>
+                                    <option value="0">Select an option</option>
                                     <option value="Active">Hoạt động</option>
                                     <option value="Inactive">Không hoạt động</option>
                                 </select>
