@@ -62,7 +62,7 @@ function Driver(){
     }
     const handleAddDriver = async() => {
         const newDriver = {name: driverName,
-                            degree: driverDegree,
+                            license: driverDegree,
                             phone: driverPhone,
                             status: driverStatus,
                             address: driverAddress,
@@ -230,7 +230,7 @@ function Driver(){
     }
     const updateDegree = async(id) => {
         const driverDoc = doc(database, "drivers", id);
-        await updateDoc(driverDoc, {degree: updatedDriverDegree});
+        await updateDoc(driverDoc, {license: updatedDriverDegree});
         getDriverList();
         document.getElementById("updateDegree-button").style.visibility = 'hidden';
         document.getElementById('driver-updated-degree').style.visibility = 'hidden';
@@ -255,7 +255,7 @@ function Driver(){
                                                 <button id="updateName-button"  onClick={() => updateName(driver.id)}>Update</button> <br/>
                             </div>
                             <div className="li-driver-info-elements">
-                            <strong>Bằng cấp:</strong> {driver.degree} <select id="driver-updated-degree" className="driver-updated" value={updatedDriverDegree} onChange={(e) => setUpdatedDriverDegree(e.target.value)} >
+                            <strong>Bằng cấp:</strong> {driver.license} <select id="driver-updated-degree" className="driver-updated" value={updatedDriverDegree} onChange={(e) => setUpdatedDriverDegree(e.target.value)} >
                                             <option value="">Select an option</option>
                                             <option value="1">1 (lái xe ô tô, xe buýt)</option>
                                             <option value="2">2 (lái xe tải)</option>

@@ -32,7 +32,8 @@ const Path = () =>{
     const [newXCoordinate,setNewXCoordinate]=useState(0);
     const [newYCoordinate,setNewYCoordinate]=useState(0);
     
-    const addStationArr=async ()=>{
+    const addStationArr=async (e)=>{
+        e.preventDefault();
         try{
             await addDoc(collection(database,"station"),{
                 name: newStationName,
@@ -91,7 +92,8 @@ const Path = () =>{
     }
     const [addedGoods, setAddedGoods] = useState([]);
 
-    const addNewGoods= async()=>{
+    const addNewGoods= async(e)=>{
+        e.preventDefault();
         if(newGoodsName===""||newGoodsWeight===0||newGoodsDest==="") document.getElementById('failedAddGoods').style.display="block";
         else{
             try{
@@ -157,7 +159,8 @@ const Path = () =>{
     }
     const [addedPassenger, setAddedPassenger] = useState([]);
 
-    const addNewPassenger= async()=>{
+    const addNewPassenger= async(e)=>{
+        e.preventDefault();
         if(newPassengerName===""||newPassengerPhone===0||newPassengerDest==="") document.getElementById('failedAddPassenger').style.display="block";
         else{
             try{
@@ -698,12 +701,12 @@ const Path = () =>{
                         <p>Trọng lượng: {goods.weight} Kg</p>
                         <p>Đích đến: {goods.dest}</p>
                         </div>))}
-                <form>
+                    <form onSubmit={addNewGoods}>
                     <input placeholder='Tên hàng' type='text' onChange={(e)=>setNewGoodsName(e.target.value)} required/>
                     <input placeholder='Trọng lượng' type='number' onChange={(e)=>setNewGoodsWeight(Number(e.target.value))} required/>
                     <input placeholder='Đích đến' type='text' onChange={(e)=>setNewGoodsDest(e.target.value)} required/>
-                    <input type='submit' onClick={addNewGoods} value="Thêm vào"/>
-                </form>
+                    <button type='submit'>Thêm vào</button>
+                    </form>
                 <h2 id='failedAddGoods' style={{display:"none"}}>Vui lòng nhập đủ, đúng dữ liệu</h2>
                 <h2 id='successAddGoods'>Đã thêm hàng thành công</h2>
             </div>
@@ -717,12 +720,12 @@ const Path = () =>{
                         <p>SĐT: {passenger.phone}</p>
                         <p>Đích đến: {passenger.dest}</p>
                         </div>))}
-                <form>
+                    <form onSubmit={addNewPassenger}>
                     <input placeholder='Tên ' type='text' onChange={(e)=>setNewPassengerName(e.target.value)} required/>
                     <input placeholder='SĐT' type='number' onChange={(e)=>setNewPassengerPhone(Number(e.target.value))} required/>
                     <input placeholder='Đích đến' type='text' onChange={(e)=>setNewPassengerDest(e.target.value)}/>
-                    <button onClick={addNewPassenger}>Thêm vào</button>
-                </form>
+                    <button type='submit' >Thêm vào</button>
+                    </form>   
                 <h2 id='successAddPassenger' style={{display:"none"}}>Đã thêm khách thành công</h2>
                 <h2 id='failedAddPassenger' style={{display:"none"}}>Vui lòng nhập đủ, đúng dữ liệu</h2>
             </div>
@@ -841,6 +844,7 @@ const Path = () =>{
                             }))
                             setShowDriversMode(false);
                             console.log(pathCalcShowDrivers);
+                            console.log(pathCalcStation);
                         }}}>Tiếp theo</button>
                 </div>
             </div>
@@ -1186,6 +1190,7 @@ const Path = () =>{
                             }))
                             setShowDriversMode(false);
                             console.log(pathCalcShowDrivers);
+                            console.log(pathCalcStation);
                         }}}>Tiếp theo</button>
                 </div>
             </div>
@@ -1419,19 +1424,20 @@ const Path = () =>{
             </div>
             {/* header */}
             <div className='headerPath'>
-                
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/f0/HCMCUT.svg" class="logo" alt="Logo"/>
+                <h2 class="site-name">Quản Lí Chuyến Đi</h2>
             </div>
             
             {/* thêm trạm */}
             
             <div className="addStation">
                 <h1>Thêm trạm :</h1>
-                <div>
+                <form onSubmit={addStationArr}>
                     <input className='inputAddStation' placeholder='Tên trạm?' type='text' onChange={(e)=>setNewStationName(e.target.value)}/>
                     <input className='inputAddStation' placeholder='Toạ độ X?' type='number' onChange={(e)=>setNewXCoordinate(e.target.value)}/>
                     <input className='inputAddStation' placeholder='Toạ độ Y?' type='number' onChange={(e)=>setNewYCoordinate(e.target.value)}/>
-                    <button className='inputAddStation' onClick={addStationArr}>Thêm vào</button>
-                </div>
+                    <button className='inputAddStation' type='submit'>Thêm vào</button>
+                </form>
                 
             </div>
            
