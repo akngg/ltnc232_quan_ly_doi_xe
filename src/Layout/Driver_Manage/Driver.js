@@ -61,7 +61,7 @@ function Driver(){
     }
     const handleAddDriver = async() => {
         const newDriver = {name: driverName,
-                            degree: driverDegree,
+                            degree: Number(driverDegree),
                             phone: driverPhone,
                             status: driverStatus,
                             address: driverAddress,
@@ -174,8 +174,8 @@ function Driver(){
         try{
             await addDoc(driversCollectionRef, {
                 name: driverName,
-                degree: driverDegree,
-                phone: driverPhone,
+                license: Number(driverDegree),
+                phone: Number(driverPhone),
                 address: driverAddress,
                 position: driverPosition,
                 status: driverStatus,
@@ -276,7 +276,7 @@ function Driver(){
                                                 <button id="updateName-button"  onClick={() => updateName(driver.id)}>Update</button> <br/>
                             </div>
                             <div className="li-driver-info-elements">
-                            <strong>Bằng cấp:</strong> {driver.degree} <select id="driver-updated-degree" className="driver-updated" value={updatedDriverDegree} onChange={(e) => setUpdatedDriverDegree(e.target.value)} >
+                            <strong>Bằng cấp:</strong> {driver.license} <select id="driver-updated-degree" className="driver-updated" value={updatedDriverDegree} onChange={(e) => setUpdatedDriverDegree(e.target.value)} >
                                             <option value="">Select an option</option>
                                             <option value="1">1 (lái xe ô tô, xe buýt)</option>
                                             <option value="2">2 (lái xe tải)</option>
@@ -326,9 +326,9 @@ function Driver(){
                             
                             <label className="driver-input" id="driver-input-degree"  for="degree"><strong>Bằng cấp</strong></label><br></br>
                             <select id="degree" name="degree" onChange={(e) => setDriverDegree(e.target.value)} className="degree-select">
-                                <option value="">Select an option</option>
-                                <option value="1">1 (lái xe ô tô, xe buýt)</option>
-                                <option value="2">2 (lái xe tải)</option>
+                                <option value="0">Select an option</option>
+                                <option value="1">1 (lái xe tải nhỏ, xe oto con)</option>
+                                <option value="2">2 (lái xe tải, oto loại vừa, nhỏ)</option>
                                 <option value="3">3 (lái mọi loại xe)</option>
                             </select>
                         </div>
@@ -346,12 +346,12 @@ function Driver(){
                         <div>
                             <label><strong>Vị trí</strong></label><br></br>
                             <input id="driver-input-position" className="driver-input" type="text" value={driverPosition} onChange={(e) => setDriverPosition(e.target.value)}
-                            placeholder="Enter driver's task: " /> <br/>
+                            placeholder="Enter driver's position: " /> <br/>
                         </div>
                         <div>
                             <label><strong>Địa chỉ</strong></label><br></br>
                             <input id="driver-input-address" className="driver-input" type="text" value={driverAddress} onChange={(e) => setDriverAddress(e.target.value)}
-                            placeholder="Enter driver's task: " /> <br/>
+                            placeholder="Enter driver's address: " /> <br/>
                         </div>
                         <div>
                             <label><strong>ID</strong></label><br></br>
