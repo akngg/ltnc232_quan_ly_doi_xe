@@ -15,7 +15,6 @@ import
 function Car() {
   // state
   const [activeTab, setActiveTab] = useState('infor');
-  const [activeTab, setActiveTab] = useState('infor');
   const [buses, setBusesList] = useState([]);
   const [trucks, setTrucks] = useState([]);
   const [busmain, setBusMainList] = useState([]);
@@ -153,10 +152,14 @@ function Car() {
     alert('Xe này đã được đăng ký bảo dưỡng.');
     return;
   }
-    const bus = buses.find(bus => bus.liplate === liplateBus);
-    if (bus) {
-      await addBusMain(bus.liplate, bus.cartype, bus.numOfSeats, bus.position, bus.releaseDate, 'maintenance');
-      await updateBusStatus(bus.id, 'maintenance');
+  const bus = buses.find(bus => bus.liplate === liplateBus);
+  if (bus && bus.status === 'Running') {
+    alert('Xe này đang hoạt động.');
+    return;
+  }
+  if (bus) {
+      await addBusMain(bus.liplate, bus.cartype, bus.numOfSeats, bus.position, bus.releaseDate, 'Maintenance');
+      await updateBusStatus(bus.id, 'Maintenance');
       alert('Đăng ký bảo dưỡng thành công');
       return;
     }
@@ -299,6 +302,8 @@ function Car() {
   const [liplate, setLiplate] = useState('');
   const [position, setPosition] = useState('');
   const [cartype, setCartype] = useState('');
+  const [weight, setWeight] = useState('');
+  const [license, setLicense] = useState('');
   const [numOfSeats, setNumOfSeats] = useState('');
   const [releaseDate, setReleaseDate] = useState('');
   const[busInforChange, setBusInforChange] = useState('');
@@ -465,7 +470,7 @@ function Car() {
       //
   //
   // Thêm xe
-  const addBus = async (liplate, cartype, numOfSeats,position, releaseDate, status) => {
+  const addBus = async (liplate, cartype,weight,license, numOfSeats,position, releaseDate, status) => {
     await addDoc(busCollectionRef, {
       liplate: liplate,
       cartype: cartype,
@@ -482,7 +487,7 @@ function Car() {
       driver: [],
       height: 0,
       length: 0,
-      license : 0,
+      license : license,
       cost : 0,
       userId: '',
       weight: weight,
@@ -494,7 +499,7 @@ function Car() {
       add: arrayUnion( 'Thêm xe: '+liplate + ' : Thời gian thêm : ' + new Date().toLocaleString(  'vi-VN', { hour: 'numeric', minute: 'numeric', day: 'numeric', month: 'numeric', year: 'numeric'} ))
     });
   };
-  const addTruck = async (liplate, cartype, carrying,position, releaseDate, status) => {
+  const addTruck = async (liplate, cartype,weight,license, payload,position, releaseDate, status) => {  
     await addDoc(truckCollectionRef, {
       liplate: liplate,
       cartype: cartype,
@@ -513,7 +518,7 @@ function Car() {
       fueltype: '',
       height: 0,
       length: 0,
-      license: 0,
+      license: license,
       userId: '',
       weight: weight,
       payload: payload,
@@ -535,10 +540,10 @@ function Car() {
       return;
     }
     if (selectedValue === 'bus') {
-      addBus(liplate, cartype, numOfSeats, position, releaseDate, 'active');
+      addBus(liplate, cartype,weight,license, numOfSeats, position, releaseDate, 'Active');
       alert('Thêm xe thành công');
     } else if (selectedValue === 'truck') {
-      addTruck(liplate, cartype, numOfSeats, position, releaseDate, 'active');
+      addTruck(liplate, cartype,weight,license, numOfSeats, position, releaseDate, 'Active');
       alert('Thêm xe thành công');
     }
     else {
@@ -1039,6 +1044,12 @@ function Car() {
         onChange={(e) => setCartype(e.target.value)}
         ></input>
         </div>
+        <input type='text' placeholder='Nhập khối lượng xe...'
+        onChange={(e) => setWeight(e.target.value)}
+        ></input>
+        <input type='text' placeholder='Nhập bằng lái yêu cầu...'
+        onChange={(e) => setLicense(e.target.value)}
+        ></input>
         <input type='text' placeholder='Nhập số ghế/ trọng tải...'
         onChange={(e) => setNumOfSeats(e.target.value)}
         ></input>
