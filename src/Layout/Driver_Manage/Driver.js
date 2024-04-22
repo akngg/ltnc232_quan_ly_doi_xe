@@ -170,7 +170,7 @@ function Driver(){
         await deleteDoc(driverDoc);
         getDriverList();
     }
-    function openHandleChangeInfoDriver(id) {
+    function openHandleChangeInfoDriver(id, driver) {
         document.getElementById(id + 'driver-updated-name').style.visibility = 'visible';
         document.getElementById(id + 'driver-updated-degree').style.visibility = 'visible';
         document.getElementById(id + 'driver-updated-phone').style.visibility = 'visible';
@@ -185,6 +185,12 @@ function Driver(){
         document.getElementById(id + 'updatePosition-button').style.visibility = 'visible';
         document.getElementById(id + 'updateAddress-button').style.visibility = 'visible';
         document.getElementById(id + 'updateDegree-button').style.visibility = 'visible';
+        setUpdatedDriverName(driver.name);
+        setUpdatedDriverPhone(driver.phone);
+        setUpdatedDriverPosition(driver.position);
+        setUpdatedDriverAddress(driver.address);
+        setUpdatedDriverDegree(driver.degree);
+        setUpdatedDriverStatus(driver.status);
     }
     const updateName = async(id) => {
         const driverDoc = doc(database, "drivers", id);
@@ -285,7 +291,7 @@ function Driver(){
                             </div>
                             <div className="remain-buttons">
                             <button id="delete-button" className="button-option" onClick={() => handleRemoveDriver(driver.id)}>Xóa</button>
-                            <button id="open-change-button" className="button-option" onClick={() => openHandleChangeInfoDriver(driver.id)}>Thay đổi</button>
+                            <button id="open-change-button" className="button-option" onClick={() => openHandleChangeInfoDriver(driver.id, driver)}>Thay đổi</button>
                             </div>
                         </li>)}
                 </ul>
