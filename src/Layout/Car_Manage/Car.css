@@ -92,7 +92,8 @@
  /* thong tin chung */
 .general{
   width: 30%;
-  height: 70%;
+  max-height: 80%;
+  overflow: auto;
   background-color: rgba(140, 230, 104, 0.137); /* Màu ghi trắng mờ */
   border: 3px solid #05a85f;
   padding: 20px;
@@ -191,7 +192,9 @@
     border: 1px solid #ddd;
     padding: 8px;
 }
-  
+#STT{
+  width: 2px;
+}  
 .table tr:nth-child(even) {
     background-color: #dddddd;
   }

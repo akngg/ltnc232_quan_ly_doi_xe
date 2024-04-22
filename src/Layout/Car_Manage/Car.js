@@ -785,7 +785,7 @@ function Car() {
                 <table className='table' id='table-container'>
                   <thead>
                     <tr>
-                      <th>STT</th>
+                      <th id='STT'>STT</th>
                       <th>Biển số</th>
                       <th>THỜI GIAN ĐĂNG KÝ BẢO DƯỠNG</th>
                       <th>THỜI GIAN HOÀN THÀNH BẢO DƯỠNG</th>
@@ -814,7 +814,7 @@ function Car() {
                 <table className='table' id='table-container'>
                   <thead>
                     <tr>
-                      <th>STT</th>
+                      <th id='STT'>STT</th>
                       <th>Biển số</th>
                       <th>THỜI GIAN ĐĂNG KÝ BẢO DƯỠNG</th>
                       <th>THỜI GIAN HOÀN THÀNH BẢO DƯỠNG</th>
@@ -1025,7 +1025,7 @@ function Car() {
                     <table className='table'>
                       <thead>
                         <tr>
-                          <th>STT</th>
+                          <th id='STT'> STT</th>
                           <th>Thông tin thay đổi</th>
                         </tr>
                       </thead>
@@ -1046,7 +1046,7 @@ function Car() {
                     <table className='table'>
                     <thead>
                         <tr>
-                          <th>STT</th>
+                          <th id='STT'>STT</th>
                           <th>Thông tin thay đổi</th>
                         </tr>
                       </thead>
@@ -1112,7 +1112,7 @@ function Car() {
                 <table className='table'>
                   <thead>
                         <tr>
-                          <th>STT</th>
+                          <th id='STT'>STT</th>
                           <th>Thông tin thay đổi</th>
                         </tr>
                   </thead>
@@ -1133,7 +1133,7 @@ function Car() {
               <table className='table'>
                 <thead>
                         <tr>
-                          <th>STT</th>
+                          <th id='STT'>STT</th>
                           <th>Thông tin thay đổi</th>
                         </tr>
                 </thead>
