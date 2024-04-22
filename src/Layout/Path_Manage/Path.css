@@ -384,7 +384,7 @@ button{
     width: 100%;
     border-collapse: collapse;
 }
-.TB tr th,td{
+.TB tr th,.TB tr td{
     border: 1px solid black;
     width: 20%;
     text-align: center;
