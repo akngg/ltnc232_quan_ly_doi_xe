@@ -79,12 +79,11 @@ const Path = () =>{
         document.getElementById('overlay').style.display="block";
     }
     const hidePopupAddGoods=()=>{
-        setAddedGoods([]);
-        // setNewGoodsDest([]);
-        setNewGoodsName("");
-        setNewGoodsWeight(0);
-        setNewGoodsLocation("");
-        setNewGoodsDest("");
+        // setAddedGoods([]);
+        // setNewGoodsName("");
+        // setNewGoodsWeight(0);
+        // setNewGoodsLocation("");
+        // setNewGoodsDest("");
         document.getElementById('popupAddGoods').style.display="none";
         document.getElementById('overlay').style.display="none";
         document.getElementById('successAddGoods').style.display="none";
@@ -147,11 +146,11 @@ const Path = () =>{
         document.getElementById('overlay').style.display="block";
     }
     const hidePopupAddPassenger=()=>{
-        setAddedPassenger([]);
-        setNewPassengerName("");
-        setNewPassengerPhone(0);
-        setNewPassengerLocation("");
-        setNewPassengerDest("");
+        // setAddedPassenger([]);
+        // setNewPassengerName("");
+        // setNewPassengerPhone(0);
+        // setNewPassengerLocation("");
+        // setNewPassengerDest("");
         document.getElementById('popupAddPassenger').style.display="none";
         document.getElementById('overlay').style.display="none";
         document.getElementById('successAddPassenger').style.display="none";
@@ -597,6 +596,7 @@ const Path = () =>{
         }
     }
     useEffect(()=>{
+        updatePerMinute();
         const interval = setInterval(updatePerMinute, 1 * 60 * 1000); 
         return () => clearInterval(interval);
     },[])
@@ -625,70 +625,135 @@ const Path = () =>{
                 <button className='closebtn' onClick={()=>hidePopupStationBox()}>X</button>
                 <h1>Thông tin chi tiết về trạm {popupStation.name}</h1>
                 <div className='popupStationDTB'>
-                    <h1>Danh sách tài xế ở trạm</h1>
-                    {popupDriverList.map((driver)=>(<div id={driver.id} className='eachDTB'>
+                    <h2>Danh sách tài xế ở trạm</h2>
+                    <table className='TB'>
+                        <tr>
+                            <th>Tên</th>
+                            <th>SĐT</th>
+                            <th>Bằng lái</th>
+                        </tr>
+                        {popupDriverList.map((driver)=>(<tr id={driver.id}>
+                        <td>{driver.name}</td>
+                        <td>{driver.phone}</td>
+                        <td>{driver.license}</td>
+                        </tr>))}
+                    </table>
+                    {/* {popupDriverList.map((driver)=>(<div id={driver.id} >
                         <p>Tên: {driver.name}</p>
                         <p>SĐT: {driver.phone}</p>
                         <p>Bằng lái: {driver.license}</p>
-                        </div>))}
+                        </div>))} */}
                 </div>
                 <div className='popupStationDTB'>
-                    <h1>Danh sách tài xế đang đến</h1>
-                    {popupIncomingDriverList.map((driver)=>(<div id={driver.id} className='eachDTB'>
-                        <p>Tên: {driver.name}</p>
-                        <p>SĐT: {driver.phone}</p>
-                        <p>Bằng lái: {driver.license}</p>
-                        </div>))}
+                    <h2>Danh sách tài xế đang đến</h2>
+                    <table className='TB'>
+                        <tr>
+                            <th>Tên</th>
+                            <th>SĐT</th>
+                            <th>Bằng lái</th>
+                        </tr>
+                        {popupIncomingDriverList.map((driver)=>(<tr id={driver.id} >
+                        <td>{driver.name}</td>
+                        <td>{driver.phone}</td>
+                        <td>{driver.license}</td>
+                        </tr>))}
+                    </table>
                 </div>
                 <div className='popupStationDTB'>
-                    <h1>Danh sách xe tải ở trạm</h1>
-                    {popupTruckList.map((truck)=>(<div id={truck.id} className='eachDTB'>
-                        <p>Loại xe: {truck.cartype}</p>
-                        <p>Biển số: {truck.liplate}</p>
-                        <p>Tải trọng: {truck.payload}</p>
-                        </div>))}
+                    <h2>Danh sách xe tải ở trạm</h2>
+                    <table className='TB'>
+                        <tr>
+                            <th>Loại xe</th>
+                            <th>Biển số</th>
+                            <th>Tải trọng</th>
+                        </tr>
+                        {popupTruckList.map((truck)=>(<tr id={truck.id} >
+                        <td>{truck.cartype}</td>
+                        <td>{truck.liplate}</td>
+                        <td>{truck.payload}</td>
+                        </tr>))}
+                    </table>
                 </div>
                 <div className='popupStationDTB'>
-                    <h1>Danh sách xe tải đang đến</h1>
-                    {popupIncomingTruck.map((truck)=>(<div id={truck.id} className='eachDTB'>
-                        <p>Loại xe: {truck.cartype}</p>
-                        <p>Biển số: {truck.liplate}</p>
-                        <p>KL Hàng: {truck.carrying}</p>
-                        </div>))}
+                    <h2>Danh sách xe tải đang đến</h2>
+                    <table className='TB'>
+                        <tr>
+                            <th>Loại xe</th>
+                            <th>Biển số</th>
+                            <th>KL Hàng</th>
+                        </tr>
+                        {popupIncomingTruck.map((truck)=>(<tr id={truck.id} >
+                        <td>{truck.cartype}</td>
+                        <td>{truck.liplate}</td>
+                        <td>{truck.carrying}</td>
+                        </tr>))}
+                    </table>
+                    
                 </div>
                 <div className='popupStationDTB'>
-                    <h1>Danh sách xe khách ở trạm</h1>
-                    {popupBusList.map((bus)=>(<div id={bus.id} className='eachDTB'>
-                        <p>Loại xe: {bus.cartype}</p>
-                        <p>Biển số: {bus.liplate}</p>
-                        <p>Số ghế: {bus.numOfSeats}</p>
-                        </div>))}
+                    <h2>Danh sách xe khách ở trạm</h2>
+                    <table className='TB'>
+                        <tr>
+                            <th>Loại xe</th>
+                            <th>Biển số</th>
+                            <th>Số ghế</th>
+                        </tr>
+                        {popupBusList.map((bus)=>(<tr id={bus.id} >
+                        <td>{bus.cartype}</td>
+                        <td>{bus.liplate}</td>
+                        <td>{bus.numOfSeats}</td>
+                        </tr>))}
+                    </table>
                 </div>
                 <div className='popupStationDTB'>
-                    <h1>Danh sách xe khách đang đến</h1>
-                    {popupIncomingBus.map((bus)=>(<div id={bus.id} className='eachDTB'>
-                        <p>Loại xe: {bus.cartype}</p>
-                        <p>Biển số: {bus.liplate}</p>
-                        <p>Số hành khách: {bus.passengers}</p>
-                        </div>))}
+                    <h2>Danh sách xe khách đang đến</h2>
+                    <table className='TB'>
+                        <tr>
+                            <th>Loại xe</th>
+                            <th>Biển số</th>
+                            <th>Số ghế</th>
+                        </tr>
+                        {popupIncomingBus.map((bus)=>(<tr id={bus.id} >
+                        <td>Loại xe: {bus.cartype}</td>
+                        <td>Biển số: {bus.liplate}</td>
+                        <td>Số hành khách: {bus.passengers}</td>
+                        </tr>))}
+                    </table>
                 </div>
                 <div className='popupStationDTB'>
-                    <h1>Danh sách hàng hoá</h1>
-                    {popupGoodsList.map((goods)=>(<div id={goods.id} className='eachDTB'>
-                        <p>Tên hàng hoá: {goods.name}</p>
-                        <p>Trọng lượng: {goods.weight}</p>
-                        <p>Đích đến: {goods.dest}</p>
-                        <button onClick={()=>deleteGoods(goods.id,popupStation)}>Xoá hàng hoá</button>
-                        </div>))}
+                    <h2>Danh sách hàng hoá</h2>
+                    <table className='TB'>
+                        <tr>
+                            <th>Tên hàng hoá</th>
+                            <th>Trọng lượng</th>
+                            <th>Đích đến</th>
+                            <th>Xoá hàng</th>
+                        </tr>
+                        {popupGoodsList.map((goods)=>(<tr id={goods.id} >
+                        <td>{goods.name}</td>
+                        <td>{goods.weight}</td>
+                        <td>{goods.dest}</td>
+                        <td><button onClick={()=>deleteGoods(goods.id,popupStation)}>Xoá hàng hoá</button></td>
+                        </tr>))}
+                    </table>
                 </div>
                 <div className='popupStationDTB'>
-                    <h1>Danh sách khách</h1>
-                    {popupPassengerList.map((passenger)=>(<div id={passenger.id} className='eachDTB'>
-                        <p>Tên khách: {passenger.name}</p>
-                        <p>SĐT: {passenger.phone}</p>
-                        <p>Đích đến: {passenger.dest}</p>
-                        <button onClick={()=>deletePassenger(passenger.id,popupStation)}>Xoá khách</button>
-                        </div>))}
+                    <h2>Danh sách khách</h2>
+                    <table className='TB'>
+                        <tr>
+                            <th>Tên khách</th>
+                            <th>SĐT</th>
+                            <th>Đích đến</th>
+                            <th>Xoá khách</th>
+                        </tr>
+                        {popupPassengerList.map((passenger)=>(<tr id={passenger.id} >
+                        <td>{passenger.name}</td>
+                        <td>{passenger.phone}</td>
+                        <td>{passenger.dest}</td>
+                        <td><button onClick={()=>deletePassenger(passenger.id,popupStation)}>Xoá khách</button></td>
+                        
+                        </tr>))}
+                    </table>
                 </div>
             </div>
             {/* Hiển thị thêm hàng hoá */}
@@ -704,7 +769,11 @@ const Path = () =>{
                     <form onSubmit={addNewGoods}>
                     <input placeholder='Tên hàng' type='text' onChange={(e)=>setNewGoodsName(e.target.value)} required/>
                     <input placeholder='Trọng lượng' type='number' onChange={(e)=>setNewGoodsWeight(Number(e.target.value))} required/>
-                    <input placeholder='Đích đến' type='text' onChange={(e)=>setNewGoodsDest(e.target.value)} required/>
+                    {/* <input placeholder='Đích đến' type='text' onChange={(e)=>setNewGoodsDest(e.target.value)} required/> */}
+                    <select onChange={(e)=>setNewGoodsDest(e.target.value)} required >
+                    <option value="" disabled selected>Chọn đích đến</option>
+                        {stationArr.map((sta)=>((sta.name!=newGoodsLocation)&&<option value={sta.name}>{sta.name}</option>))}
+                    </select>
                     <button type='submit'>Thêm vào</button>
                     </form>
                 <h2 id='failedAddGoods' style={{display:"none"}}>Vui lòng nhập đủ, đúng dữ liệu</h2>
@@ -723,7 +792,11 @@ const Path = () =>{
                     <form onSubmit={addNewPassenger}>
                     <input placeholder='Tên ' type='text' onChange={(e)=>setNewPassengerName(e.target.value)} required/>
                     <input placeholder='SĐT' type='number' onChange={(e)=>setNewPassengerPhone(Number(e.target.value))} required/>
-                    <input placeholder='Đích đến' type='text' onChange={(e)=>setNewPassengerDest(e.target.value)}/>
+                    {/* <input placeholder='Đích đến' type='text' onChange={(e)=>setNewPassengerDest(e.target.value)}/> */}
+                    <select onChange={(e)=>setNewPassengerDest(e.target.value)} required >
+                    <option value="" disabled selected>Chọn đích đến</option>
+                        {stationArr.map((sta)=>((sta.name!=newPassengerLocation)&&<option value={sta.name}>{sta.name}</option>))}
+                    </select>
                     <button type='submit' >Thêm vào</button>
                     </form>   
                 <h2 id='successAddPassenger' style={{display:"none"}}>Đã thêm khách thành công</h2>
@@ -893,8 +966,24 @@ const Path = () =>{
                                 <p>2: Giữ gìn hàng hoá tốt</p>
                                 <p>3: Hành khách hài lòng</p>
                                 <p>4: Giữ gìn xe tốt</p>
-                                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;4</p>
-                                {driver.history.map((his,index)=>(<p>{index+1}&nbsp;&nbsp;&nbsp;{his[1]}&nbsp;&nbsp;{his[2]}&nbsp;&nbsp;{his[3]}&nbsp;&nbsp;{his[4]}</p>))}
+                                <table className='TB'>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>1</th>
+                                        <th>2</th>
+                                        <th>3</th>
+                                        <th>4</th>
+                                    </tr>
+                                    {driver.history.map((his,index)=>(<tr>
+                                        <td>{index+1}</td>
+                                        <td>{his[1]}</td>
+                                        <td>{his[2]}</td>
+                                        <td>{his[3]}</td>
+                                        <td>{his[4]}</td>
+                                    </tr>))}
+                                </table>
+                                {/* <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;4</p>
+                                {driver.history.map((his,index)=>(<p>{index+1}&nbsp;&nbsp;&nbsp;{his[1]}&nbsp;&nbsp;{his[2]}&nbsp;&nbsp;{his[3]}&nbsp;&nbsp;{his[4]}</p>))} */}
                             </div>
                             {/* {driver.history.map((his, index)=>(<p>{index+1}. {his===0? "Lái xe an toàn":his===1?"Làm hỏng hàng hoá":his===2?"Vi phạm luật giao thông":"Vi phạm luât, làm hỏng hàng"}</p>))} */}
                             <button onClick={()=>{
@@ -929,8 +1018,24 @@ const Path = () =>{
                                 <p>2: Giữ gìn hàng hoá tốt</p>
                                 <p>3: Hành khách hài lòng</p>
                                 <p>4: Giữ gìn xe tốt</p>
-                                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;4</p>
-                                {pathCalcTruckUsed[pathCalcTruckChosenIndex].driver.history.map((his,index)=>(<p>{index+1}&nbsp;&nbsp;&nbsp;{his[1]}&nbsp;&nbsp;{his[2]}&nbsp;&nbsp;{his[3]}&nbsp;&nbsp;{his[4]}</p>))}
+                                <table className='TB'>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>1</th>
+                                        <th>2</th>
+                                        <th>3</th>
+                                        <th>4</th>
+                                    </tr>
+                                    {pathCalcTruckUsed[pathCalcTruckChosenIndex].driver.history.map((his,index)=>(<tr>
+                                        <td>{index+1}</td>
+                                        <td>{his[1]}</td>
+                                        <td>{his[2]}</td>
+                                        <td>{his[3]}</td>
+                                        <td>{his[4]}</td>
+                                    </tr>))}
+                                </table>
+                                {/* <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;4</p>
+                                {pathCalcTruckUsed[pathCalcTruckChosenIndex].driver.history.map((his,index)=>(<p>{index+1}&nbsp;&nbsp;&nbsp;{his[1]}&nbsp;&nbsp;{his[2]}&nbsp;&nbsp;{his[3]}&nbsp;&nbsp;{his[4]}</p>))} */}
                             </div>
                             {/* {pathCalcTruckUsed[pathCalcTruckChosenIndex].driver.history.map((his, index)=>(<p>{index+1}. {his===0? "Lái xe an toàn":his===1?"Làm hỏng hàng hoá":his===2?"Vi phạm luật giao thông":"Vi phạm luât, làm hỏng hàng"}</p>))} */}
                             <button onClick={()=>{
@@ -1239,8 +1344,24 @@ const Path = () =>{
                                 <p>2: Giữ gìn hàng hoá tốt</p>
                                 <p>3: Hành khách hài lòng</p>
                                 <p>4: Giữ gìn xe tốt</p>
-                                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;4</p>
-                                {driver.history.map((his,index)=>(<p>{index+1}&nbsp;&nbsp;&nbsp;{his[1]}&nbsp;&nbsp;{his[2]}&nbsp;&nbsp;{his[3]}&nbsp;&nbsp;{his[4]}</p>))}
+                                <table className='TB'>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>1</th>
+                                        <th>2</th>
+                                        <th>3</th>
+                                        <th>4</th>
+                                    </tr>
+                                    {driver.history.map((his,index)=>(<tr>
+                                        <td>{index+1}</td>
+                                        <td>{his[1]}</td>
+                                        <td>{his[2]}</td>
+                                        <td>{his[3]}</td>
+                                        <td>{his[4]}</td>
+                                    </tr>))}
+                                </table>
+                                {/* <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;4</p>
+                                {driver.history.map((his,index)=>(<p>{index+1}&nbsp;&nbsp;&nbsp;{his[1]}&nbsp;&nbsp;{his[2]}&nbsp;&nbsp;{his[3]}&nbsp;&nbsp;{his[4]}</p>))} */}
                             </div>
                             {/* {driver.history.map((his, index)=>(<p>{index+1}. {his===0? "Lái xe an toàn":his===1?"Làm hỏng hàng hoá":his===2?"Vi phạm luật giao thông":"Vi phạm luât, làm hỏng hàng"}</p>))} */}
                             <button onClick={()=>{
@@ -1275,8 +1396,24 @@ const Path = () =>{
                                 <p>2: Giữ gìn hàng hoá tốt</p>
                                 <p>3: Hành khách hài lòng</p>
                                 <p>4: Giữ gìn xe tốt</p>
-                                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;4</p>
-                                {pathCalcBusUsed[pathCalcBusChosenIndex].driver.history.map((his,index)=>(<p>{index+1}&nbsp;&nbsp;&nbsp;{his[1]}&nbsp;&nbsp;{his[2]}&nbsp;&nbsp;{his[3]}&nbsp;&nbsp;{his[4]}</p>))}
+                                <table className='TB'>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>1</th>
+                                        <th>2</th>
+                                        <th>3</th>
+                                        <th>4</th>
+                                    </tr>
+                                    {pathCalcBusUsed[pathCalcBusChosenIndex].driver.history.map((his,index)=>(<tr>
+                                        <td>{index+1}</td>
+                                        <td>{his[1]}</td>
+                                        <td>{his[2]}</td>
+                                        <td>{his[3]}</td>
+                                        <td>{his[4]}</td>
+                                    </tr>))}
+                                </table>
+                                {/* <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;4</p>
+                                {pathCalcBusUsed[pathCalcBusChosenIndex].driver.history.map((his,index)=>(<p>{index+1}&nbsp;&nbsp;&nbsp;{his[1]}&nbsp;&nbsp;{his[2]}&nbsp;&nbsp;{his[3]}&nbsp;&nbsp;{his[4]}</p>))} */}
                             </div>
                             {/* {pathCalcBusUsed[pathCalcBusChosenIndex].driver.history.map((his, index)=>(<p>{index+1}. {his===0? "Lái xe an toàn":his===1?"Làm hỏng hàng hoá":his===2?"Vi phạm luật giao thông":"Vi phạm luât, làm hỏng hàng"}</p>))} */}
                             <button onClick={()=>{

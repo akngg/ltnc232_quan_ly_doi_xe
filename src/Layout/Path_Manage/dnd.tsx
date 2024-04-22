@@ -51,12 +51,14 @@ const DndDisplay=({currentStation, arrStation, car})=>{
                     // console.log("test");
                 }
                 // parseFloat(cloneArrDistance[destination.indexOf(car.arrayOfGoods[index].dest)])
-                tempTotalCost+=1000*totalDistance
+                tempTotalCost+=1000*totalDistance;
+                console.log(tempTotalCost);
                 if(index+1==car.arrayOfPassenger.length){
-                    tempTotalCost+=3*totalDistance*(car.weight+1000);
+                    tempTotalCost+=3*totalDistance*(car.weight)+(3*totalDistance*1000);
                 }
-                // console.log("uhhhh");
-                // console.log(tempTotalCost);
+                console.log("uhhhh");
+                console.log(tempTotalCost);
+                console.log(car.weight);
             }
         }
         setTotalCost(Math.round(tempTotalCost));
