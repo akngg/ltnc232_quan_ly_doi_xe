@@ -195,13 +195,11 @@
     cursor: pointer;
 }
 .close-btn {
-    position: absolute;
-    top: 6px;
-    right: 12px;
+    margin-left: 97%;
     cursor: pointer;
     font-size: 15px;
     color: #666;
-    background-color: lightgray;
+    background-color: rgb(163, 159, 159);
     padding: 10px 15px;
     border: none;
 }
