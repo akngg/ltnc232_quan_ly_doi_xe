@@ -160,7 +160,7 @@ function Driver(){
                 arriveTime: 0,
                 dest: "",
             });
-            // getDriverList();
+            getDriverList();
         } catch (err){
             alert("nooo");
         }
@@ -185,7 +185,6 @@ function Driver(){
         document.getElementById(id + 'updatePosition-button').style.visibility = 'visible';
         document.getElementById(id + 'updateAddress-button').style.visibility = 'visible';
         document.getElementById(id + 'updateDegree-button').style.visibility = 'visible';
-        setUpdatedDriverName(document.getElementById(id + "driver-updated-name").value);
     }
     const updateName = async(id) => {
         const driverDoc = doc(database, "drivers", id);
@@ -193,6 +192,7 @@ function Driver(){
         getDriverList();
         document.getElementById(id + "updateName-button").style.visibility = 'hidden';
         document.getElementById(id + 'driver-updated-name').style.visibility = 'hidden';
+        setUpdatedDriverName("");
     }
     const updatePhone = async(id) => {
         const driverDoc = doc(database, "drivers", id);
@@ -200,6 +200,7 @@ function Driver(){
         getDriverList();
         document.getElementById(id + "updatePhone-button").style.visibility = 'hidden';
         document.getElementById(id + 'driver-updated-phone').style.visibility = 'hidden';
+        setUpdatedDriverPhone("");
     }
     const updateStatus = async(id) => {
         const driverDoc = doc(database, "drivers", id);
@@ -214,6 +215,7 @@ function Driver(){
         getDriverList();
         document.getElementById(id + "updatePosition-button").style.visibility = 'hidden';
         document.getElementById(id + 'driver-updated-position').style.visibility = 'hidden';
+        setUpdatedDriverPosition("");
     }
     const updateAddress = async(id) => {
         const driverDoc = doc(database, "drivers", id);
@@ -221,6 +223,7 @@ function Driver(){
         getDriverList();
         document.getElementById(id + "updateAddress-button").style.visibility = 'hidden';
         document.getElementById(id + 'driver-updated-address').style.visibility = 'hidden';
+        setUpdatedDriverAddress("");
     }
     const updateDegree = async(id) => {
         const driverDoc = doc(database, "drivers", id);
