@@ -51,7 +51,7 @@ function Driver(){
 
     function openAddDrvier(){
         document.getElementById('driver-list').style.opacity = 0.4;
-        setShowForm(true);
+        // setShowForm(true);
         document.getElementById("driver-input-form").style.display = "block";
         document.getElementById("add-button").style.visibility = "visible";
         document.getElementById("open-add-button").style.visibility = "hidden";
@@ -296,50 +296,50 @@ function Driver(){
                         </li>)}
                 </ul>
                 
-                    <form id="driver-input-form" className={"driver-input-form " + (showForm ? "show" : "")}>
-                        <button className="close-btn" onClick={() => setShowForm(false)}>X</button>
-                            <legend><strong>Thông tin</strong></legend>
-                            <div>
-                                <label><strong>Tên</strong></label><br></br>
-                                <input id="driver-input-name"  className="driver-input" type="text" value={driverName} onChange={(e) => setDriverName(e.target.value.toUpperCase())}
-                                        placeholder="Enter driver's name: " /> <br/>
-                            </div>
-                            <div>                            
-                                <label className="driver-input" id="driver-input-degree"  for="degree"><strong>Bằng cấp</strong></label><br></br>
-                                <select id="degree" name="degree"  onChange={(e) => setDriverDegree(e.target.value)} className="degree-select">
-                                    <option value="0">Select an option</option>
-                                    <option value="1">1 (lái xe ô tô, xe buýt)</option>
-                                    <option value="2">2 (lái xe tải)</option>
-                                    <option value="3">3 (lái mọi loại xe)</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label><strong>Số điện thoại</strong></label><br></br>
-                                <input id="driver-input-phone" className="driver-input" type="text" value={driverPhone} onChange={(e) => setDriverPhone(e.target.value)}
-                                placeholder="Enter driver's phone: " /> <br/>
-                            </div>
+                <form id="driver-input-form" >
+                    <button id="close-btn" onClick={() => document.getElementById('driver-input-form').style.display = 'none'}>X</button>
+                        <legend><strong>Thông tin</strong></legend>
+                        <div>
+                            <label><strong>Tên</strong></label><br></br>
+                            <input id="driver-input-name"  className="driver-input" type="text" value={driverName} onChange={(e) => setDriverName(e.target.value.toUpperCase())}
+                                    placeholder="Enter driver's name: " /> <br/>
+                        </div>
+                        <div>                            
+                            <label className="driver-input" id="driver-input-degree"  for="degree"><strong>Bằng cấp</strong></label><br></br>
+                            <select id="degree" name="degree"  onChange={(e) => setDriverDegree(e.target.value)} className="degree-select">
+                                <option value="0">Select an option</option>
+                                <option value="1">1 (lái xe ô tô, xe buýt)</option>
+                                <option value="2">2 (lái xe tải)</option>
+                                <option value="3">3 (lái mọi loại xe)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label><strong>Số điện thoại</strong></label><br></br>
+                            <input id="driver-input-phone" className="driver-input" type="text" value={driverPhone} onChange={(e) => setDriverPhone(e.target.value)}
+                            placeholder="Enter driver's phone: " /> <br/>
+                        </div>
 
-                            <div>                            
-                                <label className="driver-input" id="driver-input-status"  for="status"><strong>Trạng thái</strong></label><br></br>
-                                <select id="status" name="status" onChange={(e) => setDriverStatus(e.target.value)} className="status-select">
-                                    <option value="0">Select an option</option>
-                                    <option value="Active">Hoạt động</option>
-                                    <option value="Inactive">Không hoạt động</option>
-                                </select>
-                            </div>
+                        <div>                            
+                            <label className="driver-input" id="driver-input-status"  for="status"><strong>Trạng thái</strong></label><br></br>
+                            <select id="status" name="status" onChange={(e) => setDriverStatus(e.target.value)} className="status-select">
+                                <option value="0">Select an option</option>
+                                <option value="Active">Hoạt động</option>
+                                <option value="Inactive">Không hoạt động</option>
+                            </select>
+                        </div>
 
-                            <div>
-                                <label><strong>Vị trí</strong></label><br></br>
-                                <input id="driver-input-position" className="driver-input" type="text" value={driverPosition} onChange={(e) => setDriverPosition(e.target.value)}
-                                placeholder="Enter driver's position: " /> <br/>
-                            </div>
-                            <div>
-                                <label><strong>Địa chỉ</strong></label><br></br>
-                                <input id="driver-input-address" className="driver-input" type="text" value={driverAddress} onChange={(e) => setDriverAddress(e.target.value)}
-                                placeholder="Enter driver's address: " /> <br/>
-                            </div>
-                    </form>
-                    <button id="add-button" onClick={handleAddDriver}>Xác nhận</button>
+                        <div>
+                            <label><strong>Vị trí</strong></label><br></br>
+                            <input id="driver-input-position" className="driver-input" type="text" value={driverPosition} onChange={(e) => setDriverPosition(e.target.value)}
+                            placeholder="Enter driver's position: " /> <br/>
+                        </div>
+                        <div>
+                            <label><strong>Địa chỉ</strong></label><br></br>
+                            <input id="driver-input-address" className="driver-input" type="text" value={driverAddress} onChange={(e) => setDriverAddress(e.target.value)}
+                            placeholder="Enter driver's address: " /> <br/>
+                        </div>
+                </form>
+                <button id="add-button" onClick={handleAddDriver}>Xác nhận</button>
                 <button id="open-add-button" onClick={openAddDrvier}>Thêm tài xế</button>
 
             </div>

@@ -30,7 +30,7 @@
     font-weight: bold;
     user-select: none; 
 }
-.driver-input-form {
+#driver-input-form {
     display: none;
     background-color: lightgray;
     padding: 15px;
@@ -50,13 +50,13 @@
 }
 
 
-.driver-input-form legend {
+#driver-input-form legend {
     font-size: 25px;
     margin-bottom: 5px;
     text-align: center;
 }
 
-.driver-input-form label {
+#driver-input-form label {
     font-size:20px;
     /* display: block; */
     font-weight: bold;
@@ -69,7 +69,7 @@
 }
 
 
-.driver-input-form select {
+#driver-input-form select {
     width: 100%;
     padding: 8px;
     border: 1px solid #ccc;
@@ -195,7 +195,7 @@
 .status-select:hover{
     cursor: pointer;
 }
-.close-btn {
+#close-btn {
     margin-left: 97%;
     cursor: pointer;
     font-size: 15px;
