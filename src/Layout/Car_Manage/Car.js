@@ -23,6 +23,8 @@ function Car() {
   const [historyTruckChange, setHistoryTruckChange] = useState([]);
   const [historyAddBus, setHistoryAddBus] = useState([]);
   const [historyAddTruck, setHistoryAddTruck] = useState([]);
+  const [busortruck, setBusortruck] = useState(0);
+  const [liplates, setLiplates] = useState([]);
   //du lieu
     // xe buyt
   const busCollectionRef = collection(database, 'buses');
@@ -113,7 +115,8 @@ function Car() {
     });
   }
   const sortedBusMain = busmain.filter(bus => bus.status === 'Maintenance');
-  const activeBuses = buses.filter(bus => bus.status === "Active");  
+  const activeBuses = buses.filter(bus => bus.status === "Active");
+  const maintenanceBuses = buses.filter(bus => bus.status === "Maintenance");
   const [search, setSearch] = useState('');
   const [busInfo, setBusInfo] = useState(null);
   const [truckInfo, setTruckInfo] = useState(null);
@@ -133,7 +136,6 @@ function Car() {
       alert('Không có thông tin');
     }
   };
-  
       //dang ky bao duong
   const [liplateBus,setLiplateBus] = useState('');
   const handleInputLiplate = (event) => {
@@ -143,7 +145,7 @@ function Car() {
   const reversedBusMain = busmain.slice(0, -1).reverse();
   const busInMain = reversedBusMain.find(bus => bus.liplate === liplateBus);
   const reversedTruckMain = truckmain.slice(0, -1).reverse();
-  const truckInMain = reversedTruckMain.find(truck => truck.liplate === liplateTruck);
+  const truckInMain = reversedTruckMain.find(truck => truck.liplate === liplateBus);
   if (busInMain && busInMain.status === 'Maintenance') {
     alert('Xe này đã được đăng ký bảo dưỡng.');
     return;
@@ -223,6 +225,7 @@ function Car() {
     await updateDoc(truckDoc, {status});
   }
   const activeTrucks = trucks.filter(truck => truck.status === "Active");
+  const maintenanceTrucks = trucks.filter(truck => truck.status === "Maintenance");
       // bao duong xe tai
   const truckMainCollectionRef = collection(database, 'truckMain');
   const getTruckMain = async () => {
@@ -283,7 +286,6 @@ function Car() {
   const sortedTruckMain = truckmain.filter(truck => truck.status === 'Maintenance');
   // const sortedTrucksMain = trucks.reverse().slice(1,6);
     // dang ky bao duong xe tai
-  const [liplateTruck,setLiplateTruck] = useState('');
   const handleMaintenanceTruck = async (liplateTruck) => {
     const reversedTruckMain = truckmain.slice(0, -1).reverse();
     const truckInMain = reversedTruckMain.find(truck => truck.liplate === liplateTruck);
@@ -302,9 +304,9 @@ function Car() {
   const [liplate, setLiplate] = useState('');
   const [position, setPosition] = useState('');
   const [cartype, setCartype] = useState('');
-  const [weight, setWeight] = useState('');
-  const [license, setLicense] = useState('');
-  const [numOfSeats, setNumOfSeats] = useState('');
+  const [weight, setWeight] = useState(0);
+  const [license, setLicense] = useState(0);
+  const [numOfSeats, setNumOfSeats] = useState(0);
   const [releaseDate, setReleaseDate] = useState('');
   const[busInforChange, setBusInforChange] = useState('');
   const[truckInforChange, setTruckInforChange] = useState('');
@@ -487,10 +489,10 @@ function Car() {
       driver: [],
       height: 0,
       length: 0,
-      license : license,
+      license : Number(license),
       cost : 0,
       userId: '',
-      weight: weight,
+      weight: Number(weight),
       passengers: 0,
       fueltype: '',
     });
@@ -518,10 +520,10 @@ function Car() {
       fueltype: '',
       height: 0,
       length: 0,
-      license: license,
+      license: Number(license),
       userId: '',
-      weight: weight,
-      payload: payload,
+      weight: Number(weight),
+      payload: Number(payload,)
     });
     const truckDoc = doc(database, 'trucks','history-truck');
     await updateDoc(truckDoc, {
@@ -529,7 +531,7 @@ function Car() {
     });
   };
    const handleAdd = (selectedValue) => {
-    if(liplate === '' || cartype === '' || numOfSeats === '' || position === '' || releaseDate === '') {
+    if(liplate === '' || cartype === ''|| weight===0 || numOfSeats === 0 || position === '' || releaseDate === '') {
       alert('Vui lòng nhập đầy đủ thông tin');
       return;
     }
@@ -602,13 +604,13 @@ function Car() {
         <div className='thongtinchung'>
           <div className='general'>
           <h2>Thông tin chung</h2>
-          <p>Tổng số xe: {buses.length + trucks.length}</p>
-          <p>Xe khách: {buses.length}</p>
-          <p>Xe tải: {trucks.length}</p>
-          <p>Số xe buýt đang hoạt động: {activeBuses.length}</p>
-          <p>Số xe buýt đang bảo dưỡng: {buses.length - activeBuses.length}</p>
-          <p>Số xe tải đang hoạt động: {activeTrucks.length}</p>
-          <p>Số xe tải đang bảo dưỡng: {trucks.length - activeTrucks.length}</p>
+          <p>Tổng số xe: {buses.length + trucks.length -2}</p>
+          <p>Xe khách: {buses.length-1}</p>
+          <p>Xe tải: {trucks.length-1}</p>
+          <p>Số xe khách đang hoạt động: {buses.length - maintenanceBuses.length -1}</p>
+          <p>Số xe khách đang bảo dưỡng: {maintenanceBuses.length}</p>
+          <p>Số xe tải đang hoạt động: {trucks.length - maintenanceTrucks.length -1}</p>
+          <p>Số xe tải đang bảo dưỡng: {maintenanceTrucks.length}</p>
           </div>
           <div className='search'>
           <h2>Tìm kiếm thông tin</h2>
@@ -616,8 +618,44 @@ function Car() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           />
-          <button type='submit' onClick={handleSearch}
+          <button type='submit'onClick={() =>
+          {
+          handleSearch();
+           setBusortruck(0)
+          }}
           >Tìm kiếm</button>
+          <button type='submit' id='list'
+          onClick={() => 
+          {
+            setBusInfo(null);
+            setTruckInfo(null);
+            setBusortruck(1)
+          }}
+          >Danh sách xe khách</button>
+          <button type='submit' id='list'
+          onClick={() => 
+            {
+              setBusInfo(null);
+              setTruckInfo(null);
+              setBusortruck(2)
+            }}
+          >Danh sách xe tải</button>
+          {busortruck === 1 && (
+            <div className='searchInfo'>
+                <h3>Danh sách xe khách</h3>
+                {buses.map((bus, index) => (
+                <p key={index}>{bus.liplate}</p>
+              ))}
+            </div>
+          )}
+          {busortruck === 2 && (
+            <div className='searchInfo'>
+                <h3>Danh sách xe tải</h3>
+                {trucks.map((truck, index) => (
+                <p key={index}>{truck.liplate}</p>
+              ))}
+            </div>
+          )}
           {busInfo && (
             <div className='searchInfo'>
               <h4>Thông tin</h4>
@@ -717,8 +755,8 @@ function Car() {
                   />
                    Hoàn thành bảo dưỡng
                   <input type="radio"
-                  onChange={() => updateTruckStatus(truck.id, "maintenance")}
-                  checked={truck.status === "maintenance"}
+                  onChange={() => updateTruckStatus(truck.id, "Maintenance")}
+                  checked={truck.status === "Maintenance"}
                   />
                    Chưa bảo dưỡng
                   </div>
@@ -813,7 +851,9 @@ function Car() {
           onChange={handleInputLiplate}
           />
         <button type="button" className='submit-button'
-        onClick={handleSubmit}
+        onClick={() => {
+          handleSubmit();
+        }}
         >Đăng ký bảo dưỡng</button>
         </div>
         <div className='lichsu'>
@@ -1044,13 +1084,13 @@ function Car() {
         onChange={(e) => setCartype(e.target.value)}
         ></input>
         </div>
-        <input type='text' placeholder='Nhập khối lượng xe...'
+        <input type='number' placeholder='Nhập khối lượng xe...'
         onChange={(e) => setWeight(e.target.value)}
         ></input>
-        <input type='text' placeholder='Nhập bằng lái yêu cầu...'
+        <input type='number' placeholder='Nhập bằng lái yêu cầu...'
         onChange={(e) => setLicense(e.target.value)}
         ></input>
-        <input type='text' placeholder='Nhập số ghế/ trọng tải...'
+        <input type='number' placeholder='Nhập số ghế/ trọng tải...'
         onChange={(e) => setNumOfSeats(e.target.value)}
         ></input>
         <input type='text' placeholder='Nhập vị trí hiện tại...'
