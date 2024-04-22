@@ -87,32 +87,36 @@ const Path = () =>{
         document.getElementById('popupAddGoods').style.display="none";
         document.getElementById('overlay').style.display="none";
         document.getElementById('successAddGoods').style.display="none";
+        document.getElementById('failedAddGoods').style.display="none";
     }
     const [addedGoods, setAddedGoods] = useState([]);
 
     const addNewGoods= async()=>{
-        try{
-            setAddedGoods([...addedGoods,{
-                name: newGoodsName,
-                weight: newGoodsWeight,
-                dest: newGoodsDest,
-            }])
-            await addDoc(collection(database,"goods"),{
-                name: newGoodsName,
-                weight: newGoodsWeight,
-                dest: newGoodsDest,
-                isMoving: false,
-                position: newGoodsLocation,
-                status: true,
-                carId: "none",
-                userId: auth?.currentUser?.uid
-            });
-            document.getElementById('successAddGoods').style.display="none";
-            document.getElementById('successAddGoods').style.display="block";
-        }catch(error){
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            window.alert(errorCode, errorMessage);
+        if(newGoodsName===""||newGoodsWeight===0||newGoodsDest==="") document.getElementById('failedAddGoods').style.display="block";
+        else{
+            try{
+                setAddedGoods([...addedGoods,{
+                    name: newGoodsName,
+                    weight: newGoodsWeight,
+                    dest: newGoodsDest,
+                }])
+                await addDoc(collection(database,"goods"),{
+                    name: newGoodsName,
+                    weight: newGoodsWeight,
+                    dest: newGoodsDest,
+                    isMoving: false,
+                    position: newGoodsLocation,
+                    status: true,
+                    carId: "none",
+                    userId: auth?.currentUser?.uid
+                });
+                document.getElementById('failedAddGoods').style.display="none";
+                document.getElementById('successAddGoods').style.display="block";
+            }catch(error){
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                window.alert(errorCode, errorMessage);
+            }
         }
     }
     //2.2 Xoá Hàng
@@ -149,32 +153,36 @@ const Path = () =>{
         document.getElementById('popupAddPassenger').style.display="none";
         document.getElementById('overlay').style.display="none";
         document.getElementById('successAddPassenger').style.display="none";
+        document.getElementById('failedAddPassenger').style.display="none";
     }
     const [addedPassenger, setAddedPassenger] = useState([]);
 
     const addNewPassenger= async()=>{
-        try{
-            setAddedPassenger([...addedPassenger,{
-                name: newPassengerName,
-                phone: newPassengerPhone,
-                dest: newPassengerDest,
-            }])
-            await addDoc(collection(database,"passenger"),{
-                name: newPassengerName,
-                phone: newPassengerPhone,
-                dest: newPassengerDest,
-                isMoving: false,
-                position: newPassengerLocation,
-                status: true,
-                carId: "none",
-                userId: auth?.currentUser?.uid
-            });
-            document.getElementById('successAddPassenger').style.display="none";
-            document.getElementById('successAddPassenger').style.display="block";
-        }catch(error){
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            window.alert(errorCode, errorMessage);
+        if(newPassengerName===""||newPassengerPhone===0||newPassengerDest==="") document.getElementById('failedAddPassenger').style.display="block";
+        else{
+            try{
+                setAddedPassenger([...addedPassenger,{
+                    name: newPassengerName,
+                    phone: newPassengerPhone,
+                    dest: newPassengerDest,
+                }])
+                await addDoc(collection(database,"passenger"),{
+                    name: newPassengerName,
+                    phone: newPassengerPhone,
+                    dest: newPassengerDest,
+                    isMoving: false,
+                    position: newPassengerLocation,
+                    status: true,
+                    carId: "none",
+                    userId: auth?.currentUser?.uid
+                });
+                document.getElementById('failedAddPassenger').style.display="none";
+                document.getElementById('successAddPassenger').style.display="block";
+            }catch(error){
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                window.alert(errorCode, errorMessage);
+            }
         }
     }
     // 3.2 Xoá khách
@@ -423,8 +431,8 @@ const Path = () =>{
                     }
                     else violationType+="O";
                     violationType=allViolations+violationType
-                    if (bus.driver.history.length===10) bus.driver.history.pop();
-                    bus.driver.history.unshift(violationType);
+                    if (truck.driver.history.length===10) truck.driver.history.pop();
+                    truck.driver.history.unshift(violationType);
 
                     if(truck.arrayOfDests.length!=0){
                         truck.arriveTime=truck.arrayOfTimeDests[0];
@@ -614,7 +622,7 @@ const Path = () =>{
                 <button className='closebtn' onClick={()=>hidePopupStationBox()}>X</button>
                 <h1>Thông tin chi tiết về trạm {popupStation.name}</h1>
                 <div className='popupStationDTB'>
-                    <h1>Danh sách tài xế</h1>
+                    <h1>Danh sách tài xế ở trạm</h1>
                     {popupDriverList.map((driver)=>(<div id={driver.id} className='eachDTB'>
                         <p>Tên: {driver.name}</p>
                         <p>SĐT: {driver.phone}</p>
@@ -630,7 +638,7 @@ const Path = () =>{
                         </div>))}
                 </div>
                 <div className='popupStationDTB'>
-                    <h1>Danh sách xe tải</h1>
+                    <h1>Danh sách xe tải ở trạm</h1>
                     {popupTruckList.map((truck)=>(<div id={truck.id} className='eachDTB'>
                         <p>Loại xe: {truck.cartype}</p>
                         <p>Biển số: {truck.liplate}</p>
@@ -646,7 +654,7 @@ const Path = () =>{
                         </div>))}
                 </div>
                 <div className='popupStationDTB'>
-                    <h1>Danh sách xe khách</h1>
+                    <h1>Danh sách xe khách ở trạm</h1>
                     {popupBusList.map((bus)=>(<div id={bus.id} className='eachDTB'>
                         <p>Loại xe: {bus.cartype}</p>
                         <p>Biển số: {bus.liplate}</p>
@@ -690,10 +698,13 @@ const Path = () =>{
                         <p>Trọng lượng: {goods.weight} Kg</p>
                         <p>Đích đến: {goods.dest}</p>
                         </div>))}
-                <input placeholder='Tên hàng' type='text' onChange={(e)=>setNewGoodsName(e.target.value)}/>
-                <input placeholder='Trọng lượng' type='number' onChange={(e)=>setNewGoodsWeight(Number(e.target.value))}/>
-                <input placeholder='Đích đến' type='text' onChange={(e)=>setNewGoodsDest(e.target.value)}/>
-                <button onClick={addNewGoods}>Thêm vào</button>
+                <form>
+                    <input placeholder='Tên hàng' type='text' onChange={(e)=>setNewGoodsName(e.target.value)} required/>
+                    <input placeholder='Trọng lượng' type='number' onChange={(e)=>setNewGoodsWeight(Number(e.target.value))} required/>
+                    <input placeholder='Đích đến' type='text' onChange={(e)=>setNewGoodsDest(e.target.value)} required/>
+                    <input type='submit' onClick={addNewGoods} value="Thêm vào"/>
+                </form>
+                <h2 id='failedAddGoods' style={{display:"none"}}>Vui lòng nhập đủ, đúng dữ liệu</h2>
                 <h2 id='successAddGoods'>Đã thêm hàng thành công</h2>
             </div>
             {/* Hiển thị thêm khách */}
@@ -706,11 +717,14 @@ const Path = () =>{
                         <p>SĐT: {passenger.phone}</p>
                         <p>Đích đến: {passenger.dest}</p>
                         </div>))}
-                <input placeholder='Tên ' type='text' onChange={(e)=>setNewPassengerName(e.target.value)}/>
-                <input placeholder='SĐT' type='number' onChange={(e)=>setNewPassengerPhone(Number(e.target.value))}/>
-                <input placeholder='Đích đến' type='text' onChange={(e)=>setNewPassengerDest(e.target.value)}/>
-                <button onClick={addNewPassenger}>Thêm vào</button>
+                <form>
+                    <input placeholder='Tên ' type='text' onChange={(e)=>setNewPassengerName(e.target.value)} required/>
+                    <input placeholder='SĐT' type='number' onChange={(e)=>setNewPassengerPhone(Number(e.target.value))} required/>
+                    <input placeholder='Đích đến' type='text' onChange={(e)=>setNewPassengerDest(e.target.value)}/>
+                    <button onClick={addNewPassenger}>Thêm vào</button>
+                </form>
                 <h2 id='successAddPassenger' style={{display:"none"}}>Đã thêm khách thành công</h2>
+                <h2 id='failedAddPassenger' style={{display:"none"}}>Vui lòng nhập đủ, đúng dữ liệu</h2>
             </div>
             {/* Hiển thị tính đường đi cho xe tải */}
             <div id='popupCalcPathTruck1' >
@@ -766,18 +780,22 @@ const Path = () =>{
                                 <p>Trọng lượng: {goods.weight} Kg</p>
                                 <p>Đích đến: {goods.dest}</p>
                                 <button onClick={()=>{
-                                    if(pathCalcTruck[pathCalcTruckChosenIndex].carrying+goods.weight<=pathCalcTruck[pathCalcTruckChosenIndex].payload){
-                                        pathCalcTruck[pathCalcTruckChosenIndex]?.arrayOfGoods.push(goods);
-                                        setPathCalcTruckGoodsArray([...pathCalcTruckGoodsArray,goods]);
-                                        setPathCalcGoods(pathCalcGoods=>pathCalcGoods.filter(good=>good.id!=goods.id));
-                                        pathCalcTruck[pathCalcTruckChosenIndex].carrying+=goods.weight;
-                                        if(!pathCalcTruck[pathCalcTruckChosenIndex].arrayOfDests.includes(goods.dest)) pathCalcTruck[pathCalcTruckChosenIndex].arrayOfDests.push(goods.dest);
-                                        document.getElementById(goods.id+"warning").style.display='none';
-                                        // if(!pathCalcTruckUsed.includes(pathCalcTruck[pathCalcTruckChosenIndex])) setPathCalcTruckUsed([...pathCalcTruckUsed,pathCalcTruck[pathCalcTruckChosenIndex]]);
+                                    if(pathCalcTruck.length!==0){
+                                        if(pathCalcTruck[pathCalcTruckChosenIndex].carrying+goods.weight<=pathCalcTruck[pathCalcTruckChosenIndex].payload){
+                                            pathCalcTruck[pathCalcTruckChosenIndex]?.arrayOfGoods.push(goods);
+                                            setPathCalcTruckGoodsArray([...pathCalcTruckGoodsArray,goods]);
+                                            setPathCalcGoods(pathCalcGoods=>pathCalcGoods.filter(good=>good.id!=goods.id));
+                                            pathCalcTruck[pathCalcTruckChosenIndex].carrying+=goods.weight;
+                                            if(!pathCalcTruck[pathCalcTruckChosenIndex].arrayOfDests.includes(goods.dest)) pathCalcTruck[pathCalcTruckChosenIndex].arrayOfDests.push(goods.dest);
+                                            document.getElementById(goods.id+"warning").style.display='none';
+                                            // if(!pathCalcTruckUsed.includes(pathCalcTruck[pathCalcTruckChosenIndex])) setPathCalcTruckUsed([...pathCalcTruckUsed,pathCalcTruck[pathCalcTruckChosenIndex]]);
+                                        }
+                                        else document.getElementById(goods.id+"warning").style.display='block';
                                     }
-                                    else document.getElementById(goods.id+"warning").style.display='block';
+                                    else{document.getElementById(goods.id+"nocar").style.display='block'}
                                 }} className='chooseDelete'>Thêm vào xe</button>
                                 <p style={{display:'none'}} id={goods.id+"warning"}>Vượt quá trọng tải xe</p>
+                                <p style={{display:'none'}} id={goods.id+"nocar"}>Không có xe để vận chuyển</p>
                             </div>))}
                         </div>
                     </div>
@@ -1107,18 +1125,22 @@ const Path = () =>{
                                 <p>SĐT: {passenger.phone}</p>
                                 <p>Đích đến: {passenger.dest}</p>
                                 <button onClick={()=>{
-                                    if(pathCalcBus[pathCalcBusChosenIndex].passengers<pathCalcBus[pathCalcBusChosenIndex].numOfSeats){
-                                        pathCalcBus[pathCalcBusChosenIndex]?.arrayOfPassenger.push(passenger);
-                                        setPathCalcBusPassengerArray([...pathCalcBusPassengerArray,passenger]);
-                                        setPathCalcPassenger(pathCalcPassenger=>pathCalcPassenger.filter(good=>good.id!=passenger.id));
-                                        pathCalcBus[pathCalcBusChosenIndex].passengers+=1;
-                                        if(!pathCalcBus[pathCalcBusChosenIndex].arrayOfDests.includes(passenger.dest)) pathCalcBus[pathCalcBusChosenIndex].arrayOfDests.push(passenger.dest);
-                                        document.getElementById(passenger.id+"warning").style.display='none';
-                                        // if(!pathCalcTruckUsed.includes(pathCalcTruck[pathCalcTruckChosenIndex])) setPathCalcTruckUsed([...pathCalcTruckUsed,pathCalcTruck[pathCalcTruckChosenIndex]]);
+                                    if(pathCalcBus.length!==0){
+                                        if(pathCalcBus[pathCalcBusChosenIndex].passengers<pathCalcBus[pathCalcBusChosenIndex].numOfSeats){
+                                            pathCalcBus[pathCalcBusChosenIndex]?.arrayOfPassenger.push(passenger);
+                                            setPathCalcBusPassengerArray([...pathCalcBusPassengerArray,passenger]);
+                                            setPathCalcPassenger(pathCalcPassenger=>pathCalcPassenger.filter(good=>good.id!=passenger.id));
+                                            pathCalcBus[pathCalcBusChosenIndex].passengers+=1;
+                                            if(!pathCalcBus[pathCalcBusChosenIndex].arrayOfDests.includes(passenger.dest)) pathCalcBus[pathCalcBusChosenIndex].arrayOfDests.push(passenger.dest);
+                                            document.getElementById(passenger.id+"warning").style.display='none';
+                                            // if(!pathCalcTruckUsed.includes(pathCalcTruck[pathCalcTruckChosenIndex])) setPathCalcTruckUsed([...pathCalcTruckUsed,pathCalcTruck[pathCalcTruckChosenIndex]]);
+                                        }
+                                        else document.getElementById(passenger.id+"warning").style.display='block';
                                     }
-                                    else document.getElementById(passenger.id+"warning").style.display='block';
+                                    else {document.getElementById(passenger.id+"nocar").style.display='block'}
                                 }} className='chooseDelete'>Thêm vào xe</button>
                                 <p style={{display:'none'}} id={passenger.id+"warning"}>Vượt quá số ghé của xe</p>
+                                <p style={{display:'none'}} id={passenger.id+"nocar"}>Không có xe để vận chuyển</p>
                             </div>))}
                         </div>
                     </div>
