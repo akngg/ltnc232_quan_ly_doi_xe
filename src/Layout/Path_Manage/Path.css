@@ -355,7 +355,7 @@ button{
 }
 .headerPath{
     width: 100%;
-    height: 50px;
+    height: 100px;
     /* padding: 20px; */
     background: rgb(157, 219, 227);
     display: flex;
@@ -377,6 +377,15 @@ button{
     display: flex;
     justify-content: space-between;
 }
-.popupStationDTB{
+/* .popupStationDTB{
     border: 1px solid black;
+} */
+.TB{
+    width: 100%;
+    border-collapse: collapse;
+}
+.TB tr th,td{
+    border: 1px solid black;
+    width: 20%;
+    text-align: center;
 }

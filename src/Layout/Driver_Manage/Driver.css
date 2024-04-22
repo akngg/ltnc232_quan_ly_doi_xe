@@ -32,10 +32,11 @@
 }
 .driver-input-form {
     display: none;
-    background-color: white;
-    padding: 20px;
+    background-color: lightgray;
+    padding: 15px;
     max-width: 60%;
     margin-left: 18%;
+    background-color: rgb(233, 226, 226);
 }
 #add-button{
     visibility: hidden;
@@ -195,13 +196,11 @@
     cursor: pointer;
 }
 .close-btn {
-    position: absolute;
-    top: 6px;
-    right: 12px;
+    margin-left: 97%;
     cursor: pointer;
     font-size: 15px;
     color: #666;
-    background-color: lightgray;
+    background-color: rgb(163, 159, 159);
     padding: 10px 15px;
     border: none;
 }
