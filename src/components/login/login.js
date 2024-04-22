@@ -18,7 +18,7 @@ const login = async () =>{
         .then((userCredential) => {
             // Signed in
             const user = userCredential.user;
-            navigate('/dashboard/car')
+            navigate('/dashboard')
             console.log(user);
         })
         .catch((error) => {
@@ -44,17 +44,18 @@ const login = async () =>{
                         Mật khẩu
                     </label>
                 </div>
-                {/* <div className="remember-forgot">
+                <div className="remember-forgot">
                     <label>
                     <input type="checkbox"/>
                         Ghi nhớ tôi
                     </label>
-                </div> */}
+                    {/*Có quên mật khẩu nữa nhưng để sau */}
+                </div>
                 <button type="submit" value="Đăng nhập" onClick={login} className="btn">Đăng nhập</button>
-                {/* <div className="login-register">
+                <div className="login-register">
                     <p>Chưa có tài khoản? <Link to="/register" className="registerlink">Đăng ký ngay</Link>
                     </p>
-                </div> */}
+                </div>
             </div>
         </div>
     </div>)

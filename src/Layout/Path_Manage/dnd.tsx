@@ -33,9 +33,9 @@ const DndDisplay=({currentStation, arrStation, car})=>{
                     if (destination.indexOf(car.arrayOfGoods[index].dest)===i) break;
                 }
                 // parseFloat(cloneArrDistance[destination.indexOf(car.arrayOfGoods[index].dest)])
-                tempTotalCost+=3*totalDistance*car.arrayOfGoods[index].weight;
+                tempTotalCost+=50*totalDistance*car.arrayOfGoods[index].weight;
                 if(index+1==car.arrayOfGoods.length){
-                    tempTotalCost+=3*totalDistance*(car.weight+1000);
+                    tempTotalCost+=75*totalDistance*(car.weight+150);
                 }
             }
         }
@@ -51,14 +51,12 @@ const DndDisplay=({currentStation, arrStation, car})=>{
                     // console.log("test");
                 }
                 // parseFloat(cloneArrDistance[destination.indexOf(car.arrayOfGoods[index].dest)])
-                tempTotalCost+=1000*totalDistance;
-                console.log(tempTotalCost);
+                tempTotalCost+=1000*totalDistance
                 if(index+1==car.arrayOfPassenger.length){
-                    tempTotalCost+=3*totalDistance*(car.weight)+(3*totalDistance*1000);
+                    tempTotalCost+=75*totalDistance*(car.weight+150);
                 }
-                console.log("uhhhh");
-                console.log(tempTotalCost);
-                console.log(car.weight);
+                // console.log("uhhhh");
+                // console.log(tempTotalCost);
             }
         }
         setTotalCost(Math.round(tempTotalCost));

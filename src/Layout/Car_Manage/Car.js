@@ -482,7 +482,7 @@ function Car() {
       status: status,
       dest: "",
       arrayOfDests: [],
-      arrayOfGoods: [],
+      arrayOfPassenger: [],
       arrayOfTimeDests: [],
       arriveTime: 0,
       class: 'bus',
