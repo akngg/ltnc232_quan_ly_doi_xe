@@ -653,7 +653,7 @@ const Path = () =>{
                     {popupIncomingTruck.map((truck)=>(<div id={truck.id} className='eachDTB'>
                         <p>Loại xe: {truck.cartype}</p>
                         <p>Biển số: {truck.liplate}</p>
-                        <p>Tải trọng: {truck.payload}</p>
+                        <p>KL Hàng: {truck.carrying}</p>
                         </div>))}
                 </div>
                 <div className='popupStationDTB'>
@@ -669,7 +669,7 @@ const Path = () =>{
                     {popupIncomingBus.map((bus)=>(<div id={bus.id} className='eachDTB'>
                         <p>Loại xe: {bus.cartype}</p>
                         <p>Biển số: {bus.liplate}</p>
-                        <p>Số ghế: {bus.numOfSeats}</p>
+                        <p>Số hành khách: {bus.passengers}</p>
                         </div>))}
                 </div>
                 <div className='popupStationDTB'>
