@@ -38,11 +38,11 @@ const Sidebar = () => {
                 <AltRouteIcon/>
                 <div className="title"> Quản lý chuyến đi</div></Link>
             </li>
-            <li onClick={hideDriverInfo}>
+            {/* <li onClick={hideDriverInfo}>
               <Link to="/dashboard/perform" className="SidebarLink">
                 <OfflineBoltIcon/>
                 <div className="title">Hiệu suất</div></Link>
-            </li>
+            </li> */}
             <li onClick={hideDriverInfo}>
               <Link to="/dashboard/setting" className="SidebarLink">
                 <SettingsIcon/>
