@@ -40,12 +40,6 @@ function Register(){
             <h2>Đăng ký</h2>
             <div>
                 <div className="regbox">
-                <input type="text" required/>
-                <label>
-                    Tên tài khoản
-                </label>
-                </div>
-                <div className="regbox">
                 <input type="email" required onChange={(e)=>{setEmail(e.target.value)}}/>
                 <label>
                     Email
