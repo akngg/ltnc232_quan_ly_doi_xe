@@ -157,7 +157,7 @@ function Driver(){
         try{
             await addDoc(driversCollectionRef, {
                 name: driverName,
-                license: driverDegree,
+                license: Number(driverDegree),
                 phone: driverPhone,
                 address: driverAddress,
                 position: driverPosition,
