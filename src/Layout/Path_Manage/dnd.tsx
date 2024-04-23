@@ -53,7 +53,7 @@ const DndDisplay=({currentStation, arrStation, car})=>{
                 // parseFloat(cloneArrDistance[destination.indexOf(car.arrayOfGoods[index].dest)])
                 console.log(tempTotalCost);
                 if(index+1==car.arrayOfPassenger.length){
-                    tempTotalCost+=3*totalDistance*(car.weight)+(3*totalDistance*1000)+2000*totalDistance;
+                    tempTotalCost+=2.5*totalDistance*(car.weight)+(3*totalDistance*1000);
                 }
                 console.log("uhhhh");
                 console.log(tempTotalCost);
