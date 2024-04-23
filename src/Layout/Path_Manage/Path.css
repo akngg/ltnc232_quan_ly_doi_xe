@@ -46,6 +46,7 @@ button{
     z-index: 2;
     padding: 20px;
     box-sizing: border-box;
+    overflow: auto;
 }
 #popupAddPassenger{
     display: none;
