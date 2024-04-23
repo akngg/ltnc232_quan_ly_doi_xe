@@ -79,11 +79,11 @@ const Path = () =>{
         document.getElementById('overlay').style.display="block";
     }
     const hidePopupAddGoods=()=>{
-        // setAddedGoods([]);
-        // setNewGoodsName("");
-        // setNewGoodsWeight(0);
-        // setNewGoodsLocation("");
-        // setNewGoodsDest("");
+        setAddedGoods([]);
+        setNewGoodsName("");
+        setNewGoodsWeight(0);
+        setNewGoodsLocation("");
+        setNewGoodsDest("");
         document.getElementById('popupAddGoods').style.display="none";
         document.getElementById('overlay').style.display="none";
         document.getElementById('successAddGoods').style.display="none";
@@ -146,11 +146,11 @@ const Path = () =>{
         document.getElementById('overlay').style.display="block";
     }
     const hidePopupAddPassenger=()=>{
-        // setAddedPassenger([]);
-        // setNewPassengerName("");
-        // setNewPassengerPhone(0);
-        // setNewPassengerLocation("");
-        // setNewPassengerDest("");
+        setAddedPassenger([]);
+        setNewPassengerName("");
+        setNewPassengerPhone(0);
+        setNewPassengerLocation("");
+        setNewPassengerDest("");
         document.getElementById('popupAddPassenger').style.display="none";
         document.getElementById('overlay').style.display="none";
         document.getElementById('successAddPassenger').style.display="none";
