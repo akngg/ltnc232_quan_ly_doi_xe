@@ -29,7 +29,7 @@ function Header(){
             <nav>
                 <Link to="/" className={headerstyle.thelink}>Trang chủ</Link>
                 <Link to={!auth.currentUser?"/login":"/dashboard/car"} className={headerstyle.thelink}>Đăng nhập</Link>
-                {/* <Link to={!auth.currentUser?"/register":"dashboard"} className={headerstyle.thelink}>Đăng ký</Link> */}
+                <Link to={!auth.currentUser?"/register":"dashboard"} className={headerstyle.thelink}>Đăng ký</Link>
             </nav>
         </header>
     

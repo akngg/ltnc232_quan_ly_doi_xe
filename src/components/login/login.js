@@ -51,10 +51,10 @@ const login = async () =>{
                     </label>
                 </div> */}
                 <button type="submit" value="Đăng nhập" onClick={login} className="btn">Đăng nhập</button>
-                {/* <div className="login-register">
+                <div className="login-register">
                     <p>Chưa có tài khoản? <Link to="/register" className="registerlink">Đăng ký ngay</Link>
                     </p>
-                </div> */}
+                </div>
             </div>
         </div>
     </div>)

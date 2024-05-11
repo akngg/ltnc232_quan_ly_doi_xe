@@ -12,8 +12,8 @@ function Home(){
         <h1>Hệ thống quản lý đội xe</h1>
         <h3>By : 110901 Team</h3>
         <div className="logreg">
-        {/* <Link to={!user?"/register":"dashboard"} ><button className="homebtn">Đăng ký ngay</button></Link> */}
-        {/* <Link to={!user?"/login":"/dashboard"} ><button className="homebtn">Đã có tài khoản?</button></Link> */}
+        <Link to={!user?"/register":"dashboard"} ><button className="homebtn">Đăng ký ngay</button></Link>
+        <Link to={!user?"/login":"/dashboard"} ><button className="homebtn">Đã có tài khoản?</button></Link>
         </div>
     </div>)
 } 
