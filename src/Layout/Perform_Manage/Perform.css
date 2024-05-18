@@ -1,11 +1,239 @@
 .Perform{
+    background-color: antiquewhite;
+  width: calc(100%-220px);
+  height: 100%;
+  margin-left: 220px; 
+}
+.p-body{
+    
+}
+.p-header{
+        width: 100%;
+        height: 100px;
+        background: rgb(157, 219, 227);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        justify-content: space-between;
+}
+.PContent{
+    font-size: 3rem;
+    margin-right: 20%;
+    margin-left: 10px;
+    background: rgb(157, 219, 227);
+    font-weight: bold;
+    -webkit-user-select: none;
+    user-select: none;
+    margin: 0 auto;
+}
+.p-logo{
+    width: 10%;
+    height:100%;
+    border-radius: 5px;
+    background: rgb(157, 219, 227);
+    float: left;
+}
+.common{
+    height: 60px;
     width: 100%;
-    height: 100vh;
     display: flex;
     align-items: center;
-    justify-content: center;  
+    background-color: rgb(69, 63, 92);
+    font-size: 20px;
+    font-weight: 600;
+    color: rgb(34, 182, 84);
+    justify-content: space-between;
 }
-.titlePerform{
+.select-content{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    height: 80px;
+    border-bottom: 2px solid #ccc;
+    border-bottom: none;
+    background-color: #95afc9;
+}
+
+.D1{
+    margin-left: 10px;
+}
+.x{
+    height: 29px;
+    width: 29px;
+    margin-right: 1rem;
+    border : 2px solid #ccc;
+    border-radius: 3px;
+    align-items: center;
+    justify-content: center;
+}
+.x:hover {
+    box-shadow: 0 0 10px 5px rgba(255, 255, 0, 0.5);
+    color : white;
+}
+.select-pr{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    min-width: 200px;
+}
+.pr-label{
+    position: absolute;
+    top: -8px;
+    left: 28%;
+}
+.item-search{
+    height: 30px;
+    width: 100%;
+    margin-top: 15px;
+    padding-left: 10px;
+}
+.filter{
+    background-color: #f2f2f2;
+    height: 25px;
+    width :32px;
+  padding: 3px 3px; 
+  border-radius: 4px; 
+  cursor: pointer; 
+  transition: background-color 0.3s ease; 
+  margin-top: 10px;
+  padding: auto;
+  justify-content: center;
+}
+.filter:hover {
+    background-color: #e5a4a4;
+  }
+.reset {
+    width: 120px;
+    height: 30px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #cccccc61;
+    cursor: pointer;
+    font-weight: 600;
+    position: relative;
+}
+
+.reset:hover {
+    color: red;
+}
+
+.reset .icon-reset {
+    margin-right: 8px;
+}
+
+
+.table-infor{
+    width: 100%;
+}
+
+.pr-tr{
+    height: 80px;
+    font-size: 14px;
+}
+.pr-nhansu{
+    height: 60px;
+    font-size: 14px;
+}
+.pr-th{
     color: black;
-    margin-bottom: 10px;
+    padding: 0px;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    
+}
+
+
+
+.nl{
+    display: flexbox;
+    flex-direction: row;
+    position: relative;
+    padding: 0px;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+}
+.nhienlieu{
+    position: absolute;
+    top: 0px;
+    
+    line-height: 20px;
+    width: 100%;
+    left: 0px;
+    display: flex;
+    align-items: center;
+    height: 40px;
+    justify-content: center;
+}
+.body-nhienlieu{
+    display: flex;
+    margin-top: 40px;
+}
+.nhienlieu-content{
+    width: 50%;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.nl1{
+    border-top:1px solid black ;
+}
+.nl12{
+    border-top:1px solid black ;
+    border-right:1px solid black ;
+}
+
+.tr-item {
+    height: 60px;
+}
+.nhienlieu-item{
+    display: flex;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    padding: 0;
+    width: 100%;
+    height: 60px;
+}
+.nhienlieu-item .nhienlieu-content{
+    width: 50%;
+    height: 60px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+.nhienlieu-item .nhienlieu-content + .nhienlieu-content {
+    border-left: 1px solid #ccc;
+}
+.pr-val-common{
+    display: flex;
+}
+.pr-val{
+    width: 50%;
+    height: 60px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+.pr-val1{
+    width: 50%;
+    height: 60px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    border-right: 1px solid black;
+}
+.dataset{
+    height: 50px;
+    font-size: 14px;
 }

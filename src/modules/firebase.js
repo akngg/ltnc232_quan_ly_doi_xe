@@ -118,3 +118,12 @@ export async function DriverDelete(id) {
     success: true,
   };
 }
+export async function PerformGet(id) {
+  let items;
+  if (id) items = await Get("perform" + "/" + id);
+  else items = await Get("perform");
+  return {
+    success: true,
+    data: items,
+  };
+}
