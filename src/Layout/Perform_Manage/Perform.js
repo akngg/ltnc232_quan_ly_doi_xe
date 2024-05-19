@@ -1,28 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect  } from 'react';
 import CachedIcon from '@mui/icons-material/Cached';
 import FilterArtIcon from '@mui/icons-material/FilterAlt'
 import './Perform.css';
 import {
   getDocs,
   collection,
-  addDoc,
-  deleteDoc,
-  updateDoc,
-  doc,
 } from "firebase/firestore";
 
-import { DriversGet, database } from '../../modules/firebase';
+import {  database } from '../../modules/firebase';
 
 
 function Perform() {
   const [show, setShow] = useState(true);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [phoneInput, setPhoneInput] = useState('');
   const [error, setError] = useState('');
-  const [dataList, setDataList] = useState([]);
-  const [driversList, setDriversList] = useState([]);
-  const performCollectionRef=collection(database,"perform");
 
+  const [dataList, setDataList] = useState([]);
+  const [filteredDataList, setFilteredDataList] = useState([]);
+  const [driversList, setDriversList] = useState([]);
+  const [filteredDriversList, setFilteredDriversList] = useState([]);
+
+  const performCollectionRef=collection(database,"perform");
   const driversCollectionRef = collection(database, "drivers");
 
   const getPerformList = async () => {
@@ -66,24 +66,47 @@ function Perform() {
     setEndDate(e.target.value);
     setError('');
   };
-
+  
+  const setPhoneChange = (e) => {
+    setPhoneInput(e.target.value);
+    setError('');
+  }
+  
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (startDate > endDate) {
-      setError('Ngày bắt đầu phải lớn hơn ngày kết thúc');
-      return;
-    }
-
-    // Add logic for filtering data based on start and end dates if needed
+    setStartDate('');
+    setEndDate('');
+    setPhoneInput('');
+    setFilteredDataList(dataList);
+    setFilteredDriversList(driversList);
   };
+  const Filter_member = (phoneInput) => {
+    const filteredDrivers = driversList.filter((driver) => {
+      if (phoneInput === '') {
+        return driversList;
+      }
+      return driver.phone.includes(phoneInput);
+    });
+    setFilteredDriversList(filteredDrivers);
+  }
+  const Filter_Car = (startDate, endDate) => {
+    const filteredData = dataList.filter((item) => {
+      if (startDate === '' && endDate === '') {
+        return dataList;
+      }
+      const start = item.StartDay.toDate();
+      const end = item.EndDay.toDate();
+      return start >= new Date(startDate) && end <= new Date(endDate);
+    });
+    setFilteredDataList(filteredData);
+  }
 
   return (
     <div className="Perform">
       <div className="p-body">
         <div className="p-header">
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/f/f0/HCMCUT.svg"
+            src=""
             className="p-logo"
             alt="p-Logo"
           />
@@ -131,8 +154,13 @@ function Perform() {
               <div className="select-pr">
                 <div className="infor-pr">
                   <div className="pr-label">Số điện thoại</div>
-                  <input className="item-search">
-                     
+                  <input 
+                    type='text'
+                    name = "phoneInput"
+                    value={phoneInput}
+                    onChange= {setPhoneChange} 
+                    className="item-search"
+                  >
                   </input>
                 </div>
               </div>
@@ -165,8 +193,18 @@ function Perform() {
                 </div>
               </div>
             )}
-            <div className='filter'> <FilterArtIcon/> </div>
-            <div className="reset" onClick={handleSubmit}>
+            <div className='filter'
+                 onClick={() => {
+                  Filter_member(phoneInput); 
+                  Filter_Car(startDate, endDate);
+                }}
+                 
+            > <FilterArtIcon/> </div>
+            <div
+             className="reset" 
+             onClick={ 
+              handleSubmit
+              }>
               Đặt lại bộ lọc
             </div>
           </div>
@@ -197,7 +235,7 @@ function Perform() {
                 </tr>
               </thead>
               <tbody>
-              {dataList.map((data) => (
+              {filteredDataList.map((data) => (
                 <tr key={data.ID}>
                   <td className="pr-th">{data.ID}</td>
                   <td className="pr-th">{data.StartDay?.toDate().toLocaleDateString()}</td>
@@ -245,7 +283,7 @@ function Perform() {
                 </tr>
               </thead>
               <tbody>
-              {driversList.map((drivers) => (
+              {filteredDriversList.map((drivers) => (
                 <tr className='dataset' key={drivers.id}>
                   <td className="pr-th">{drivers.name}</td>
                   <td className="pr-th">{drivers.license}</td>
