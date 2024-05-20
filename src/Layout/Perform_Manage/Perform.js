@@ -15,15 +15,19 @@ function Perform() {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [phoneInput, setPhoneInput] = useState('');
+  const [stationInput,setStationInput] = useState('');
   const [error, setError] = useState('');
 
   const [dataList, setDataList] = useState([]);
   const [filteredDataList, setFilteredDataList] = useState([]);
   const [driversList, setDriversList] = useState([]);
   const [filteredDriversList, setFilteredDriversList] = useState([]);
+  const [stationList, setStationList] = useState([]);
+  const [filteredStationList, setFilteredStationList] = useState([]);
 
   const performCollectionRef=collection(database,"perform");
   const driversCollectionRef = collection(database, "drivers");
+  const stationCollectionRef = collection(database, "station");
 
   const getPerformList = async () => {
     try {
@@ -49,9 +53,22 @@ function Perform() {
       console.error(err);
     }
   };
+  const getStationList = async () => {
+    try {
+      const stationData = await getDocs(stationCollectionRef);
+      const filteredStationData = stationData.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setStationList(filteredStationData);
+    } catch (err) {
+      console.error(err);
+    }
+  };
   useEffect(() => {
     getPerformList();
     getDriversList();
+    getStationList();
   }, [])
 
   
@@ -106,7 +123,7 @@ function Perform() {
       <div className="p-body">
         <div className="p-header">
           <img
-            src=""
+            src="https://upload.wikimedia.org/wikipedia/commons/f/f0/HCMCUT.svg"
             className="p-logo"
             alt="p-Logo"
           />
@@ -142,14 +159,14 @@ function Perform() {
           )}
 
           <div className="select-content">
-            {show && (
+            {/* {show && (
               <div className="select-pr">
                 <div className="infor-pr">
                   <div className="pr-label">Chọn trạm</div>
                   <select className="item-search"></select>
                 </div>
               </div>
-            )}
+            )} */}
             {!show && (
               <div className="select-pr">
                 <div className="infor-pr">
